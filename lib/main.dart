@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/di/service_locator.dart';
+import 'package:graduation_project/core/router/router.dart';
+import 'package:graduation_project/core/theme/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
+
   runApp(const MainApp());
 }
 
@@ -9,10 +17,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) => BlocProvider(
+        create: (context) =>
+            serviceLocator<
+              AuthenticationCubit
+            >(), //put the authentication cubit here!
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: appTheme,
+          routerConfig: router,
         ),
       ),
     );
