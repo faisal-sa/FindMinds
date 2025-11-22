@@ -29,6 +29,7 @@ import '../../features/authentication/domain/usecases/signup_usecase.dart'
     as _i712;
 import '../../features/authentication/presentation/cubit/authentication_cubit.dart'
     as _i675;
+import '../../features/profile/presentation/cubit/profile_cubit.dart' as _i36;
 import '../env_config/env_config.dart' as _i113;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -43,6 +44,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.supabaseClient,
       preResolve: true,
     );
+    gh.factory<_i36.ProfileCubit>(() => _i36.ProfileCubit());
     gh.lazySingleton<_i308.AuthenticationRemoteDataSource>(
       () => _i308.AuthenticationRemoteDataSourceImpl(
         supabaseClient: gh<_i454.SupabaseClient>(),

@@ -1,7 +1,10 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/features/authentication/presentation/pages/forgot_password.dart';
 import 'package:graduation_project/features/authentication/presentation/pages/login_page.dart';
 import 'package:graduation_project/features/authentication/presentation/pages/signup_page.dart';
+import 'package:graduation_project/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:graduation_project/features/profile/presentation/pages/profile_page.dart';
 
 final GoRouter router = GoRouter(
@@ -28,7 +31,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) {
-        return ProfilePage();
+        return BlocProvider(
+          create: (context) => serviceLocator.get<ProfileCubit>(),
+          child: ProfilePage(),
+        );
       },
     ),
   ],

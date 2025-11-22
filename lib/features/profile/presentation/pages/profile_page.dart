@@ -1,12 +1,18 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:graduation_project/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:graduation_project/features/profile/presentation/widgets/custom_text_field.dart';
 import 'package:graduation_project/features/profile/presentation/widgets/segmented_progress_bar.dart';
 
 class ProfilePage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
   ProfilePage({super.key});
 
   @override
@@ -49,34 +55,57 @@ class ProfilePage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: .center,
                       children: [
-                        InkWell(
-                          onTap: () => {},
-                          borderRadius: BorderRadius.circular(50),
-                          child: DottedBorder(
-                            options: CircularDottedBorderOptions(
-                              dashPattern: [5, 5],
-                              strokeWidth: 2,
-                              color: Color(0xffccd6e1),
-                            ),
-                            child: Container(
-                              width: 70.w,
-                              height: 70.h,
+                        BlocBuilder<ProfileCubit, ProfileState>(
+                          builder: (context, state) {
+                            return InkWell(
+                              onTap: () {
+                                context.pickImage();
+                                print(state.toString());
+                              },
+                              borderRadius: BorderRadius.circular(50),
+                              child: state.image == null
+                                  ? DottedBorder(
+                                      options: CircularDottedBorderOptions(
+                                        dashPattern: [5, 5],
+                                        strokeWidth: 2,
+                                        color: Color(0xffccd6e1),
+                                      ),
+                                      child: Container(
+                                        width: 70.w,
+                                        height: 70.h,
 
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Color(0xfff1f5f9),
-                              ),
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  colorFilter: ColorFilter.mode(
-                                    Color(0xff67768d),
-                                    .srcIn,
-                                  ),
-                                  "assets/icons/camera_add.svg",
-                                ),
-                              ),
-                            ),
-                          ),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xfff1f5f9),
+                                        ),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            colorFilter: ColorFilter.mode(
+                                              Color(0xff67768d),
+                                              .srcIn,
+                                            ),
+                                            "assets/icons/camera_add.svg",
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      width: 70.w,
+                                      height: 70.h,
+
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Color(0xfff1f5f9),
+                                      ),
+                                      child: ClipOval(
+                                        child: Image.file(
+                                          state.image!,
+                                          fit: .fill,
+                                        ),
+                                      ),
+                                    ),
+                            );
+                          },
                         ),
                         SizedBox(width: 25.w),
                         Column(
@@ -105,17 +134,17 @@ class ProfilePage extends StatelessWidget {
                       hint: "Enter your full name",
                     ),
                     CustomTextField(
-                      controller: nameController,
+                      controller: locationController,
                       title: "Location",
                       hint: "e.g., Riyadh, SA",
                     ),
                     CustomTextField(
-                      controller: nameController,
+                      controller: emailController,
                       title: "Email Address",
                       hint: "Enter your email",
                     ),
                     CustomTextField(
-                      controller: nameController,
+                      controller: phoneController,
                       title: "Phone Number",
                       hint: "(123) 456-7890",
                     ),
