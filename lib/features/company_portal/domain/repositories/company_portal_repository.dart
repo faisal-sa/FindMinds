@@ -1,9 +1,21 @@
-/// CompanyPortalRepository is an abstract class defining the contract for operations
-/// related to data within the domain layer.
-/// Concrete implementations of this repository interface will be provided
-/// in the data layer to interact with specific data sources (e.g., API, database).
-abstract class CompanyPortalRepository {
+import 'package:multiple_result/multiple_result.dart';
+import '../entities/company_entity.dart';
 
+abstract class CompanyRepository {
+  Future<Result<CompanyEntity, String>> registerCompany({
+    required String email,
+    required String password,
+  });
 
+  Future<Result<CompanyEntity, String>> updateCompanyProfile(
+    CompanyEntity company,
+  );
 
+  Future<Result<CompanyEntity, String>> getCompanyProfile(String userId);
+
+  Future<Result<List<Map<String, dynamic>>, String>> searchCandidates({
+    String? city,
+    String? skill,
+    String? experience,
+  });
 }
