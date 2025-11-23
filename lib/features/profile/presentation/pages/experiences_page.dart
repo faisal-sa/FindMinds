@@ -2,8 +2,10 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/features/profile/domain/entities/education.dart';
 import 'package:graduation_project/features/profile/domain/entities/work_experience.dart';
 import 'package:graduation_project/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:graduation_project/features/profile/presentation/widgets/education_modal_sheet.dart';
 import 'package:graduation_project/features/profile/presentation/widgets/segmented_progress_bar.dart';
 import 'package:graduation_project/features/profile/presentation/widgets/work_experience_modal_sheet.dart';
 import 'package:intl/intl.dart';
@@ -110,47 +112,91 @@ class ExperiencesPage extends StatelessWidget {
 
             SizedBox(height: 24.h),
             Row(
-              mainAxisAlignment: .spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Education",
-                  style: TextStyle(fontSize: 24.r, fontWeight: .bold),
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                  ), 
                 ),
-
                 CircleAvatar(
-                  backgroundColor: Color(0xffe5e7eb),
+                  radius: 20.r,
+                  backgroundColor: const Color(0xffe5e7eb),
                   child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.add, color: Colors.black),
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                     
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (_) {
+                          return BlocProvider.value(
+                            value: context.read<ProfileCubit>(),
+                            child: const EducationModalSheet(),
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.add, color: Colors.black),
                   ),
                 ),
               ],
             ),
             SizedBox(height: 10.h),
-            DottedBorder(
-              options: RoundedRectDottedBorderOptions(
-                radius: Radius.circular(12.r),
-                color: Color(0xffd1d5db),
-                dashPattern: [10, 7],
-                strokeWidth: 2,
-                strokeCap: .round,
-              ),
-              child: SizedBox(
-                width: 1.sw,
-                height: 200.h,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: .center,
-                    children: [
-                      Text(
-                        "No Education Added",
-                        style: TextStyle(fontWeight: .w500),
+
+           
+            BlocBuilder<ProfileCubit, ProfileState>(
+              builder: (context, state) {
+                if (state.educations.isEmpty) {
+                  return DottedBorder(
+                    options: RoundedRectDottedBorderOptions(
+                      radius: Radius.circular(12.r),
+                      color: const Color(0xffd1d5db),
+                      dashPattern: [10, 7],
+                      strokeWidth: 2,
+                      strokeCap: StrokeCap.round,
+                    ),
+                    child: SizedBox(
+                      width: 1.sw,
+                      height: 200.h,
+                      child: const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "No Education Added",
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                            Text("add your degrees and certifications"),
+                          ],
+                        ),
                       ),
-                      Text("add your degrees and certifications"),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  );
+                } else {
+             
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.educations.length,
+                    separatorBuilder: (c, i) => SizedBox(height: 16.h),
+                    itemBuilder: (context, index) {
+                      final education = state.educations[index];
+                      return _EducationCard(
+                        education: education,
+                        onDelete: () {
+                          context.read<ProfileCubit>().removeEducation(
+                            education.id,
+                          );
+                        },
+                      );
+                    },
+                  );
+                }
+              },
             ),
             SizedBox(height: 32.h),
 
@@ -615,6 +661,94 @@ class _ExperienceCard extends StatelessWidget {
                 ),
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EducationCard extends StatelessWidget {
+  final Education education;
+  final VoidCallback onDelete;
+
+  const _EducationCard({required this.education, required this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    final dateFormat = DateFormat('MMM yyyy');
+
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Colors.grey[200]!),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  education.institutionName,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: onDelete,
+                icon: Icon(
+                  Icons.delete_outline,
+                  size: 20.sp,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            "${education.degreeType} • ${education.fieldOfStudy}",
+            style: TextStyle(fontSize: 14.sp, color: Colors.black87),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            "${dateFormat.format(education.startDate)} - ${dateFormat.format(education.endDate)}",
+            style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
+          ),
+          if (education.gpa != null) ...[
+            SizedBox(height: 8.h),
+            Text(
+              "GPA: ${education.gpa}",
+              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+            ),
+          ],
+          if (education.graduationCertificate != null ||
+              education.academicRecord != null) ...[
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Icon(Icons.attachment, size: 14.sp, color: Colors.blue),
+                SizedBox(width: 4.w),
+                Text(
+                  "Attachments uploaded",
+                  style: TextStyle(fontSize: 12.sp, color: Colors.blue),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );

@@ -1,88 +1,102 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graduation_project/features/profile/domain/entities/work_experience.dart';
+import 'package:graduation_project/features/profile/domain/entities/education.dart';
 import 'package:graduation_project/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:intl/intl.dart';
+import 'package:file_picker/file_picker.dart';
 
-class WorkExperienceModalSheet extends StatefulWidget {
-  const WorkExperienceModalSheet({super.key});
+class EducationModalSheet extends StatefulWidget {
+  const EducationModalSheet({super.key});
 
   @override
-  State<WorkExperienceModalSheet> createState() =>
-      _WorkExperienceModalSheetState();
+  State<EducationModalSheet> createState() => _EducationModalSheetState();
 }
 
-class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
-  final TextEditingController _companyNameController = TextEditingController();
-  final TextEditingController _jobRoleController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
+class _EducationModalSheetState extends State<EducationModalSheet> {
+  final TextEditingController _institutionController = TextEditingController();
+  final TextEditingController _degreeController = TextEditingController();
+  final TextEditingController _fieldOfStudyController = TextEditingController();
+  final TextEditingController _gpaController = TextEditingController();
+  final TextEditingController _activityItemController = TextEditingController();
 
-  final TextEditingController _resItemController = TextEditingController();
+  final List<String> _activitiesList = [];
 
-  final List<String> _responsibilitiesList = [];
-
-  String? _selectedEmploymentType;
   DateTime? _startDate;
   DateTime? _endDate;
-  bool _isCurrentlyWorking = false;
+  File? _graduationCertificate;
+  File? _academicRecord;
 
-  final List<String> _employmentTypes = [
-    'Full-time',
-    'Part-time',
-    'Contract',
-    'Freelance',
-    'Internship',
-  ];
-
-  void _addResponsibility() {
-    if (_resItemController.text.trim().isNotEmpty) {
+  void _addActivity() {
+    if (_activityItemController.text.trim().isNotEmpty) {
       setState(() {
-        _responsibilitiesList.add(_resItemController.text.trim());
-        _resItemController.clear();
+        _activitiesList.add(_activityItemController.text.trim());
+        _activityItemController.clear();
       });
     }
   }
 
-  void _removeResponsibility(int index) {
+  void _removeActivity(int index) {
     setState(() {
-      _responsibilitiesList.removeAt(index);
+      _activitiesList.removeAt(index);
     });
   }
 
+  Future<void> _pickFile(bool isCertificate) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'jpg', 'png', 'doc'],
+    );
+
+    if (result != null) {
+      setState(() {
+        if (isCertificate) {
+          _graduationCertificate = File(result.files.single.path!);
+        } else {
+          _academicRecord = File(result.files.single.path!);
+        }
+      });
+    }
+  }
+
   void _onSave() {
-    if (_jobRoleController.text.isEmpty ||
-        _companyNameController.text.isEmpty ||
-        _startDate == null) {
+    if (_institutionController.text.isEmpty ||
+        _degreeController.text.isEmpty ||
+        _fieldOfStudyController.text.isEmpty ||
+        _startDate == null ||
+        _endDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill in required fields")),
       );
       return;
     }
 
-    final newExperience = WorkExperience(
+    final newEducation = Education(
       id: DateTime.now().toString(),
-      jobTitle: _jobRoleController.text,
-      companyName: _companyNameController.text,
-      employmentType: _selectedEmploymentType ?? 'Full-time',
-      location: _locationController.text,
-      responsibilities: _responsibilitiesList,
+      institutionName: _institutionController.text,
+      degreeType: _degreeController.text,
+      fieldOfStudy: _fieldOfStudyController.text,
       startDate: _startDate!,
-      endDate: _isCurrentlyWorking ? null : _endDate,
-      isCurrentlyWorking: _isCurrentlyWorking,
+      endDate: _endDate!,
+      gpa: _gpaController.text.isNotEmpty ? _gpaController.text : null,
+      activities: _activitiesList,
+      graduationCertificate: _graduationCertificate,
+      academicRecord: _academicRecord,
     );
 
-    context.read<ProfileCubit>().addWorkExperience(newExperience);
+    context.read<ProfileCubit>().addEducation(newEducation);
     Navigator.pop(context);
   }
 
   @override
   void dispose() {
-    _companyNameController.dispose();
-    _jobRoleController.dispose();
-    _locationController.dispose();
-    _resItemController.dispose();
+    _institutionController.dispose();
+    _degreeController.dispose();
+    _fieldOfStudyController.dispose();
+    _gpaController.dispose();
+    _activityItemController.dispose();
     super.dispose();
   }
 
@@ -116,8 +130,10 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                 child: CupertinoDatePicker(
                   initialDateTime: initial,
                   mode: CupertinoDatePickerMode.monthYear,
-                  minimumDate: DateTime(1990),
-                  maximumDate: DateTime.now(),
+                  minimumDate: DateTime(1980),
+                  maximumDate: DateTime.now().add(
+                    const Duration(days: 365 * 5),
+                  ),
                   onDateTimeChanged: (DateTime newDate) {
                     setState(() {
                       if (isStart) {
@@ -145,7 +161,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
-        height: 0.85.sh,
+        height: 0.9.sh,
         width: 1.sw,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -164,7 +180,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
             ),
             SizedBox(height: 20.h),
             Text(
-              'Add Work Experience',
+              'Add Education',
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
@@ -173,7 +189,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
             ),
             SizedBox(height: 4.h),
             Text(
-              'Share where you\'ve worked on your profile.',
+              'Add details about your academic background.',
               style: TextStyle(fontSize: 12.sp, color: Colors.grey[600]),
             ),
             SizedBox(height: 20.h),
@@ -182,67 +198,25 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
                 children: [
-                  _buildLabel("Job Title"),
+                  _buildLabel("Institution Name"),
                   _buildTextField(
-                    controller: _jobRoleController,
-                    hint: "e.g. Senior Product Designer",
+                    controller: _institutionController,
+                    hint: "e.g. Stanford University",
+                    icon: Icons.school_outlined,
                   ),
                   SizedBox(height: 16.h),
 
-                  _buildLabel("Company"),
+                  _buildLabel("Degree"),
                   _buildTextField(
-                    controller: _companyNameController,
-                    hint: "e.g. Google",
-                    icon: Icons.business,
+                    controller: _degreeController,
+                    hint: "e.g. Bachelor's, Master's",
                   ),
                   SizedBox(height: 16.h),
 
-                  _buildLabel("Employment Type"),
-                  DropdownButtonFormField<String>(
-                    value: _selectedEmploymentType,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    decoration: _inputDecoration(hint: "Select type"),
-                    items: _employmentTypes.map((String type) {
-                      return DropdownMenuItem(value: type, child: Text(type));
-                    }).toList(),
-                    onChanged: (val) =>
-                        setState(() => _selectedEmploymentType = val),
-                  ),
-                  SizedBox(height: 16.h),
-
-                  _buildLabel("Location"),
+                  _buildLabel("Field of Study"),
                   _buildTextField(
-                    controller: _locationController,
-                    hint: "e.g. New York, USA",
-                    icon: Icons.location_on_outlined,
-                  ),
-                  SizedBox(height: 16.h),
-
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 24.h,
-                        width: 24.w,
-                        child: Checkbox(
-                          value: _isCurrentlyWorking,
-                          activeColor: Colors.black87,
-                          onChanged: (val) {
-                            setState(() {
-                              _isCurrentlyWorking = val ?? false;
-                              if (_isCurrentlyWorking) _endDate = null;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        "I am currently working in this role",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ],
+                    controller: _fieldOfStudyController,
+                    hint: "e.g. Computer Science, Design",
                   ),
                   SizedBox(height: 16.h),
 
@@ -269,26 +243,13 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLabel("End Date"),
+                            _buildLabel("End Date (or Expected)"),
                             GestureDetector(
-                              onTap: _isCurrentlyWorking
-                                  ? null
-                                  : () => _pickDate(false),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: _isCurrentlyWorking
-                                      ? Colors.grey[100]
-                                      : null,
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                child: _buildDateDisplay(
-                                  _endDate,
-                                  dateFormat,
-                                  _isCurrentlyWorking ? "Present" : "End Date",
-                                  isPlaceholder:
-                                      _endDate == null && !_isCurrentlyWorking,
-                                  isPresent: _isCurrentlyWorking,
-                                ),
+                              onTap: () => _pickDate(false),
+                              child: _buildDateDisplay(
+                                _endDate,
+                                dateFormat,
+                                "End Date",
                               ),
                             ),
                           ],
@@ -298,19 +259,26 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                   ),
                   SizedBox(height: 16.h),
 
-                  _buildLabel("Responsibilities"),
+                  _buildLabel("GPA (Optional)"),
+                  _buildTextField(
+                    controller: _gpaController,
+                    hint: "e.g. 3.8/4.0",
+                  ),
+                  SizedBox(height: 16.h),
+
+                  _buildLabel("Activities & Achievements (Optional)"),
                   Row(
                     children: [
                       Expanded(
                         child: _buildTextField(
-                          controller: _resItemController,
-                          hint: "Add a key achievement...",
-                          onSubmitted: (_) => _addResponsibility(),
+                          controller: _activityItemController,
+                          hint: "Add society, award, etc...",
+                          onSubmitted: (_) => _addActivity(),
                         ),
                       ),
                       SizedBox(width: 8.w),
                       IconButton(
-                        onPressed: _addResponsibility,
+                        onPressed: _addActivity,
                         style: IconButton.styleFrom(
                           backgroundColor: Colors.black87,
                           shape: RoundedRectangleBorder(
@@ -323,7 +291,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                   ),
                   SizedBox(height: 12.h),
 
-                  if (_responsibilitiesList.isNotEmpty)
+                  if (_activitiesList.isNotEmpty)
                     Container(
                       padding: EdgeInsets.all(12.w),
                       decoration: BoxDecoration(
@@ -332,9 +300,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                         border: Border.all(color: Colors.grey[200]!),
                       ),
                       child: Column(
-                        children: _responsibilitiesList.asMap().entries.map((
-                          entry,
-                        ) {
+                        children: _activitiesList.asMap().entries.map((entry) {
                           int idx = entry.key;
                           String val = entry.value;
                           return Padding(
@@ -361,7 +327,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () => _removeResponsibility(idx),
+                                  onTap: () => _removeActivity(idx),
                                   child: Padding(
                                     padding: EdgeInsets.all(4.w),
                                     child: Icon(
@@ -377,6 +343,23 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                         }).toList(),
                       ),
                     ),
+
+                  SizedBox(height: 16.h),
+
+                  _buildLabel("Attachments"),
+                  _buildFileUpload(
+                    "Graduation Certificate",
+                    _graduationCertificate,
+                    () => _pickFile(true),
+                    () => setState(() => _graduationCertificate = null),
+                  ),
+                  SizedBox(height: 12.h),
+                  _buildFileUpload(
+                    "Academic Record / Transcript",
+                    _academicRecord,
+                    () => _pickFile(false),
+                    () => setState(() => _academicRecord = null),
+                  ),
 
                   SizedBox(height: 40.h),
                 ],
@@ -398,7 +381,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
                     elevation: 0,
                   ),
                   child: Text(
-                    "Save Experience",
+                    "Save Education",
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
@@ -414,13 +397,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
     );
   }
 
-  Widget _buildDateDisplay(
-    DateTime? date,
-    DateFormat fmt,
-    String placeholder, {
-    bool isPlaceholder = false,
-    bool isPresent = false,
-  }) {
+  Widget _buildDateDisplay(DateTime? date, DateFormat fmt, String placeholder) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
       decoration: BoxDecoration(
@@ -431,19 +408,77 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            isPresent
-                ? "Present"
-                : (date == null ? placeholder : fmt.format(date)),
+            date == null ? placeholder : fmt.format(date),
             style: TextStyle(
-              color: isPresent
-                  ? Colors.green
-                  : (date == null ? Colors.grey[500] : Colors.black87),
+              color: date == null ? Colors.grey[500] : Colors.black87,
               fontSize: 14.sp,
-              fontWeight: isPresent ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
-          if (!isPresent)
-            Icon(Icons.calendar_today, size: 16.sp, color: Colors.grey[600]),
+          Icon(Icons.calendar_today, size: 16.sp, color: Colors.grey[600]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFileUpload(
+    String title,
+    File? file,
+    VoidCallback onUpload,
+    VoidCallback onRemove,
+  ) {
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(12.r),
+        color: Colors.white,
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.w),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Icon(Icons.attach_file, color: Colors.grey[700]),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  file != null ? file.path.split('/').last : "No file selected",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: file != null ? Colors.black87 : Colors.grey[400],
+                    fontWeight: file != null
+                        ? FontWeight.w600
+                        : FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (file == null)
+            TextButton(onPressed: onUpload, child: const Text("Upload"))
+          else
+            IconButton(
+              onPressed: onRemove,
+              icon: const Icon(Icons.close, color: Colors.red),
+            ),
         ],
       ),
     );
@@ -473,31 +508,27 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
       controller: controller,
       onSubmitted: onSubmitted,
       style: TextStyle(fontSize: 14.sp),
-      decoration: _inputDecoration(hint: hint, icon: icon),
-    );
-  }
-
-  InputDecoration _inputDecoration({required String hint, IconData? icon}) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-      prefixIcon: icon != null
-          ? Icon(icon, size: 20.sp, color: Colors.grey[500])
-          : null,
-      filled: true,
-      fillColor: Colors.white,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: Colors.grey[300]!),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(color: Colors.grey[300]!),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: const BorderSide(color: Colors.black87, width: 1.5),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        prefixIcon: icon != null
+            ? Icon(icon, size: 20.sp, color: Colors.grey[500])
+            : null,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: const BorderSide(color: Colors.black87, width: 1.5),
+        ),
       ),
     );
   }

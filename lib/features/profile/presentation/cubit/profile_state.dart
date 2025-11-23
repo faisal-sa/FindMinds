@@ -10,6 +10,7 @@ class ProfileState extends Equatable {
   final int currentPage;
   final List<String> skills;
   final List<WorkExperience> experiences;
+  final List<Education> educations;
 
   const ProfileState({
     this.image,
@@ -20,6 +21,7 @@ class ProfileState extends Equatable {
     this.currentPage = 0,
     this.skills = const [],
     this.experiences = const [],
+    this.educations = const [],
   });
 
   ProfileState copyWith({
@@ -31,6 +33,7 @@ class ProfileState extends Equatable {
     int? currentPage,
     List<String>? skills,
     List<WorkExperience>? experiences,
+    List<Education>? educations,
   }) {
     return ProfileState(
       image: image ?? this.image,
@@ -41,6 +44,7 @@ class ProfileState extends Equatable {
       currentPage: currentPage ?? this.currentPage,
       skills: skills ?? this.skills,
       experiences: experiences ?? this.experiences,
+      educations: educations ?? this.educations,
     );
   }
 
@@ -54,5 +58,6 @@ class ProfileState extends Equatable {
     currentPage,
     skills,
     experiences,
+    educations,
   ];
 }

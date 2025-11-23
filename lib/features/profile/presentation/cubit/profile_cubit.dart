@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/profile/domain/entities/education.dart';
 import 'package:graduation_project/features/profile/domain/entities/work_experience.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
@@ -66,6 +67,18 @@ class ProfileCubit extends Cubit<ProfileState> {
     final updatedList = List<WorkExperience>.from(state.experiences)
       ..removeWhere((element) => element.id == id);
     emit(state.copyWith(experiences: updatedList));
+  }
+
+  void addEducation(Education education) {
+    final updatedList = List<Education>.from(state.educations)..add(education);
+    updatedList.sort((a, b) => b.endDate.compareTo(a.endDate));
+    emit(state.copyWith(educations: updatedList));
+  }
+
+  void removeEducation(String id) {
+    final updatedList = List<Education>.from(state.educations)
+      ..removeWhere((element) => element.id == id);
+    emit(state.copyWith(educations: updatedList));
   }
 }
 
