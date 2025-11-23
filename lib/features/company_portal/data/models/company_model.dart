@@ -6,51 +6,70 @@ part 'company_model.mapper.dart';
 @MappableClass()
 class CompanyModel with CompanyModelMappable {
   final String id;
-  final String user_id;
-  final String company_name;
+  final String userId;
+  final String companyName;
   final String industry;
   final String description;
   final String city;
   final String? address;
-  final String company_size;
+  final String companySize;
   final String website;
   final String email;
   final String phone;
-  final String? logo_url;
-  final String created_at;
-  final String updated_at;
+  final String? logoUrl;
+  final String createdAt;
+  final String updatedAt;
 
   const CompanyModel({
     required this.id,
-    required this.user_id,
-    required this.company_name,
+    required this.userId,
+    required this.companyName,
     required this.industry,
     required this.description,
     required this.city,
     this.address,
-    required this.company_size,
+    required this.companySize,
     required this.website,
     required this.email,
     required this.phone,
-    this.logo_url,
-    required this.created_at,
-    required this.updated_at,
+    this.logoUrl,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
+  /// Model → Entity
   CompanyEntity toEntity() => CompanyEntity(
     id: id,
-    userId: user_id,
-    companyName: company_name,
+    userId: userId,
+    companyName: companyName,
     industry: industry,
     description: description,
     city: city,
     address: address,
-    companySize: company_size,
+    companySize: companySize,
     website: website,
     email: email,
     phone: phone,
-    logoUrl: logo_url,
-    createdAt: DateTime.parse(created_at),
-    updatedAt: DateTime.parse(updated_at),
+    logoUrl: logoUrl,
+    createdAt: DateTime.parse(createdAt),
+    updatedAt: DateTime.parse(updatedAt),
+  );
+
+  /// Entity → Model
+  static CompanyModel fromEntity(CompanyEntity entity) => CompanyModel(
+    id: entity.id,
+    userId: entity.userId,
+    companyName: entity.companyName,
+    industry: entity.industry,
+    description: entity.description,
+    city: entity.city,
+    address: entity.address,
+    companySize: entity.companySize,
+    website: entity.website,
+    email: entity.email,
+    phone: entity.phone,
+    logoUrl: entity.logoUrl,
+    createdAt: entity.createdAt.toIso8601String(),
+    updatedAt: entity.updatedAt.toIso8601String(),
   );
 }
