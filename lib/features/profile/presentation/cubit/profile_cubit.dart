@@ -10,12 +10,11 @@ part 'profile_state.dart';
 
 @injectable
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileState());
+  ProfileCubit() : super(const ProfileState());
   final ImagePicker _picker = ImagePicker();
   final PageController pageController = PageController();
 
   Future<void> pickImage() async {
-    //duplicated with core/utils
     try {
       final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -43,6 +42,18 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(state.copyWith(currentPage: prev));
       pageController.jumpToPage(prev);
     }
+  }
+
+  // --- Skills Logic ---
+
+  void updateSkills(List<String> newSkills) {
+    emit(state.copyWith(skills: newSkills));
+  }
+
+  void removeSkill(String skill) {
+    final currentSkills = List<String>.from(state.skills);
+    currentSkills.remove(skill);
+    emit(state.copyWith(skills: currentSkills));
   }
 }
 

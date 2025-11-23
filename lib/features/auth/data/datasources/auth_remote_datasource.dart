@@ -3,15 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<UserModel> signUp({
-    required String email,
-    required String password,
-  });
+  Future<UserModel> signUp({required String email, required String password});
 
-  Future<UserModel> signIn({
-    required String email,
-    required String password,
-  });
+  Future<UserModel> signIn({required String email, required String password});
 
   Future<void> signOut();
 
@@ -19,10 +13,7 @@ abstract class AuthRemoteDataSource {
 
   Future<void> resendOTP({required String email});
 
-  Future<UserModel> verifyOTP({
-    required String email,
-    required String token,
-  });
+  Future<UserModel> verifyOTP({required String email, required String token});
 
   Future<UserModel?> getCurrentUser();
 }
@@ -83,18 +74,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> sendOTP({required String email}) async {
-    await _supabase.auth.signInWithOtp(
-      email: email,
-      emailRedirectTo: null,
-    );
+    await _supabase.auth.signInWithOtp(email: email, emailRedirectTo: null);
   }
 
   @override
   Future<void> resendOTP({required String email}) async {
-    await _supabase.auth.resend(
-      type: OtpType.signup,
-      email: email,
-    );
+    await _supabase.auth.resend(type: OtpType.signup, email: email);
   }
 
   @override
@@ -124,11 +109,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final user = _supabase.auth.currentUser;
     if (user == null) return null;
 
-    return UserModel(
-      id: user.id,
-      email: user.email ?? '',
-      phone: user.phone,
-    );
+    return UserModel(id: user.id, email: user.email ?? '', phone: user.phone);
   }
 }
-

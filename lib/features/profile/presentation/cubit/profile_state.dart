@@ -8,6 +8,7 @@ class ProfileState extends Equatable {
   final String phoneNumber;
   final String location;
   final int currentPage;
+  final List<String> skills;
 
   const ProfileState({
     this.image,
@@ -16,6 +17,7 @@ class ProfileState extends Equatable {
     this.phoneNumber = '',
     this.location = '',
     this.currentPage = 0,
+    this.skills = const [],
   });
 
   ProfileState copyWith({
@@ -25,6 +27,7 @@ class ProfileState extends Equatable {
     String? phoneNumber,
     String? location,
     int? currentPage,
+    List<String>? skills,
   }) {
     return ProfileState(
       image: image ?? this.image,
@@ -33,6 +36,7 @@ class ProfileState extends Equatable {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       location: location ?? this.location,
       currentPage: currentPage ?? this.currentPage,
+      skills: skills ?? this.skills,
     );
   }
 
@@ -46,5 +50,6 @@ class ProfileState extends Equatable {
     phoneNumber,
     location,
     currentPage,
+    skills,
   ];
 }
