@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/profile/domain/entities/certification.dart';
 import 'package:graduation_project/features/profile/domain/entities/education.dart';
 import 'package:graduation_project/features/profile/domain/entities/work_experience.dart';
 import 'package:image_picker/image_picker.dart';
@@ -79,6 +80,60 @@ class ProfileCubit extends Cubit<ProfileState> {
     final updatedList = List<Education>.from(state.educations)
       ..removeWhere((element) => element.id == id);
     emit(state.copyWith(educations: updatedList));
+  }
+
+  void addCertification(Certification certification) {
+    final updatedList = List<Certification>.from(state.certifications)
+      ..add(certification);
+    updatedList.sort((a, b) => b.issueDate.compareTo(a.issueDate));
+    emit(state.copyWith(certifications: updatedList));
+  }
+
+  void removeCertification(String id) {
+    final updatedList = List<Certification>.from(state.certifications)
+      ..removeWhere((element) => element.id == id);
+    emit(state.copyWith(certifications: updatedList));
+  }
+
+  Future<void> pickVideo() async {
+    try {
+      final XFile? pickedFile = await _picker.pickVideo(
+        source: ImageSource.gallery,
+        maxDuration: const Duration(seconds: 30),
+      );
+
+      if (pickedFile != null) {
+        emit(state.copyWith(video: File(pickedFile.path)));
+      }
+    } catch (e) {
+      debugPrint('Error picking video: $e');
+    }
+  }
+
+  void removeVideo() {
+    emit(state.copyWith(clearVideo: true));
+  }
+
+  void updateAboutMe(String description) {
+    emit(state.copyWith(aboutMe: description));
+  }
+
+  void toggleEmploymentType(String type) {
+    final currentList = List<String>.from(state.selectedEmploymentTypes);
+    if (currentList.contains(type)) {
+      currentList.remove(type);
+    } else {
+      currentList.add(type);
+    }
+    emit(state.copyWith(selectedEmploymentTypes: currentList));
+  }
+
+  void updateRelocation(bool value) {
+    emit(state.copyWith(canRelocate: value));
+  }
+
+  void updateStartImmediately(bool value) {
+    emit(state.copyWith(canStartImmediately: value));
   }
 }
 

@@ -2,9 +2,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/features/profile/domain/entities/certification.dart';
 import 'package:graduation_project/features/profile/domain/entities/education.dart';
 import 'package:graduation_project/features/profile/domain/entities/work_experience.dart';
 import 'package:graduation_project/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:graduation_project/features/profile/presentation/widgets/certification_modal_sheet.dart';
 import 'package:graduation_project/features/profile/presentation/widgets/education_modal_sheet.dart';
 import 'package:graduation_project/features/profile/presentation/widgets/segmented_progress_bar.dart';
 import 'package:graduation_project/features/profile/presentation/widgets/work_experience_modal_sheet.dart';
@@ -119,7 +121,7 @@ class ExperiencesPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
-                  ), 
+                  ),
                 ),
                 CircleAvatar(
                   radius: 20.r,
@@ -127,7 +129,6 @@ class ExperiencesPage extends StatelessWidget {
                   child: IconButton(
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                     
                       showModalBottomSheet(
                         backgroundColor: Colors.transparent,
                         context: context,
@@ -147,7 +148,6 @@ class ExperiencesPage extends StatelessWidget {
             ),
             SizedBox(height: 10.h),
 
-           
             BlocBuilder<ProfileCubit, ProfileState>(
               builder: (context, state) {
                 if (state.educations.isEmpty) {
@@ -177,7 +177,6 @@ class ExperiencesPage extends StatelessWidget {
                     ),
                   );
                 } else {
-             
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -199,6 +198,91 @@ class ExperiencesPage extends StatelessWidget {
               },
             ),
             SizedBox(height: 32.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Certifications",
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                CircleAvatar(
+                  radius: 20.r,
+                  backgroundColor: const Color(0xffe5e7eb),
+                  child: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (_) {
+                          return BlocProvider.value(
+                            value: context.read<ProfileCubit>(),
+                            child: const CertificationModalSheet(),
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.add, color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+
+            BlocBuilder<ProfileCubit, ProfileState>(
+              builder: (context, state) {
+                if (state.certifications.isEmpty) {
+                  return DottedBorder(
+                    options: RoundedRectDottedBorderOptions(
+                      radius: Radius.circular(12.r),
+                      color: const Color(0xffd1d5db),
+                      dashPattern: [10, 7],
+                      strokeWidth: 2,
+                      strokeCap: StrokeCap.round,
+                    ),
+                    child: SizedBox(
+                      width: 1.sw,
+                      height: 150.h,
+                      child: const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "No Certifications Added",
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                            Text("Add licenses or certificates"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.certifications.length,
+                    separatorBuilder: (c, i) => SizedBox(height: 16.h),
+                    itemBuilder: (context, index) {
+                      final cert = state.certifications[index];
+                      return _CertificationCard(
+                        certification: cert,
+                        onDelete: () {
+                          context.read<ProfileCubit>().removeCertification(
+                            cert.id,
+                          );
+                        },
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+            SizedBox(height: 24.h),
 
             SkillsEditor(),
 
@@ -266,93 +350,103 @@ class SkillsEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<ProfileCubit>();
 
-    return Container(
-      width: 1.sw,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(16.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Skills", style: TextStyle(color: Color(0xff878787))),
-                CircleAvatar(
-                  backgroundColor: Colors.grey[300],
-                  child: IconButton(
-                    icon: const Icon(Icons.add),
-                    color: Colors.black,
-                    onPressed: () {
-                      final currentState = context.read<ProfileCubit>().state;
-                      showModalBottomSheet(
-                        backgroundColor: Colors.white,
-                        context: context,
-                        isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(25.0.r),
-                          ),
+            Text(
+              "Skills",
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+            ),
+            CircleAvatar(
+              radius: 20.r,
+              backgroundColor: const Color(0xffe5e7eb),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: const Icon(Icons.add),
+                color: Colors.black,
+                onPressed: () {
+                  final currentState = context.read<ProfileCubit>().state;
+                  showModalBottomSheet(
+                    backgroundColor: Colors.white,
+                    context: context,
+                    isScrollControlled: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0.r),
+                      ),
+                    ),
+                    builder: (context) {
+                      return BlocProvider.value(
+                        value: cubit,
+                        child: SkillPickerSheet(
+                          allSkills: _availableSkills,
+                          initialSelectedSkills: currentState.skills,
                         ),
-                        builder: (context) {
-                          return BlocProvider.value(
-                            value: cubit,
-                            child: SkillPickerSheet(
-                              allSkills: _availableSkills,
-                              initialSelectedSkills: currentState.skills,
-                            ),
-                          );
-                        },
                       );
                     },
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12.h),
-
-            BlocBuilder<ProfileCubit, ProfileState>(
-              builder: (context, state) {
-                if (state.skills.isEmpty) {
-                  return Padding(
-                    padding: EdgeInsets.only(top: 4.h),
-                    child: Text(
-                      'No skills added yet.',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
                   );
-                }
-
-                return Wrap(
-                  spacing: 8.w,
-                  runSpacing: 8.h,
-                  children: state.skills.map((skill) {
-                    return Chip(
-                      label: Text(skill),
-                      backgroundColor: Colors.blueAccent,
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.sp,
-                      ),
-                      deleteIcon: Icon(
-                        Icons.close,
-                        size: 16.r,
-                        color: Colors.white,
-                      ),
-                      onDeleted: () {
-                        cubit.removeSkill(skill);
-                      },
-                    );
-                  }).toList(),
-                );
-              },
+                },
+              ),
             ),
           ],
         ),
-      ),
+        SizedBox(height: 10.h),
+        Container(
+          width: 1.sw,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(16.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 12.h),
+
+                BlocBuilder<ProfileCubit, ProfileState>(
+                  builder: (context, state) {
+                    if (state.skills.isEmpty) {
+                      return Padding(
+                        padding: EdgeInsets.only(top: 4.h),
+                        child: Text(
+                          'No skills added yet.',
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
+                      );
+                    }
+
+                    return Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.h,
+                      children: state.skills.map((skill) {
+                        return Chip(
+                          label: Text(skill),
+                          backgroundColor: Colors.blueAccent,
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.sp,
+                          ),
+                          deleteIcon: Icon(
+                            Icons.close,
+                            size: 16.r,
+                            color: Colors.white,
+                          ),
+                          onDeleted: () {
+                            cubit.removeSkill(skill);
+                          },
+                        );
+                      }).toList(),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -503,44 +597,6 @@ class _SkillPickerSheetState extends State<SkillPickerSheet> {
       ),
     );
   }
-}
-
-Widget _buildEmptyState() {
-  return DottedBorder(
-    options: RoundedRectDottedBorderOptions(
-      radius: Radius.circular(12.r),
-      color: const Color(0xffd1d5db),
-      dashPattern: const [10, 7],
-      strokeWidth: 2,
-    ),
-
-    child: SizedBox(
-      width: 1.sw,
-      height: 180.h,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.work_outline, size: 40.sp, color: Colors.grey[400]),
-            SizedBox(height: 12.h),
-            Text(
-              "No experience added yet",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 16.sp,
-                color: Colors.grey[700],
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              "Add your past roles to showcase expertise",
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
 }
 
 class _ExperienceCard extends StatelessWidget {
@@ -749,6 +805,102 @@ class _EducationCard extends StatelessWidget {
               ],
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _CertificationCard extends StatelessWidget {
+  final Certification certification;
+  final VoidCallback onDelete;
+
+  const _CertificationCard({
+    required this.certification,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final dateFormat = DateFormat('MMM yyyy');
+
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Colors.grey[200]!),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 48.w,
+            height: 48.w,
+            decoration: BoxDecoration(
+              color: Colors.blueGrey[50],
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: Icon(
+              Icons.workspace_premium,
+              color: Colors.blueGrey,
+              size: 24.sp,
+            ),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  certification.name,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  certification.issuingInstitution,
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  "Issued ${dateFormat.format(certification.issueDate)}${certification.expirationDate != null ? ' · Expires ${dateFormat.format(certification.expirationDate!)}' : ''}",
+                  style: TextStyle(fontSize: 12.sp, color: Colors.grey[500]),
+                ),
+                if (certification.credentialFile != null) ...[
+                  SizedBox(height: 8.h),
+                  Row(
+                    children: [
+                      Icon(Icons.attach_file, size: 14.sp, color: Colors.blue),
+                      SizedBox(width: 4.w),
+                      Text(
+                        "Credential Attached",
+                        style: TextStyle(fontSize: 12.sp, color: Colors.blue),
+                      ),
+                    ],
+                  ),
+                ],
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: onDelete,
+            icon: Icon(
+              Icons.delete_outline,
+              color: Colors.red[300],
+              size: 20.sp,
+            ),
+          ),
         ],
       ),
     );
