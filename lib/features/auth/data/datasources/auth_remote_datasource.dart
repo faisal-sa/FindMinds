@@ -3,7 +3,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<UserModel> signUp({required String email, required String password});
+  Future<UserModel> signUp({
+    required String email,
+    required String password,
+    required String role,
+  });
 
   Future<UserModel> signIn({required String email, required String password});
 
@@ -28,11 +32,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> signUp({
     required String email,
     required String password,
+    required String role,
   }) async {
     final response = await _supabase.auth.signUp(
       email: email,
       password: password,
       emailRedirectTo: null,
+      data: {'role': role},
     );
 
     if (response.user == null) {
@@ -43,6 +49,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       id: response.user!.id,
       email: response.user!.email ?? email,
       phone: response.user!.phone,
+      role: role,
     );
   }
 
@@ -60,10 +67,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw Exception('Sign in failed: User is null');
     }
 
+    final userMetadata = response.user!.userMetadata;
+    final appMetadata = response.user!.appMetadata;
+    final role =
+        (userMetadata?['role'] ?? appMetadata['role']) as String? ??
+        'Individual';
+
     return UserModel(
       id: response.user!.id,
       email: response.user!.email ?? email,
       phone: response.user!.phone,
+      role: role,
     );
   }
 
@@ -97,10 +111,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw Exception('OTP verification failed: User is null');
     }
 
+    final userMetadata = response.user!.userMetadata;
+    final appMetadata = response.user!.appMetadata;
+    final role =
+        (userMetadata?['role'] ?? appMetadata['role']) as String? ??
+        'Individual';
+
     return UserModel(
       id: response.user!.id,
       email: response.user!.email ?? email,
       phone: response.user!.phone,
+      role: role,
     );
   }
 
@@ -109,6 +130,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final user = _supabase.auth.currentUser;
     if (user == null) return null;
 
-    return UserModel(id: user.id, email: user.email ?? '', phone: user.phone);
+    final userMetadata = user.userMetadata;
+    final appMetadata = user.appMetadata;
+    final role =
+        (userMetadata?['role'] ?? appMetadata['role']) as String? ??
+        'Individual';
+
+    return UserModel(
+      id: user.id,
+      email: user.email ?? '',
+      phone: user.phone,
+      role: role,
+    );
   }
 }
