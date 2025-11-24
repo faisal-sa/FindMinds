@@ -1,6 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/di/service_locator.dart';
+import 'package:graduation_project/features/temp/dashboard.dart';
+import 'package:graduation_project/features/individuals/navigation/cubit/navigation_cubit.dart';
+import 'package:graduation_project/features/individuals/navigation/pages/individuals_home_page.dart';
 
 import 'package:graduation_project/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:graduation_project/features/profile/presentation/pages/profile_register_page.dart';
@@ -39,9 +42,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) {
-        return BlocProvider(
-          create: (context) => serviceLocator.get<ProfileCubit>(),
-          child: ProfileRegisterPage(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => NavigationCubit()),
+            BlocProvider(create: (context) => UserCubit()),
+          ],
+          child: const IndividualsHomePage(),
         );
       },
     ),
