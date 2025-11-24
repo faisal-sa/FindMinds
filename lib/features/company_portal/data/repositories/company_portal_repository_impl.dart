@@ -59,4 +59,13 @@ class CompanyRepositoryImpl implements CompanyRepository {
       return Error(e.toString());
     }
   }
+
+  @override
+  Future<Result<void, String>> addCandidateBookmark(
+    String companyId,
+    String candidateId,
+  ) {
+    // TODO: implement addCandidateBookmark
+    throw UnimplementedError();
+  }
 }
