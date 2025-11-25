@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:graduation_project/features/company_portal/data/models/company_model.dart';
 import 'package:graduation_project/features/company_portal/domain/entities/company_entity.dart';
 import 'package:graduation_project/features/company_portal/domain/usecases/add_candidate_bookmark.dart';
@@ -8,6 +7,7 @@ import 'package:graduation_project/features/company_portal/domain/usecases/get_c
 import 'package:graduation_project/features/company_portal/domain/usecases/search_candidates.dart';
 import 'package:graduation_project/features/company_portal/domain/usecases/update_company_profile.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'company_event.dart';
 part 'company_state.dart';
@@ -29,9 +29,8 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
     on<UpdateCompanyProfileEvent>(_onUpdateCompanyProfile);
     on<SearchCandidatesEvent>(_onSearchCandidates);
     on<AddCandidateBookmarkEvent>(_onAddCandidateBookmark);
+    on<GetCompanyBookmarksEvent>(_onGetBookmarks);
   }
-
-  // -------------------- Handlers --------------------
 
   Future<void> _onGetCompanyProfile(
     GetCompanyProfileEvent event,
@@ -51,10 +50,7 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
   ) async {
     emit(const CompanyLoading());
 
-    // Convert Entity → Model
     final model = CompanyModel.fromEntity(event.company);
-
-    // Apply updates (copyWith)
     final updatedModel = model.copyWith(
       companyName: event.company.companyName,
       industry: event.company.industry,
@@ -66,12 +62,9 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
       phone: event.company.phone,
       logoUrl: event.company.logoUrl,
     );
-
-    // Convert back to Entity
     final updatedEntity = updatedModel.toEntity();
 
     final result = await _updateCompanyProfile(updatedEntity);
-
     result.when(
       (company) => emit(CompanyLoaded(company)),
       (error) => emit(CompanyError(error)),
@@ -108,5 +101,18 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
       (_) => emit(const BookmarkAddedSuccessfully()),
       (error) => emit(CompanyError(error)),
     );
+  }
+
+  Future<void> _onGetBookmarks(
+    GetCompanyBookmarksEvent event,
+    Emitter<CompanyState> emit,
+  ) async {
+    emit(const CompanyLoading());
+    final response = await Supabase.instance.client
+        .from('company_bookmarks')
+        .select('candidate_id, profiles(full_name,skills,city)')
+        .eq('company_id', event.companyId);
+    final data = List<Map<String, dynamic>>.from(response);
+    emit(CompanyBookmarksLoaded(data));
   }
 }

@@ -199,7 +199,7 @@ class _WorkExperienceModalSheetState extends State<WorkExperienceModalSheet> {
 
                   _buildLabel("Employment Type"),
                   DropdownButtonFormField<String>(
-                    value: _selectedEmploymentType,
+                    initialValue: _selectedEmploymentType,
                     icon: const Icon(Icons.keyboard_arrow_down),
                     decoration: _inputDecoration(hint: "Select type"),
                     items: _employmentTypes.map((String type) {

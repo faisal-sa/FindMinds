@@ -2,20 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/company_portal/presentation/blocs/bloc/company_bloc.dart';
 
-class CompanySearchPage extends StatefulWidget {
+class CompanySearchPage extends StatelessWidget {
   const CompanySearchPage({super.key});
 
   @override
-  State<CompanySearchPage> createState() => _CompanySearchPageState();
-}
-
-class _CompanySearchPageState extends State<CompanySearchPage> {
-  final _city = TextEditingController();
-  final _skill = TextEditingController();
-  final _exp = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final city = TextEditingController();
+    final skill = TextEditingController();
+    final exp = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(title: const Text('Search Candidates')),
       body: Padding(
@@ -23,15 +18,15 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
         child: Column(
           children: [
             TextField(
-              controller: _city,
+              controller: city,
               decoration: const InputDecoration(labelText: 'City'),
             ),
             TextField(
-              controller: _skill,
+              controller: skill,
               decoration: const InputDecoration(labelText: 'Skill'),
             ),
             TextField(
-              controller: _exp,
+              controller: exp,
               decoration: const InputDecoration(labelText: 'Experience'),
             ),
             const SizedBox(height: 12),
@@ -39,9 +34,9 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
               onPressed: () {
                 context.read<CompanyBloc>().add(
                   SearchCandidatesEvent(
-                    city: _city.text,
-                    skill: _skill.text,
-                    experience: _exp.text,
+                    city: city.text,
+                    skill: skill.text,
+                    experience: exp.text,
                   ),
                 );
               },

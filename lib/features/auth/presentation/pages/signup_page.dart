@@ -147,7 +147,7 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                         const SizedBox(height: 16),
                         DropdownButtonFormField<String>(
-                          value: selectedRole,
+                          initialValue: selectedRole,
                           decoration: const InputDecoration(
                             labelText: 'Role',
                             labelStyle: TextStyle(color: Colors.grey),

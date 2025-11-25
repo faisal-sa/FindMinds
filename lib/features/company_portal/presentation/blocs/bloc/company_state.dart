@@ -17,7 +17,6 @@ class CompanyLoading extends CompanyState {
 class CompanyLoaded extends CompanyState {
   final CompanyEntity company;
   const CompanyLoaded(this.company);
-
   @override
   List<Object?> get props => [company];
 }
@@ -25,9 +24,15 @@ class CompanyLoaded extends CompanyState {
 class CandidateResults extends CompanyState {
   final List<Map<String, dynamic>> candidates;
   const CandidateResults(this.candidates);
-
   @override
   List<Object?> get props => [candidates];
+}
+
+class CompanyBookmarksLoaded extends CompanyState {
+  final List<Map<String, dynamic>> bookmarks;
+  const CompanyBookmarksLoaded(this.bookmarks);
+  @override
+  List<Object?> get props => [bookmarks];
 }
 
 class BookmarkAddedSuccessfully extends CompanyState {
@@ -37,7 +42,6 @@ class BookmarkAddedSuccessfully extends CompanyState {
 class CompanyError extends CompanyState {
   final String message;
   const CompanyError(this.message);
-
   @override
   List<Object?> get props => [message];
 }

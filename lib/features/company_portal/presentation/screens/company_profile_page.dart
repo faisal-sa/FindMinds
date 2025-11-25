@@ -3,46 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/company_portal/domain/entities/company_entity.dart';
 import 'package:graduation_project/features/company_portal/presentation/blocs/bloc/company_bloc.dart';
 
-class CompanyProfilePage extends StatefulWidget {
+class CompanyProfilePage extends StatelessWidget {
   const CompanyProfilePage({super.key});
-
-  @override
-  State<CompanyProfilePage> createState() => _CompanyProfilePageState();
-}
-
-class _CompanyProfilePageState extends State<CompanyProfilePage> {
-  final _form = GlobalKey<FormState>();
-  late TextEditingController _name;
-  late TextEditingController _industry;
-  late TextEditingController _desc;
-  late TextEditingController _city;
-  late TextEditingController _website;
-  late TextEditingController _phone;
-  CompanyEntity? _entity;
-
-  @override
-  void initState() {
-    final state = context.read<CompanyBloc>().state;
-    if (state is CompanyLoaded) _entity = state.company;
-    _name = TextEditingController(text: _entity?.companyName ?? '');
-    _industry = TextEditingController(text: _entity?.industry ?? '');
-    _desc = TextEditingController(text: _entity?.description ?? '');
-    _city = TextEditingController(text: _entity?.city ?? '');
-    _website = TextEditingController(text: _entity?.website ?? '');
-    _phone = TextEditingController(text: _entity?.phone ?? '');
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _name.dispose();
-    _industry.dispose();
-    _desc.dispose();
-    _city.dispose();
-    _website.dispose();
-    _phone.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,83 +16,76 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is CompanyLoaded &&
-              _entity != null &&
-              state.company != _entity) {
+          } else if (state is CompanyLoaded) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(const SnackBar(content: Text('Profile updated')));
           }
         },
         builder: (context, state) {
-          final loading = state is CompanyLoading;
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Form(
-              key: _form,
+          if (state is CompanyLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is CompanyLoaded) {
+            final c = state.company;
+            final name = TextEditingController(text: c.companyName);
+            final industry = TextEditingController(text: c.industry);
+            final desc = TextEditingController(text: c.description);
+            final city = TextEditingController(text: c.city);
+            final website = TextEditingController(text: c.website);
+            final phone = TextEditingController(text: c.phone);
+
+            return Padding(
+              padding: const EdgeInsets.all(16),
               child: ListView(
                 children: [
-                  TextFormField(
-                    controller: _name,
+                  TextField(
+                    controller: name,
                     decoration: const InputDecoration(
                       labelText: 'Company Name',
                     ),
                   ),
-                  TextFormField(
-                    controller: _industry,
+                  TextField(
+                    controller: industry,
                     decoration: const InputDecoration(labelText: 'Industry'),
                   ),
-                  TextFormField(
-                    controller: _desc,
+                  TextField(
+                    controller: desc,
                     decoration: const InputDecoration(labelText: 'Description'),
                   ),
-                  TextFormField(
-                    controller: _city,
+                  TextField(
+                    controller: city,
                     decoration: const InputDecoration(labelText: 'City'),
                   ),
-                  TextFormField(
-                    controller: _website,
+                  TextField(
+                    controller: website,
                     decoration: const InputDecoration(labelText: 'Website'),
                   ),
-                  TextFormField(
-                    controller: _phone,
+                  TextField(
+                    controller: phone,
                     decoration: const InputDecoration(labelText: 'Phone'),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: loading
-                        ? null
-                        : () {
-                            if (_entity == null) return;
-                            final updated = CompanyEntity(
-                              id: _entity!.id,
-                              userId: _entity!.userId,
-                              companyName: _name.text,
-                              industry: _industry.text,
-                              description: _desc.text,
-                              city: _city.text,
-                              address: _entity!.address,
-                              companySize: _entity!.companySize,
-                              website: _website.text,
-                              email: _entity!.email,
-                              phone: _phone.text,
-                              logoUrl: _entity!.logoUrl,
-                              createdAt: _entity!.createdAt,
-                              updatedAt: DateTime.now(),
-                            );
-                            context.read<CompanyBloc>().add(
-                              UpdateCompanyProfileEvent(updated),
-                            );
-                          },
-
-                    child: loading
-                        ? const CircularProgressIndicator()
-                        : const Text('Save'),
+                    onPressed: () {
+                      final updated = c.copyWith(
+                        companyName: name.text,
+                        industry: industry.text,
+                        description: desc.text,
+                        city: city.text,
+                        website: website.text,
+                        phone: phone.text,
+                      );
+                      context.read<CompanyBloc>().add(
+                        UpdateCompanyProfileEvent(updated),
+                      );
+                    },
+                    child: const Text('Save'),
                   ),
                 ],
               ),
-            ),
-          );
+            );
+          }
+          return const SizedBox();
         },
       ),
     );
