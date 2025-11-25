@@ -8,13 +8,15 @@ import 'package:graduation_project/features/auth/presentation/pages/login_page.d
 import 'package:graduation_project/features/auth/presentation/pages/signup_page.dart';
 import 'package:graduation_project/features/auth/presentation/pages/otp_verification_page.dart';
 
+import '../../features/CRinfo/cr_info_page.dart';
+
 final GoRouter router = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return const LoginPage(); //spalsh later page
+        return const CrInfoPage(); //spalsh later page
       },
     ),
     GoRoute(
