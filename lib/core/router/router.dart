@@ -8,8 +8,8 @@ import 'package:graduation_project/features/company_portal/presentation/screens/
 import 'package:graduation_project/features/company_portal/presentation/screens/company_qr_scanner_page.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/company_search_page.dart';
 import 'package:graduation_project/features/individuals/chat/presentation/pages/chats_tab.dart';
-import 'package:graduation_project/features/individuals/features/basic_information/presentation/cubit/basic_information_cubit.dart';
-import 'package:graduation_project/features/individuals/features/basic_information/presentation/pages/basic_info_page.dart';
+import 'package:graduation_project/features/individuals/features/basic_info/presentation/cubit/basic_info_cubit.dart';
+import 'package:graduation_project/features/individuals/features/basic_info/presentation/pages/basic_info_page.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/pages/insights_tab.dart';
 import 'package:graduation_project/features/individuals/profile/presentation/cubit/profile_cubit.dart';
 import 'package:graduation_project/features/individuals/profile/presentation/pages/profile_tab.dart';
@@ -80,8 +80,8 @@ final GoRouter router = GoRouter(
                   path: 'basic-info',
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) => BlocProvider(
-                    create: (context) => BasicInformationCubit(),
-                    child: BasicInfoPage(),
+                    create: (context) => serviceLocator.get<BasicInfoCubit>(),
+                    child: const BasicInfoPage(),
                   ),
                 ),
                 // GoRoute(

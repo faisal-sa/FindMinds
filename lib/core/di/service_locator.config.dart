@@ -44,6 +44,16 @@ import '../../features/company_portal/domain/usecases/update_company_profile.dar
     as _i923;
 import '../../features/company_portal/presentation/blocs/bloc/company_bloc.dart'
     as _i401;
+import '../../features/individuals/features/basic_info/data/datasources/basic_info_remote_data_source.dart'
+    as _i25;
+import '../../features/individuals/features/basic_info/data/repositories/basic_info_repository_impl.dart'
+    as _i500;
+import '../../features/individuals/features/basic_info/domain/repositories/basic_info_repository.dart'
+    as _i591;
+import '../../features/individuals/features/basic_info/domain/usecases/save_basic_info_usecase.dart'
+    as _i961;
+import '../../features/individuals/features/basic_info/presentation/cubit/basic_info_cubit.dart'
+    as _i37;
 import '../../features/profile/presentation/cubit/profile_cubit.dart' as _i36;
 import '../env_config/env_config.dart' as _i113;
 
@@ -72,6 +82,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i252.CompanyRemoteDataSource>(),
       ),
     );
+    gh.lazySingleton<_i25.BasicInfoRemoteDataSource>(
+      () => _i25.BasicInfoRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.factory<_i468.RegisterCompany>(
       () => companyModule.registerCompany(gh<_i786.CompanyRepository>()),
     );
@@ -98,6 +111,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(gh<_i161.AuthRemoteDataSource>()),
     );
+    gh.lazySingleton<_i591.BasicInfoRepository>(
+      () => _i500.BasicInfoRepositoryImpl(gh<_i25.BasicInfoRemoteDataSource>()),
+    );
     gh.factory<_i111.GetCurrentUser>(
       () => _i111.GetCurrentUser(gh<_i787.AuthRepository>()),
     );
@@ -110,6 +126,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i190.SignUp>(() => _i190.SignUp(gh<_i787.AuthRepository>()));
     gh.factory<_i975.VerifyOTP>(
       () => _i975.VerifyOTP(gh<_i787.AuthRepository>()),
+    );
+    gh.lazySingleton<_i961.SaveBasicInfoUseCase>(
+      () => _i961.SaveBasicInfoUseCase(gh<_i591.BasicInfoRepository>()),
+    );
+    gh.factory<_i37.BasicInfoCubit>(
+      () => _i37.BasicInfoCubit(gh<_i961.SaveBasicInfoUseCase>()),
     );
     gh.factory<_i117.AuthCubit>(
       () => _i117.AuthCubit(
