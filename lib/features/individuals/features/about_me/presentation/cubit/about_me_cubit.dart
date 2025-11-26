@@ -1,26 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/individuals/features/about_me/domain/usecases/delete_about_me_video_use_case.dart';
+import 'package:graduation_project/features/individuals/features/about_me/domain/usecases/save_about_me_use_case.dart';
 import 'package:graduation_project/features/individuals/features/about_me/presentation/cubit/about_me_state.dart';
 import 'package:injectable/injectable.dart';
-
-@lazySingleton
-class SaveAboutMeUseCase {
-  Future<String?> call(String summary, String? videoPath) async {
-    // TODO: implement call
-    return "";
-  }
-}
 
 @injectable
 class AboutMeCubit extends Cubit<AboutMeState> {
   final SaveAboutMeUseCase _saveAboutMeUseCase;
+  final DeleteAboutMeVideoUseCase _deleteVideoUseCase;
+  AboutMeCubit(this._saveAboutMeUseCase, this._deleteVideoUseCase)
+    : super(const AboutMeState());
 
-  AboutMeCubit(this._saveAboutMeUseCase) : super(const AboutMeState());
-
-  void initialize(String currentSummary, String? currentVideoUrl) {
+  void initialize(String? currentSummary, String? currentVideoUrl) {
     emit(
       state.copyWith(
-        summary: currentSummary,
+        summary: currentSummary ?? '',
         existingVideoUrl: currentVideoUrl,
+        status: FormStatus.initial,
       ),
     );
   }
@@ -31,6 +27,10 @@ class AboutMeCubit extends Cubit<AboutMeState> {
 
   void videoSelected(String path) {
     emit(state.copyWith(videoPath: path));
+  }
+
+  void removeSelectedVideo() {
+    emit(state.copyWith(videoPath: null));
   }
 
   Future<void> saveForm() async {
@@ -47,8 +47,23 @@ class AboutMeCubit extends Cubit<AboutMeState> {
         state.copyWith(
           status: FormStatus.success,
           existingVideoUrl: newVideoUrl ?? state.existingVideoUrl,
+          videoPath: null,
         ),
       );
+    } catch (e) {
+      emit(state.copyWith(status: FormStatus.failure));
+    }
+  }
+
+  Future<void> deleteExistingVideo() async {
+    if (state.status == FormStatus.loading) return;
+
+    emit(state.copyWith(status: FormStatus.loading));
+
+    try {
+      await _deleteVideoUseCase();
+
+      emit(state.copyWith(status: FormStatus.success, existingVideoUrl: null));
     } catch (e) {
       emit(state.copyWith(status: FormStatus.failure));
     }

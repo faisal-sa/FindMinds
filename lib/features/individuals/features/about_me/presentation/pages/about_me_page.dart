@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/individuals/features/about_me/presentation/cubit/about_me_cubit.dart';
 import 'package:graduation_project/features/individuals/features/about_me/presentation/cubit/about_me_state.dart';
 import 'package:graduation_project/features/shared/user_cubit.dart';
-import 'dart:ui';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AboutMePage extends StatelessWidget {
   const AboutMePage({super.key});
@@ -44,7 +42,7 @@ class AboutMePage extends StatelessWidget {
           } else if (state.status == FormStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Failed to save'),
+                content: Text('Failed to save profile. Please try again.'),
                 backgroundColor: Colors.red,
               ),
             );
@@ -65,9 +63,7 @@ class AboutMePage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _SummaryInput(),
-
               const SizedBox(height: 32),
-
               const Text(
                 'Video Intro',
                 style: TextStyle(
@@ -87,8 +83,7 @@ class AboutMePage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const _VideoPickerSection(),
-
-              const SizedBox(height: 60), // Space for bottom bar
+              const SizedBox(height: 60),
             ],
           ),
         ),
@@ -98,10 +93,12 @@ class AboutMePage extends StatelessWidget {
   }
 }
 
+// ... _SummaryInput remains the same ...
 class _SummaryInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final state = context.read<AboutMeCubit>().state;
+    // Ideally use BlocBuilder here or in parent to prevent full rebuilds
+    final state = context.select((AboutMeCubit c) => c.state);
 
     return Container(
       decoration: BoxDecoration(
@@ -116,8 +113,7 @@ class _SummaryInput extends StatelessWidget {
         onChanged: (val) => context.read<AboutMeCubit>().summaryChanged(val),
         style: const TextStyle(color: Color(0xFF334155), fontSize: 14),
         decoration: InputDecoration(
-          hintText:
-              'Write a brief summary about yourself, your experience, and your career goals.',
+          hintText: 'Write a brief summary...',
           hintStyle: TextStyle(color: Colors.grey[400]),
           contentPadding: const EdgeInsets.all(16),
           border: InputBorder.none,
@@ -131,16 +127,37 @@ class _SummaryInput extends StatelessWidget {
 class _VideoPickerSection extends StatelessWidget {
   const _VideoPickerSection();
 
+  Future<void> _pickVideo(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? video = await picker.pickVideo(
+      source: ImageSource.gallery,
+      maxDuration: const Duration(minutes: 2),
+    );
+
+    if (video != null && context.mounted) {
+      context.read<AboutMeCubit>().videoSelected(video.path);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AboutMeCubit, AboutMeState>(
       builder: (context, state) {
-        // Logic to show selected video preview could go here
-        // For now, showing the add button as per design
+        bool hasPendingFile = state.videoPath != null;
+        bool hasExistingUrl =
+            state.existingVideoUrl != null &&
+            state.existingVideoUrl!.isNotEmpty;
+
+        if (hasPendingFile) {
+          return _buildFilePreview(context, state.videoPath!);
+        }
+
+        if (hasExistingUrl) {
+          return _buildExistingVideoPreview(context, state.existingVideoUrl!);
+        }
+
         return GestureDetector(
-          onTap: () {
-            // Trigger File Picker logic -> call context.read<AboutMeCubit>().videoSelected(path)
-          },
+          onTap: () => _pickVideo(context),
           child: CustomPaint(
             painter: _DashedBorderPainter(color: Colors.grey[300]!, gap: 6),
             child: Container(
@@ -171,7 +188,6 @@ class _VideoPickerSection extends StatelessWidget {
                     style: TextStyle(
                       color: Color(0xFF3B82F6),
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
                     ),
                   ),
                 ],
@@ -180,6 +196,133 @@ class _VideoPickerSection extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildFilePreview(BuildContext context, String path) {
+    return Container(
+      height: 180,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blueAccent),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.video_file, size: 48, color: Colors.blue),
+          const SizedBox(height: 8),
+          const Text(
+            "New video selected",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextButton.icon(
+            onPressed: () => context.read<AboutMeCubit>().removeSelectedVideo(),
+            icon: const Icon(Icons.close, color: Colors.red),
+            label: const Text(
+              "Cancel Upload",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExistingVideoPreview(BuildContext context, String url) {
+    return Container(
+      height: 180,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.black87,
+        borderRadius: BorderRadius.circular(12),
+        image: const DecorationImage(
+          image: NetworkImage(
+            "https://placehold.co/600x400/000000/FFFFFF/png?text=Video+Preview",
+          ),
+          fit: BoxFit.cover,
+          opacity: 0.3,
+        ),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.play_circle_fill, size: 50, color: Colors.white),
+              const SizedBox(height: 10),
+              const Text(
+                "Video Uploaded",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // REPLACE BUTTON
+                  ElevatedButton.icon(
+                    onPressed: () => _pickVideo(context),
+                    icon: const Icon(Icons.edit, size: 16),
+                    label: const Text("Replace"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // DELETE BUTTON
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: const Text("Delete Video?"),
+                          content: const Text("This action cannot be undone."),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                context
+                                    .read<AboutMeCubit>()
+                                    .deleteExistingVideo();
+                              },
+                              child: const Text(
+                                "Delete",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                    label: const Text(
+                      "Delete",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

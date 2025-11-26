@@ -291,7 +291,7 @@ class InsightsTab extends StatelessWidget {
                       height: 8,
                       width:
                           MediaQuery.of(context).size.width *
-                          state.profileCompletion * // Use double directly
+                          state.profileCompletion *
                           0.7,
                       decoration: BoxDecoration(
                         color: Colors.white,

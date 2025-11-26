@@ -44,6 +44,16 @@ import '../../features/company_portal/domain/usecases/update_company_profile.dar
     as _i923;
 import '../../features/company_portal/presentation/blocs/bloc/company_bloc.dart'
     as _i401;
+import '../../features/individuals/features/about_me/data/datasources/about_me_remote_data_source.dart'
+    as _i733;
+import '../../features/individuals/features/about_me/data/repositories/about_me_repository_impl.dart'
+    as _i633;
+import '../../features/individuals/features/about_me/domain/repositories/about_me_repository.dart'
+    as _i542;
+import '../../features/individuals/features/about_me/domain/usecases/delete_about_me_video_use_case.dart'
+    as _i1047;
+import '../../features/individuals/features/about_me/domain/usecases/save_about_me_use_case.dart'
+    as _i250;
 import '../../features/individuals/features/about_me/presentation/cubit/about_me_cubit.dart'
     as _i781;
 import '../../features/individuals/features/basic_info/data/datasources/basic_info_remote_data_source.dart'
@@ -72,12 +82,24 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.supabaseClient,
       preResolve: true,
     );
-    gh.lazySingleton<_i781.SaveAboutMeUseCase>(
-      () => _i781.SaveAboutMeUseCase(),
-    );
     gh.lazySingleton<_i171.UserCubit>(() => _i171.UserCubit());
     gh.lazySingleton<_i252.CompanyRemoteDataSource>(
       () => companyModule.provideRemoteDS(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i733.AboutMeRemoteDataSource>(
+      () => _i733.AboutMeRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i542.AboutMeRepository>(
+      () => _i633.AboutMeRepositoryImpl(
+        gh<_i733.AboutMeRemoteDataSource>(),
+        gh<_i454.SupabaseClient>(),
+      ),
+    );
+    gh.lazySingleton<_i1047.DeleteAboutMeVideoUseCase>(
+      () => _i1047.DeleteAboutMeVideoUseCase(gh<_i542.AboutMeRepository>()),
+    );
+    gh.lazySingleton<_i250.SaveAboutMeUseCase>(
+      () => _i250.SaveAboutMeUseCase(gh<_i542.AboutMeRepository>()),
     );
     gh.lazySingleton<_i161.AuthRemoteDataSource>(
       () => _i161.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -86,9 +108,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => companyModule.provideCompanyRepository(
         gh<_i252.CompanyRemoteDataSource>(),
       ),
-    );
-    gh.factory<_i781.AboutMeCubit>(
-      () => _i781.AboutMeCubit(gh<_i781.SaveAboutMeUseCase>()),
     );
     gh.lazySingleton<_i25.BasicInfoRemoteDataSource>(
       () => _i25.BasicInfoRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -118,6 +137,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(gh<_i161.AuthRemoteDataSource>()),
+    );
+    gh.factory<_i781.AboutMeCubit>(
+      () => _i781.AboutMeCubit(
+        gh<_i250.SaveAboutMeUseCase>(),
+        gh<_i1047.DeleteAboutMeVideoUseCase>(),
+      ),
     );
     gh.lazySingleton<_i591.BasicInfoRepository>(
       () => _i500.BasicInfoRepositoryImpl(gh<_i25.BasicInfoRemoteDataSource>()),

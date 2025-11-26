@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/company_portal/presentation/blocs/bloc/company_bloc.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class CompanyQrScannerPage extends StatelessWidget {
   const CompanyQrScannerPage({super.key});
@@ -25,16 +25,16 @@ class CompanyQrScannerPage extends StatelessWidget {
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
-        child: QRView(
-          key: qrKey,
-          onQRViewCreated: (controller) {
-            controller.scannedDataStream.listen((scan) {
-              final code = scan.code;
-              context.read<CompanyBloc>().add(AddCandidateBookmarkEvent(code));
-              controller.pauseCamera();
-            });
-          },
-        ),
+        // child: QRView(
+        //   key: qrKey,
+        //   onQRViewCreated: (controller) {
+        //     controller.scannedDataStream.listen((scan) {
+        //       final code = scan.code;
+        //       context.read<CompanyBloc>().add(AddCandidateBookmarkEvent(code));
+        //       controller.pauseCamera();
+        //     });
+        //   },
+        // ),
       ),
     );
   }
