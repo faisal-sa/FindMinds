@@ -65,7 +65,6 @@ class AuthCubit extends Cubit<AuthState> {
     required String role,
   }) async {
     emit(AuthLoading());
-
     final result = await signUp(
       SignUpParams(email: email, password: password, role: role),
     );
