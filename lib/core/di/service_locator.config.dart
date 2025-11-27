@@ -102,6 +102,14 @@ import '../../features/individuals/features/education/presentation/cubit/form/ed
     as _i896;
 import '../../features/individuals/features/education/presentation/cubit/list/education_list_cubit.dart'
     as _i828;
+import '../../features/individuals/features/skills_languages/data/datasources/skills_languages_remote_data_source.dart'
+    as _i354;
+import '../../features/individuals/features/skills_languages/data/repositories/profile_repository_impl.dart'
+    as _i676;
+import '../../features/individuals/features/skills_languages/domain/repositories/skills_languages_repository.dart'
+    as _i122;
+import '../../features/individuals/features/skills_languages/presentation/cubit/skills_languages_cubit.dart'
+    as _i201;
 import '../../features/individuals/features/work_experience/data/datasources/work_experience_remote_data_source.dart'
     as _i271;
 import '../../features/individuals/features/work_experience/data/repositories/work_experience_repository_impl.dart'
@@ -173,9 +181,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i607.CertificationRemoteDataSource>(
       () => _i607.CertificationRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.lazySingleton<_i354.SkillsLanguagesRemoteDataSource>(
+      () =>
+          _i354.SkillsLanguagesRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i271.WorkExperienceRemoteDataSource>(
       () =>
           _i271.WorkExperienceRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i122.SkillsLanguagesRepository>(
+      () => _i676.SkillsLanguagesRepositoryImpl(
+        gh<_i354.SkillsLanguagesRemoteDataSource>(),
+      ),
     );
     gh.lazySingleton<_i25.BasicInfoRemoteDataSource>(
       () => _i25.BasicInfoRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -202,6 +219,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i754.SearchCandidates>(),
         gh<_i533.AddCandidateBookmark>(),
       ),
+    );
+    gh.factory<_i201.SkillsLanguagesCubit>(
+      () => _i201.SkillsLanguagesCubit(gh<_i122.SkillsLanguagesRepository>()),
     );
     gh.lazySingleton<_i651.WorkExperienceRepository>(
       () => _i51.WorkExperienceRepositoryImpl(

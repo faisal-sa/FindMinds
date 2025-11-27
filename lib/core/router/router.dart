@@ -16,6 +16,7 @@ import 'package:graduation_project/features/individuals/features/certifications/
 import 'package:graduation_project/features/individuals/features/certifications/presentation/pages/certification_page.dart';
 import 'package:graduation_project/features/individuals/features/education/presentation/cubit/list/education_list_cubit.dart';
 import 'package:graduation_project/features/individuals/features/education/presentation/pages/education_page.dart';
+import 'package:graduation_project/features/individuals/features/skills_languages/presentation/pages/skills_page.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_cubit.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/pages/work_experience_page.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/widgets/add_work_experience_modal.dart';
@@ -167,6 +168,13 @@ final GoRouter router = GoRouter(
                             ..loadCertifications(),
                       child: const CertificationPage(),
                     );
+                  },
+                ),
+                GoRoute(
+                  path: 'skills',
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) {
+                    return const SkillsPage();
                   },
                 ),
               ],
