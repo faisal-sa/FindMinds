@@ -110,7 +110,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (response.user == null) {
       throw Exception('OTP verification failed: User is null');
     }
-    print(3);
     final userMetadata = response.user!.userMetadata;
     final appMetadata = response.user!.appMetadata;
     final role =
