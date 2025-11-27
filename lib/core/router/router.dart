@@ -19,7 +19,7 @@ import 'package:graduation_project/features/individuals/features/education/prese
 import 'package:graduation_project/features/individuals/features/job_preferences/presentation/pages/job_preferences_page.dart';
 import 'package:graduation_project/features/individuals/features/skills_languages/presentation/pages/skills_page.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_cubit.dart';
-import 'package:graduation_project/features/individuals/features/work_experience/presentation/pages/work_experience_page.dart';
+import 'package:graduation_project/features/individuals/features/work_experience/presentation/pages/work_experience_list_page.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/pages/insights_tab.dart';
 import 'package:graduation_project/features/individuals/profile/presentation/cubit/profile_cubit.dart';
 import 'package:graduation_project/features/individuals/profile/presentation/pages/profile_tab.dart';
@@ -141,7 +141,7 @@ final GoRouter router = GoRouter(
                       create: (context) =>
                           serviceLocator.get<WorkExperienceListCubit>()
                             ..loadExperiences(),
-                      child: const ExperiencesPage(),
+                      child: const WorkExperienceListPage(),
                     );
                   },
                 ),

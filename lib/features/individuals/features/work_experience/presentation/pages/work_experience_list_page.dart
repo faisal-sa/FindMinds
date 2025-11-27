@@ -5,11 +5,11 @@ import 'package:graduation_project/features/individuals/features/work_experience
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_cubit.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_state.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/widgets/add_work_experience_modal.dart';
-
 import 'package:intl/intl.dart';
 
-class ExperiencesPage extends StatelessWidget {
-  const ExperiencesPage({super.key});
+//experience page shows a list of Experience cards, it relies on modal for editing and adding experienes
+class WorkExperienceListPage extends StatelessWidget {
+  const WorkExperienceListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,10 @@ class ExperiencesPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black),
         actions: [
           IconButton(
-            onPressed: () => AddWorkExperienceModal.show(context, null),
+            onPressed: () => AddWorkExperienceModal.show(
+              context,
+              null,
+            ), // we pass null when adding, WorkExperience when editing
             icon: const Icon(
               Icons.add_circle_outline,
               color: Color(0xFF3B82F6),
@@ -33,6 +36,7 @@ class ExperiencesPage extends StatelessWidget {
           ),
         ],
       ),
+
       body: BlocBuilder<WorkExperienceListCubit, WorkExperienceListState>(
         builder: (context, state) {
           if (state.status == ListStatus.loading) {
@@ -73,7 +77,7 @@ class ExperiencesPage extends StatelessWidget {
           return ListView.separated(
             padding: EdgeInsets.all(24.w),
             itemCount: experiences.length,
-            separatorBuilder: (_, __) => SizedBox(height: 16.h),
+            separatorBuilder: (_, _) => SizedBox(height: 16.h),
             itemBuilder: (context, index) {
               final exp = experiences[index];
               return _ExperienceCard(

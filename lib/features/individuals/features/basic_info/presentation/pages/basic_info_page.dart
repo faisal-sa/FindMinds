@@ -10,7 +10,6 @@ class BasicInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser = context.read<UserCubit>().state.user;
-
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(

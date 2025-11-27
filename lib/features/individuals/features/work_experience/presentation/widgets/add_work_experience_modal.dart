@@ -46,7 +46,9 @@ class AddWorkExperienceModal extends StatelessWidget {
         if (state.status == FormStatus.success) {
           Navigator.pop(context);
 
-          context.read<WorkExperienceListCubit>().loadExperiences();
+          context
+              .read<WorkExperienceListCubit>()
+              .loadExperiences(); // this updates the Worklist page after successful Add/Edit, (Remove it we don't need to call API to update the list)
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
