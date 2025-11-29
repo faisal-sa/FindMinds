@@ -6,33 +6,30 @@ import 'package:graduation_project/features/individuals/features/education/domai
 import 'package:graduation_project/features/individuals/features/education/domain/usecases/get_educations_usecase.dart';
 import 'package:graduation_project/features/individuals/features/education/domain/usecases/update_education_usecase.dart';
 import 'package:injectable/injectable.dart';
-import 'education_list_state.dart';
+import 'education_state.dart';
 
 @injectable
-class EducationListCubit extends Cubit<EducationListState> {
+class EducationCubit extends Cubit<EducationState> {
   final GetEducationsUseCase _getEducationsUseCase;
   final DeleteEducationUseCase _deleteEducationUseCase;
   final AddEducationUseCase _addEducationUseCase;
   final UpdateEducationUseCase _updateEducationUseCase;
 
-  EducationListCubit(
+  EducationCubit(
     this._getEducationsUseCase,
     this._deleteEducationUseCase,
     this._addEducationUseCase,
     this._updateEducationUseCase,
-  ) : super(const EducationListState());
+  ) : super(const EducationState());
 
   Future<void> loadEducations() async {
-    emit(const EducationListState(status: ListStatus.loading));
+    emit(const EducationState(status: ListStatus.loading));
     try {
       final list = await _getEducationsUseCase();
-      emit(EducationListState(status: ListStatus.success, educations: list));
+      emit(EducationState(status: ListStatus.success, educations: list));
     } catch (e) {
       emit(
-        EducationListState(
-          status: ListStatus.failure,
-          errorMessage: e.toString(),
-        ),
+        EducationState(status: ListStatus.failure, errorMessage: e.toString()),
       );
     }
   }

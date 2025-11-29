@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/individuals/features/education/presentation/widgets/education_card.dart';
 
-import '../cubit/list/education_list_cubit.dart';
-import '../cubit/list/education_list_state.dart';
+import '../cubit/education_cubit.dart';
+import '../cubit/education_state.dart';
 import '../widgets/add_education_modal.dart';
 
 class EducationPage extends StatelessWidget {
@@ -27,7 +27,7 @@ class EducationPage extends StatelessWidget {
             onPressed: () async {
               final result = await AddEducationModal.show(context, null);
               if (result != null && context.mounted) {
-                context.read<EducationListCubit>().addEducation(result);
+                context.read<EducationCubit>().addEducation(result);
               }
             },
             icon: const Icon(
@@ -37,7 +37,7 @@ class EducationPage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<EducationListCubit, EducationListState>(
+      body: BlocBuilder<EducationCubit, EducationState>(
         builder: (context, state) {
           if (state.status == ListStatus.loading) {
             return const Center(child: CircularProgressIndicator());
@@ -72,7 +72,7 @@ class EducationPage extends StatelessWidget {
                         null,
                       );
                       if (result != null && context.mounted) {
-                        context.read<EducationListCubit>().addEducation(result);
+                        context.read<EducationCubit>().addEducation(result);
                       }
                     },
                     child: const Text("Add your education"),
@@ -91,11 +91,11 @@ class EducationPage extends StatelessWidget {
               return EducationCard(
                 education: edu,
                 onDelete: () =>
-                    context.read<EducationListCubit>().deleteEducation(edu.id),
+                    context.read<EducationCubit>().deleteEducation(edu.id),
                 onEdit: () async {
                   final result = await AddEducationModal.show(context, edu);
                   if (result != null && context.mounted) {
-                    context.read<EducationListCubit>().updateEducation(result);
+                    context.read<EducationCubit>().updateEducation(result);
                   }
                 },
               );

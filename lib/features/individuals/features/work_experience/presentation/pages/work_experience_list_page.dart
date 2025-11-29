@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/domain/entities/work_experience.dart';
-import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_cubit.dart';
-import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_state.dart';
+import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/work_experience_cubit.dart';
+import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/work_experience_state.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/widgets/add_work_experience_modal.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/widgets/experience_card.dart';
 
@@ -17,9 +17,9 @@ class WorkExperienceListPage extends StatelessWidget {
   }) async {
     if (result != null && context.mounted) {
       if (isUpdate) {
-        context.read<WorkExperienceListCubit>().updateExperience(result);
+        context.read<WorkExperienceCubit>().updateExperience(result);
       } else {
-        context.read<WorkExperienceListCubit>().addExperience(result);
+        context.read<WorkExperienceCubit>().addExperience(result);
       }
     }
   }
@@ -51,7 +51,7 @@ class WorkExperienceListPage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<WorkExperienceListCubit, WorkExperienceListState>(
+      body: BlocBuilder<WorkExperienceCubit, WorkExperienceState>(
         builder: (context, state) {
           if (state.status == ListStatus.loading) {
             return const Center(child: CircularProgressIndicator());
@@ -82,7 +82,7 @@ class WorkExperienceListPage extends StatelessWidget {
               return ExperienceCard(
                 experience: exp,
                 onDelete: () => context
-                    .read<WorkExperienceListCubit>()
+                    .read<WorkExperienceCubit>()
                     .deleteExperience(exp.id),
                 onEdit: () async {
                   final result = await AddWorkExperienceModal.show(

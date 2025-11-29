@@ -5,33 +5,31 @@ import 'package:graduation_project/features/individuals/features/work_experience
 import 'package:graduation_project/features/individuals/features/work_experience/domain/usecases/delete_work_experience_usecase.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/domain/usecases/get_work_experiences_usecase.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/domain/usecases/update_work_experience_usecase.dart';
-import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_state.dart';
+import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/work_experience_state.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class WorkExperienceListCubit extends Cubit<WorkExperienceListState> {
+class WorkExperienceCubit extends Cubit<WorkExperienceState> {
   final GetWorkExperiencesUseCase _getWorkExperiencesUseCase;
   final DeleteWorkExperienceUseCase _deleteWorkExperienceUseCase;
   final AddWorkExperienceUseCase _addWorkExperienceUseCase;
   final UpdateWorkExperienceUseCase _updateWorkExperienceUseCase;
 
-  WorkExperienceListCubit(
+  WorkExperienceCubit(
     this._getWorkExperiencesUseCase,
     this._deleteWorkExperienceUseCase,
     this._addWorkExperienceUseCase,
     this._updateWorkExperienceUseCase,
-  ) : super(const WorkExperienceListState());
+  ) : super(const WorkExperienceState());
 
   Future<void> loadExperiences() async {
-    emit(const WorkExperienceListState(status: ListStatus.loading));
+    emit(const WorkExperienceState(status: ListStatus.loading));
     try {
       final list = await _getWorkExperiencesUseCase();
-      emit(
-        WorkExperienceListState(status: ListStatus.success, experiences: list),
-      );
+      emit(WorkExperienceState(status: ListStatus.success, experiences: list));
     } catch (e) {
       emit(
-        WorkExperienceListState(
+        WorkExperienceState(
           status: ListStatus.failure,
           errorMessage: e.toString(),
         ),

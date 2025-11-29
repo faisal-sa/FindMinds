@@ -106,7 +106,7 @@ final GoRouter router = GoRouter(
                   builder: (context, state) {
                     return BlocProvider(
                       create: (context) =>
-                          serviceLocator.get<WorkExperienceListCubit>(),
+                          serviceLocator.get<WorkExperienceCubit>(),
                       child: const WorkExperienceListPage(),
                     );
                   },
@@ -117,7 +117,7 @@ final GoRouter router = GoRouter(
                   builder: (context, state) {
                     return BlocProvider(
                       create: (context) =>
-                          serviceLocator.get<EducationListCubit>()
+                          serviceLocator.get<EducationCubit>()
                             ..loadEducations(),
                       child: const EducationPage(),
                     );
@@ -129,7 +129,7 @@ final GoRouter router = GoRouter(
                   builder: (context, state) {
                     return BlocProvider(
                       create: (context) =>
-                          serviceLocator.get<CertificationListCubit>()
+                          serviceLocator.get<CertificationCubit>()
                             ..loadCertifications(),
                       child: const CertificationPage(),
                     );
