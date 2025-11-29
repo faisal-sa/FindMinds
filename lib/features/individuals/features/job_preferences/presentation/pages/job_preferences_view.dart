@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:graduation_project/app/widgets/custom_text_field.dart';
+import 'package:graduation_project/app/widgets/saving_button.dart';
+import 'package:graduation_project/features/individuals/features/shared/widgets/dynamic_list_section.dart';
 import '../../domain/entities/job_preferences_entity.dart';
 import '../cubit/job_preferences_cubit.dart';
 
@@ -14,8 +17,6 @@ class JobPreferencesView extends StatefulWidget {
 class _JobPreferencesViewState extends State<JobPreferencesView> {
   final _formKey = GlobalKey<FormState>();
 
-  // Form Controllers
-  final TextEditingController _roleController = TextEditingController();
   final TextEditingController _minSalaryController = TextEditingController();
   final TextEditingController _maxSalaryController = TextEditingController();
   final TextEditingController _noticePeriodController = TextEditingController();
@@ -25,13 +26,10 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
   List<String> _employmentTypes = [];
   List<String> _workModes = [];
 
-  // Hardcoded to SAR as requested
   final String _salaryCurrency = 'SAR';
-
   bool _canRelocate = false;
-  bool _canStartImmediately = false; // "On" in screenshot
+  bool _canStartImmediately = false;
 
-  // Constants
   final List<String> _availableWorkModes = ['Remote', 'On-site', 'Hybrid'];
   final List<String> _availableEmpTypes = [
     'Full-time',
@@ -43,7 +41,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
 
   @override
   void dispose() {
-    _roleController.dispose();
     _minSalaryController.dispose();
     _maxSalaryController.dispose();
     _noticePeriodController.dispose();
@@ -72,12 +69,10 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
         workModes: _workModes,
         canRelocate: _canRelocate,
         canStartImmediately: _canStartImmediately,
-        // Only save notice period if the toggle is ON (since it's hidden otherwise)
         noticePeriodDays: _canStartImmediately
             ? int.tryParse(_noticePeriodController.text)
             : null,
       );
-
       context.read<JobPreferencesCubit>().savePreferences(entity);
     }
   }
@@ -100,6 +95,7 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
         }
       },
       builder: (context, state) {
+        // Move loading check to button or overlay if you want to keep form visible
         if (state is JobPreferencesLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -111,28 +107,19 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildLabel('Target Role'),
-                _buildRoleInput(),
-
-                // Chips for added roles
-                if (_targetRoles.isNotEmpty) ...[
-                  const Gap(8),
-                  Wrap(
-                    spacing: 8,
-                    children: _targetRoles.map((role) {
-                      return Chip(
-                        label: Text(role),
-                        backgroundColor: Colors.blue.shade50,
-                        deleteIcon: const Icon(Icons.close, size: 18),
-                        onDeleted: () =>
-                            setState(() => _targetRoles.remove(role)),
-                      );
-                    }).toList(),
-                  ),
-                ],
+                // 1. REUSED: DynamicListSection
+                // Replaces _buildLabel, _roleController, _buildRoleInput, and the Chips Wrap
+                DynamicListSection(
+                  title: 'Target Role',
+                  hintText: 'e.g., Software Engineer',
+                  items: _targetRoles,
+                  onChanged: (values) => setState(() => _targetRoles = values),
+                ),
 
                 const Gap(24),
                 _buildLabel('Salary Expectations'),
+                // Note: Kept custom _buildSalaryRow because your CustomTextField
+                // doesn't support suffixText ('/mo') or Widget prefixes currently.
                 _buildSalaryRow(),
 
                 const Gap(24),
@@ -140,15 +127,11 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
                 _buildSelectionChips(
                   options: _availableWorkModes,
                   selectedValues: _workModes,
-                  onSelect: (val) {
-                    setState(() {
-                      if (_workModes.contains(val)) {
-                        _workModes.remove(val);
-                      } else {
-                        _workModes.add(val);
-                      }
-                    });
-                  },
+                  onSelect: (val) => setState(() {
+                    _workModes.contains(val)
+                        ? _workModes.remove(val)
+                        : _workModes.add(val);
+                  }),
                 ),
 
                 const Gap(24),
@@ -156,68 +139,46 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
                 _buildSelectionChips(
                   options: _availableEmpTypes,
                   selectedValues: _employmentTypes,
-                  onSelect: (val) {
-                    setState(() {
-                      if (_employmentTypes.contains(val)) {
-                        _employmentTypes.remove(val);
-                      } else {
-                        _employmentTypes.add(val);
-                      }
-                    });
-                  },
+                  onSelect: (val) => setState(() {
+                    _employmentTypes.contains(val)
+                        ? _employmentTypes.remove(val)
+                        : _employmentTypes.add(val);
+                  }),
                 ),
 
                 const Gap(24),
-                // Custom Switch Tile for Relocation
-                _buildSwitchTile(
+                buildSwitchTile(
                   title: 'Open to relocation',
                   value: _canRelocate,
                   onChanged: (val) => setState(() => _canRelocate = val),
                 ),
 
                 const Gap(16),
-                // Custom Switch Tile for Start Immediately
-                _buildSwitchTile(
+                buildSwitchTile(
                   title: 'Can start immediately',
                   value: _canStartImmediately,
                   onChanged: (val) =>
                       setState(() => _canStartImmediately = val),
                 ),
 
-                // Logic: Hidden if Can Start Immediately is OFF
                 if (_canStartImmediately) ...[
                   const Gap(24),
-                  _buildLabel('Notice Period'),
-                  TextFormField(
+                  CustomTextField(
+                    label: 'Notice Period',
+                    hint: 'e.g., 2 weeks',
                     controller: _noticePeriodController,
-                    decoration: _inputDecoration(hint: 'e.g., 2 weeks'),
                   ),
                 ],
 
                 const Gap(40),
-                SizedBox(
-                  width: double.infinity,
+
+                SavingButton(
+                  text: 'Save Preferences',
+                  //pass isLoading: state is JobPreferencesLoading here
+                  onPressed: _onSave,
+                  backgroundColor: const Color(0xFF4285F4),
+                  padding: EdgeInsets.zero,
                   height: 50,
-                  child: ElevatedButton(
-                    onPressed: _onSave,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(
-                        0xFF4285F4,
-                      ), // Google Blue style from screenshot
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Save Preferences',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
                 ),
                 const Gap(24),
               ],
@@ -227,7 +188,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
       },
     );
   }
-
   // --- Helper Widgets ---
 
   Widget _buildLabel(String text) {
@@ -242,25 +202,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
         ),
       ),
     );
-  }
-
-  Widget _buildRoleInput() {
-    return TextField(
-      controller: _roleController,
-      decoration: _inputDecoration(hint: 'e.g., Software Engineer'),
-      onSubmitted: (_) => _addRole(),
-      textInputAction: TextInputAction.done,
-    );
-  }
-
-  void _addRole() {
-    final text = _roleController.text.trim();
-    if (text.isNotEmpty && !_targetRoles.contains(text)) {
-      setState(() {
-        _targetRoles.add(text);
-        _roleController.clear();
-      });
-    }
   }
 
   Widget _buildSalaryRow() {
@@ -315,7 +256,7 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   ),
-                  suffixText: '/mo', // Per month request
+                  suffixText: '/mo',
                 ),
               ),
             ],
@@ -365,7 +306,7 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
     );
   }
 
-  Widget _buildSwitchTile({
+  Widget buildSwitchTile({
     required String title,
     required bool value,
     required Function(bool) onChanged,
