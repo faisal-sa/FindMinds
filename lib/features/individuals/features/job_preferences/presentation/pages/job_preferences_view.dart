@@ -24,13 +24,15 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
   List<String> _targetRoles = [];
   List<String> _employmentTypes = [];
   List<String> _workModes = [];
-  String? _currentWorkStatus;
-  String _salaryCurrency = 'USD';
-  bool _canRelocate = false;
-  bool _canStartImmediately = false;
 
-  // Constants for Dropdowns/Chips
-  final List<String> _availableWorkModes = ['Remote', 'Onsite', 'Hybrid'];
+  // Hardcoded to SAR as requested
+  final String _salaryCurrency = 'SAR';
+
+  bool _canRelocate = false;
+  bool _canStartImmediately = false; // "On" in screenshot
+
+  // Constants
+  final List<String> _availableWorkModes = ['Remote', 'On-site', 'Hybrid'];
   final List<String> _availableEmpTypes = [
     'Full-time',
     'Part-time',
@@ -38,13 +40,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
     'Freelance',
     'Co-op',
   ];
-  final List<String> _workStatuses = [
-    'Open to work',
-    'Actively applying',
-    'Not looking',
-    'Casual browsing',
-  ];
-  final List<String> _currencies = ['USD', 'EUR', 'GBP', 'CAD', 'AUD'];
 
   @override
   void dispose() {
@@ -55,17 +50,12 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
     super.dispose();
   }
 
-  /// Initialize local state from the loaded entity
   void _initializeValues(JobPreferencesEntity prefs) {
     _targetRoles = List.from(prefs.targetRoles);
     _employmentTypes = List.from(prefs.employmentTypes);
     _workModes = List.from(prefs.workModes);
-
     _minSalaryController.text = prefs.minSalary?.toString() ?? '';
     _maxSalaryController.text = prefs.maxSalary?.toString() ?? '';
-    _salaryCurrency = prefs.salaryCurrency ?? 'USD';
-
-    _currentWorkStatus = prefs.currentWorkStatus;
     _canRelocate = prefs.canRelocate;
     _canStartImmediately = prefs.canStartImmediately;
     _noticePeriodController.text = prefs.noticePeriodDays?.toString() ?? '';
@@ -78,12 +68,14 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
         minSalary: int.tryParse(_minSalaryController.text),
         maxSalary: int.tryParse(_maxSalaryController.text),
         salaryCurrency: _salaryCurrency,
-        currentWorkStatus: _currentWorkStatus,
         employmentTypes: _employmentTypes,
         workModes: _workModes,
         canRelocate: _canRelocate,
         canStartImmediately: _canStartImmediately,
-        noticePeriodDays: int.tryParse(_noticePeriodController.text),
+        // Only save notice period if the toggle is ON (since it's hidden otherwise)
+        noticePeriodDays: _canStartImmediately
+            ? int.tryParse(_noticePeriodController.text)
+            : null,
       );
 
       context.read<JobPreferencesCubit>().savePreferences(entity);
@@ -101,12 +93,7 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
               backgroundColor: Colors.green,
             ),
           );
-        } else if (state is JobPreferencesError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
-          );
         } else if (state is JobPreferencesLoaded) {
-          // Sync local state when data loads from DB
           setState(() {
             _initializeValues(state.preferences);
           });
@@ -124,154 +111,111 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSectionHeader('Target Roles'),
+                _buildLabel('Target Role'),
                 _buildRoleInput(),
-                const Gap(8),
-                Wrap(
-                  spacing: 8,
-                  children: _targetRoles.map((role) {
-                    return Chip(
-                      label: Text(role),
-                      onDeleted: () {
-                        setState(() {
-                          _targetRoles.remove(role);
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
 
-                const Gap(24),
-                _buildSectionHeader('Salary Expectations (Annual)'),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: _minSalaryController,
-                        decoration: const InputDecoration(labelText: 'Min'),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    const Gap(16),
-                    Expanded(
-                      child: TextFormField(
-                        controller: _maxSalaryController,
-                        decoration: const InputDecoration(labelText: 'Max'),
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
-                    const Gap(16),
-                    DropdownButton<String>(
-                      value: _currencies.contains(_salaryCurrency)
-                          ? _salaryCurrency
-                          : _currencies.first,
-                      items: _currencies
-                          .map(
-                            (c) => DropdownMenuItem(value: c, child: Text(c)),
-                          )
-                          .toList(),
-                      onChanged: (val) =>
-                          setState(() => _salaryCurrency = val!),
-                    ),
-                  ],
-                ),
-
-                const Gap(24),
-                _buildSectionHeader('Current Work Status'),
-                DropdownButtonFormField<String>(
-                  value: _currentWorkStatus,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  items: _workStatuses
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
-                  onChanged: (val) => setState(() => _currentWorkStatus = val),
-                ),
-
-                const Gap(24),
-                _buildSectionHeader('Work Environment'),
-                Wrap(
-                  spacing: 8,
-                  children: _availableWorkModes.map((mode) {
-                    final isSelected = _workModes.contains(mode);
-                    return FilterChip(
-                      label: Text(mode),
-                      selected: isSelected,
-                      onSelected: (selected) {
-                        setState(() {
-                          selected
-                              ? _workModes.add(mode)
-                              : _workModes.remove(mode);
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-
-                const Gap(16),
-                _buildSectionHeader('Employment Type'),
-                Wrap(
-                  spacing: 8,
-                  children: _availableEmpTypes.map((type) {
-                    final isSelected = _employmentTypes.contains(type);
-                    return FilterChip(
-                      label: Text(type),
-                      selected: isSelected,
-                      onSelected: (selected) {
-                        setState(() {
-                          selected
-                              ? _employmentTypes.add(type)
-                              : _employmentTypes.remove(type);
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-
-                const Gap(24),
-                _buildSectionHeader('Availability'),
-                SwitchListTile(
-                  title: const Text('Open to Relocation'),
-                  value: _canRelocate,
-                  onChanged: (val) => setState(() => _canRelocate = val),
-                  contentPadding: EdgeInsets.zero,
-                ),
-                SwitchListTile(
-                  title: const Text('Can Start Immediately'),
-                  value: _canStartImmediately,
-                  onChanged: (val) =>
-                      setState(() => _canStartImmediately = val),
-                  contentPadding: EdgeInsets.zero,
-                ),
-
-                // Only show Notice Period if NOT starting immediately
-                if (!_canStartImmediately) ...[
+                // Chips for added roles
+                if (_targetRoles.isNotEmpty) ...[
                   const Gap(8),
-                  TextFormField(
-                    controller: _noticePeriodController,
-                    decoration: const InputDecoration(
-                      labelText: 'Notice Period (Days)',
-                      border: OutlineInputBorder(),
-                      helperText: 'How many days before you can join?',
-                    ),
-                    keyboardType: TextInputType.number,
+                  Wrap(
+                    spacing: 8,
+                    children: _targetRoles.map((role) {
+                      return Chip(
+                        label: Text(role),
+                        backgroundColor: Colors.blue.shade50,
+                        deleteIcon: const Icon(Icons.close, size: 18),
+                        onDeleted: () =>
+                            setState(() => _targetRoles.remove(role)),
+                      );
+                    }).toList(),
                   ),
                 ],
 
-                const Gap(32),
+                const Gap(24),
+                _buildLabel('Salary Expectations'),
+                _buildSalaryRow(),
+
+                const Gap(24),
+                _buildLabel('Work Environment'),
+                _buildSelectionChips(
+                  options: _availableWorkModes,
+                  selectedValues: _workModes,
+                  onSelect: (val) {
+                    setState(() {
+                      if (_workModes.contains(val)) {
+                        _workModes.remove(val);
+                      } else {
+                        _workModes.add(val);
+                      }
+                    });
+                  },
+                ),
+
+                const Gap(24),
+                _buildLabel('Employment Type'),
+                _buildSelectionChips(
+                  options: _availableEmpTypes,
+                  selectedValues: _employmentTypes,
+                  onSelect: (val) {
+                    setState(() {
+                      if (_employmentTypes.contains(val)) {
+                        _employmentTypes.remove(val);
+                      } else {
+                        _employmentTypes.add(val);
+                      }
+                    });
+                  },
+                ),
+
+                const Gap(24),
+                // Custom Switch Tile for Relocation
+                _buildSwitchTile(
+                  title: 'Open to relocation',
+                  value: _canRelocate,
+                  onChanged: (val) => setState(() => _canRelocate = val),
+                ),
+
+                const Gap(16),
+                // Custom Switch Tile for Start Immediately
+                _buildSwitchTile(
+                  title: 'Can start immediately',
+                  value: _canStartImmediately,
+                  onChanged: (val) =>
+                      setState(() => _canStartImmediately = val),
+                ),
+
+                // Logic: Hidden if Can Start Immediately is OFF
+                if (_canStartImmediately) ...[
+                  const Gap(24),
+                  _buildLabel('Notice Period'),
+                  TextFormField(
+                    controller: _noticePeriodController,
+                    decoration: _inputDecoration(hint: 'e.g., 2 weeks'),
+                  ),
+                ],
+
+                const Gap(40),
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
                     onPressed: _onSave,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: const Color(
+                        0xFF4285F4,
+                      ), // Google Blue style from screenshot
                       foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 0,
                     ),
                     child: const Text(
                       'Save Preferences',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -284,28 +228,28 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
     );
   }
 
+  // --- Helper Widgets ---
+
+  Widget _buildLabel(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF5F6368), // Dark grey
+        ),
+      ),
+    );
+  }
+
   Widget _buildRoleInput() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: _roleController,
-            decoration: const InputDecoration(
-              hintText: 'e.g. Senior Flutter Developer',
-              border: OutlineInputBorder(),
-              isDense: true,
-            ),
-            onSubmitted: (_) => _addRole(),
-          ),
-        ),
-        const Gap(8),
-        IconButton(
-          onPressed: _addRole,
-          icon: const Icon(Icons.add_circle),
-          color: Theme.of(context).primaryColor,
-          iconSize: 32,
-        ),
-      ],
+    return TextField(
+      controller: _roleController,
+      decoration: _inputDecoration(hint: 'e.g., Software Engineer'),
+      onSubmitted: (_) => _addRole(),
+      textInputAction: TextInputAction.done,
     );
   }
 
@@ -319,13 +263,171 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
     }
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  Widget _buildSalaryRow() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Minimum Salary",
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+              const Gap(4),
+              TextFormField(
+                controller: _minSalaryController,
+                keyboardType: TextInputType.number,
+                decoration: _inputDecoration(
+                  hint: 'e.g., 5,000',
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(14.0),
+                    child: Text(
+                      '\$',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  ),
+                  suffixText: '/mo', // Per month request
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Gap(16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Maximum Salary",
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+              const Gap(4),
+              TextFormField(
+                controller: _maxSalaryController,
+                keyboardType: TextInputType.number,
+                decoration: _inputDecoration(
+                  hint: 'e.g., 8,000',
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(14.0),
+                    child: Text(
+                      '\$',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  ),
+                  suffixText: '/mo', // Per month request
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSelectionChips({
+    required List<String> options,
+    required List<String> selectedValues,
+    required Function(String) onSelect,
+  }) {
+    return Wrap(
+      spacing: 12,
+      runSpacing: 12,
+      children: options.map((option) {
+        final isSelected = selectedValues.contains(option);
+        return InkWell(
+          onTap: () => onSelect(option),
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: isSelected
+                    ? const Color(0xFF4285F4)
+                    : Colors.grey.shade300,
+                width: isSelected ? 1.5 : 1,
+              ),
+            ),
+            child: Text(
+              option,
+              style: TextStyle(
+                color: isSelected
+                    ? const Color(0xFF4285F4)
+                    : Colors.grey.shade700,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildSwitchTile({
+    required String title,
+    required bool value,
+    required Function(bool) onChanged,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        // Simulating the card look from the screenshot
+        border: Border.all(color: Colors.white),
       ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Color(0xFF3C4043),
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: Colors.white,
+            activeTrackColor: const Color(0xFF4285F4),
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.grey.shade300,
+          ),
+        ],
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration({
+    String? hint,
+    Widget? prefixIcon,
+    String? suffixText,
+  }) {
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: TextStyle(color: Colors.grey.shade400),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      prefixIcon: prefixIcon,
+      suffixText: suffixText,
+      suffixStyle: const TextStyle(color: Colors.grey),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: Color(0xFF4285F4), width: 1.5),
+      ),
+      filled: true,
+      fillColor: Colors.white,
     );
   }
 }
