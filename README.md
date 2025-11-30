@@ -45,3 +45,7 @@ lib/
 ## Preview 
 
 this project is currently a work in progress..
+
+<img width="490" height="912" alt="image" src="https://github.com/user-attachments/assets/db0d8c2e-9362-49db-99d0-4a1a375781a1" />
+<img width="494" height="914" alt="image" src="https://github.com/user-attachments/assets/5ed3935a-f9e7-49ac-82ca-d973c1307ca0" />
+
