@@ -76,7 +76,7 @@ class UserEntity extends Equatable {
 
 extension StringExtension on String {
   String take(int n) {
-    if (this.length <= n) return this;
-    return this.substring(0, n);
+    if (length <= n) return this;
+    return substring(0, n);
   }
 }

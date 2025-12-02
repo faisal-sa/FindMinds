@@ -159,7 +159,11 @@ class _VideoPickerSection extends StatelessWidget {
         return GestureDetector(
           onTap: () => _pickVideo(context),
           child: CustomPaint(
-            painter: _DashedBorderPainter(color: Colors.grey[300]!, gap: 6),
+            painter: _DashedBorderPainter(
+              color: Colors.grey[300]!,
+              gap: 6,
+              strokeWidth: 5,
+            ),
             child: Container(
               height: 180,
               width: double.infinity,
@@ -386,8 +390,8 @@ class _DashedBorderPainter extends CustomPainter {
 
   _DashedBorderPainter({
     required this.color,
-    this.strokeWidth = 1.0,
     this.gap = 5.0,
+    required this.strokeWidth,
   });
 
   @override

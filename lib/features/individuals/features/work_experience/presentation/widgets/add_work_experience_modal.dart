@@ -122,7 +122,7 @@ class _AddWorkExperienceModalState extends State<AddWorkExperienceModal> {
 
           const FormLabel("Employment Type"),
           DropdownButtonFormField<String>(
-            value: _employmentType,
+            initialValue: _employmentType,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,

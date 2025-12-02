@@ -333,7 +333,7 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: Colors.white,
+            activeThumbColor: Colors.white,
             activeTrackColor: const Color(0xFF4285F4),
             inactiveThumbColor: Colors.white,
             inactiveTrackColor: Colors.grey.shade300,
