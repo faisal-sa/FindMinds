@@ -28,12 +28,16 @@ import '../../features/auth/domain/usecases/verify_otp.dart' as _i975;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
 import '../../features/company_portal/data/data_sources/company_portal_data_source.dart'
     as _i252;
-import '../../features/company_portal/di/company_injectable_module.dart'
-    as _i999;
+import '../../features/company_portal/data/repositories/company_portal_repository_impl.dart'
+    as _i624;
 import '../../features/company_portal/domain/repositories/company_portal_repository.dart'
     as _i786;
 import '../../features/company_portal/domain/usecases/add_candidate_bookmark.dart'
     as _i533;
+import '../../features/company_portal/domain/usecases/check_company_status.dart'
+    as _i528;
+import '../../features/company_portal/domain/usecases/get_company_bookmarks.dart'
+    as _i831;
 import '../../features/company_portal/domain/usecases/get_company_profile.dart'
     as _i303;
 import '../../features/company_portal/domain/usecases/register_company.dart'
@@ -42,6 +46,8 @@ import '../../features/company_portal/domain/usecases/search_candidates.dart'
     as _i754;
 import '../../features/company_portal/domain/usecases/update_company_profile.dart'
     as _i923;
+import '../../features/company_portal/domain/usecases/verify_company_qr.dart'
+    as _i742;
 import '../../features/company_portal/presentation/blocs/bloc/company_bloc.dart'
     as _i401;
 import '../../features/profile/presentation/cubit/profile_cubit.dart' as _i36;
@@ -55,37 +61,46 @@ extension GetItInjectableX on _i174.GetIt {
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final registerModule = _$RegisterModule();
-    final companyModule = _$CompanyModule();
     await gh.factoryAsync<_i454.SupabaseClient>(
       () => registerModule.supabaseClient,
       preResolve: true,
     );
     gh.factory<_i36.ProfileCubit>(() => _i36.ProfileCubit());
     gh.lazySingleton<_i252.CompanyRemoteDataSource>(
-      () => companyModule.provideRemoteDS(gh<_i454.SupabaseClient>()),
+      () => _i252.CompanyRemoteDataSource(gh<_i454.SupabaseClient>()),
     );
     gh.lazySingleton<_i161.AuthRemoteDataSource>(
       () => _i161.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
-    gh.lazySingleton<_i786.CompanyRepository>(
-      () => companyModule.provideCompanyRepository(
-        gh<_i252.CompanyRemoteDataSource>(),
-      ),
+    gh.factory<_i786.CompanyRepository>(
+      () => _i624.CompanyRepositoryImpl(gh<_i252.CompanyRemoteDataSource>()),
+    );
+    gh.lazySingleton<_i787.AuthRepository>(
+      () => _i153.AuthRepositoryImpl(gh<_i161.AuthRemoteDataSource>()),
     );
     gh.factory<_i468.RegisterCompany>(
-      () => companyModule.registerCompany(gh<_i786.CompanyRepository>()),
+      () => _i468.RegisterCompany(gh<_i786.CompanyRepository>()),
     );
-    gh.factory<_i303.GetCompanyProfile>(
-      () => companyModule.getCompanyProfile(gh<_i786.CompanyRepository>()),
-    );
-    gh.factory<_i923.UpdateCompanyProfile>(
-      () => companyModule.updateCompanyProfile(gh<_i786.CompanyRepository>()),
-    );
-    gh.factory<_i754.SearchCandidates>(
-      () => companyModule.searchCandidates(gh<_i786.CompanyRepository>()),
+    gh.factory<_i742.VerifyCompanyQR>(
+      () => _i742.VerifyCompanyQR(gh<_i786.CompanyRepository>()),
     );
     gh.factory<_i533.AddCandidateBookmark>(
-      () => companyModule.addCandidateBookmark(gh<_i786.CompanyRepository>()),
+      () => _i533.AddCandidateBookmark(gh<_i786.CompanyRepository>()),
+    );
+    gh.factory<_i528.CheckCompanyStatus>(
+      () => _i528.CheckCompanyStatus(gh<_i786.CompanyRepository>()),
+    );
+    gh.factory<_i831.GetCompanyBookmarks>(
+      () => _i831.GetCompanyBookmarks(gh<_i786.CompanyRepository>()),
+    );
+    gh.factory<_i303.GetCompanyProfile>(
+      () => _i303.GetCompanyProfile(gh<_i786.CompanyRepository>()),
+    );
+    gh.factory<_i754.SearchCandidates>(
+      () => _i754.SearchCandidates(gh<_i786.CompanyRepository>()),
+    );
+    gh.factory<_i923.UpdateCompanyProfile>(
+      () => _i923.UpdateCompanyProfile(gh<_i786.CompanyRepository>()),
     );
     gh.factory<_i401.CompanyBloc>(
       () => _i401.CompanyBloc(
@@ -93,10 +108,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i923.UpdateCompanyProfile>(),
         gh<_i754.SearchCandidates>(),
         gh<_i533.AddCandidateBookmark>(),
+        gh<_i831.GetCompanyBookmarks>(),
+        gh<_i528.CheckCompanyStatus>(),
+        gh<_i468.RegisterCompany>(),
+        gh<_i742.VerifyCompanyQR>(),
       ),
-    );
-    gh.lazySingleton<_i787.AuthRepository>(
-      () => _i153.AuthRepositoryImpl(gh<_i161.AuthRemoteDataSource>()),
     );
     gh.factory<_i111.GetCurrentUser>(
       () => _i111.GetCurrentUser(gh<_i787.AuthRepository>()),
@@ -127,5 +143,3 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$RegisterModule extends _i113.RegisterModule {}
-
-class _$CompanyModule extends _i999.CompanyModule {}

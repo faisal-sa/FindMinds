@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/company_portal/presentation/blocs/bloc/company_bloc.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/advanced_searchpage.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/company_bookmarks_page.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/company_onboarding_router_page.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/company_qr_page.dart';
 
 import 'package:graduation_project/features/company_portal/presentation/screens/company_search_page.dart';
@@ -97,6 +98,20 @@ final GoRouter router = GoRouter(
       ],
     ),
     // -------------------- COMPANY PORTAL FLOW --------------------
+
+    // 1. THE ROUTER: Checks the status after successful login/signup
+    GoRoute(
+      path: '/company/onboarding-router',
+      name: 'company-onboarding-router',
+      // We must provide the CompanyBloc here so the router page can dispatch
+      // the CheckCompanyStatusEvent and listen for the results.
+      builder: (context, state) => BlocProvider(
+        create: (_) => getIt<CompanyBloc>(),
+        child: const CompanyOnboardingRouterPage(),
+      ),
+    ),
+
+    // 2. ONBOARDING STEP 1: Profile Completion (if profile is incomplete)
     GoRoute(
       path: '/company/complete-profile',
       name: 'company-complete-profile',
@@ -105,11 +120,16 @@ final GoRouter router = GoRouter(
         child: const CompleteCompanyProfilePage(),
       ),
     ),
+
+    // 3. ONBOARDING STEP 2: Payment/Verification (if profile is complete but unverified/unpaid)
     GoRoute(
       path: '/company/payment',
       name: 'company-payment',
       builder: (context, state) => const PaymentPage(),
+      // Note: This page must route to '/company/search' upon success.
     ),
+
+    // 4. MAIN FEATURE: Search Candidates (if all prerequisites are met)
     GoRoute(
       path: '/company/search',
       name: 'company-search',
@@ -123,11 +143,13 @@ final GoRouter router = GoRouter(
           name: 'company-advanced-search',
           builder: (context, state) => BlocProvider(
             create: (_) => getIt<CompanyBloc>(),
-            child: const AdvancedSearchPage(),
+            child: AdvancedSearchPage(),
           ),
         ),
+        // Note: The QR route should ideally be nested under /company/search or accessible from it.
+        // I moved the absolute path '/company/qr' to be relative to the root or explicitly defined.
         GoRoute(
-          path: '/company/qr',
+          path: 'qr',
           name: 'company-qr',
           builder: (context, state) => BlocProvider(
             create: (_) => getIt<CompanyBloc>(),
@@ -135,21 +157,14 @@ final GoRouter router = GoRouter(
           ),
         ),
         GoRoute(
-          path: '/company/bookmarks',
-          name: 'company-bookmarks',
-          builder: (context, state) => BlocProvider(
-            create: (_) => getIt<CompanyBloc>(),
-            child: const CompanyBookmarksPage(),
-          ),
-        ),
-
-        // صفحة الإعدادات
-        GoRoute(
-          path: '/company/settings',
+          path: 'settings',
           name: 'company-settings',
           builder: (context, state) => const CompanySettingsPage(),
         ),
       ],
     ),
+
+    // Define other common/utility routes if necessary (e.g., /settings)
   ],
+  // ... rest of GoRouter configuration (errorBuilder, redirect, etc.)
 );

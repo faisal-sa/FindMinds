@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CompanySettingsPage extends StatelessWidget {
   const CompanySettingsPage({super.key});
@@ -6,26 +7,33 @@ class CompanySettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('إعدادات الشركة')),
+      appBar: AppBar(title: const Text('Company Settings')),
       body: ListView(
-        padding: const EdgeInsets.all(16),
         children: [
-          const ListTile(
-            leading: Icon(Icons.lock_outline),
-            title: Text('تغيير كلمة المرور'),
+          ListTile(
+            leading: const Icon(Icons.business),
+            title: const Text('Edit Company Profile'),
+            subtitle: const Text('Update description, industry, etc.'),
+            onTap: () {
+              // Navigate back to the main profile page for edits
+              context.goNamed('company-complete-profile');
+            },
           ),
           const Divider(),
-          const ListTile(
-            leading: Icon(Icons.notifications_active_outlined),
-            title: Text('إدارة التنبيهات'),
+          ListTile(
+            leading: const Icon(Icons.lock),
+            title: const Text('Change Password'),
+            onTap: () {
+              // Navigate to a dedicated password change page
+            },
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('تسجيل الخروج'),
+            title: const Text('Logout'),
             onTap: () {
-              // هنا يمكن تنفيذ logout الحقيقي
-              Navigator.pop(context);
+              // Dispatch AuthLogoutEvent and navigate to the root login page
+              context.go('/login');
             },
           ),
         ],

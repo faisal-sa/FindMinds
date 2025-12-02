@@ -36,9 +36,9 @@ class _SignupPageState extends State<SignupPage> {
 
         if (state is AuthAuthenticated) {
           if (state.role == 'Company') {
-            context.go('/company/complete-profile');
+            context.go('/company/onboarding-router');
           } else {
-            context.go('/insights');
+            context.go('/insights'); // Individual user flow
           }
         }
 
