@@ -144,10 +144,9 @@ import '../../features/payment/data/datasources/payment_remote_data_source.dart'
     as _i811;
 import '../../features/payment/data/repositories/payment_repository_impl.dart'
     as _i265;
-import '../../features/payment/domain/repositories/payment_repository.dart'
-    as _i639;
 import '../../features/payment/domain/usecases/process_payment_usecase.dart'
     as _i432;
+import '../../features/payment/export_payment.dart' as _i903;
 import '../../features/payment/presentation/cubit/payment_cubit.dart' as _i513;
 import '../../features/shared/user_cubit.dart' as _i171;
 import '../env_config/env_config.dart' as _i113;
@@ -230,9 +229,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i466.JobPreferencesRemoteDataSource>(),
       ),
     );
-    gh.lazySingleton<_i639.PaymentRepository>(
-      () => _i265.PaymentRepositoryImpl(gh<_i811.PaymentRemoteDataSource>()),
-    );
     gh.factory<_i468.RegisterCompany>(
       () => companyModule.registerCompany(gh<_i786.CompanyRepository>()),
     );
@@ -266,6 +262,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i787.AuthRepository>(
       () => _i153.AuthRepositoryImpl(gh<_i161.AuthRemoteDataSource>()),
+    );
+    gh.lazySingleton<_i903.PaymentRepository>(
+      () => _i265.PaymentRepositoryImpl(gh<_i903.PaymentRemoteDataSource>()),
     );
     gh.lazySingleton<_i965.AddEducationUseCase>(
       () => _i965.AddEducationUseCase(gh<_i843.EducationRepository>()),
@@ -314,7 +313,7 @@ extension GetItInjectableX on _i174.GetIt {
       ),
     );
     gh.lazySingleton<_i432.ProcessPaymentUseCase>(
-      () => _i432.ProcessPaymentUseCase(gh<_i639.PaymentRepository>()),
+      () => _i432.ProcessPaymentUseCase(gh<_i903.PaymentRepository>()),
     );
     gh.factory<_i387.JobPreferencesCubit>(
       () => _i387.JobPreferencesCubit(
@@ -361,9 +360,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i947.DeleteEducationUseCase>(),
       ),
     );
-    gh.factory<_i513.PaymentCubit>(
-      () => _i513.PaymentCubit(gh<_i432.ProcessPaymentUseCase>()),
-    );
     gh.factory<_i557.CertificationListCubit>(
       () => _i557.CertificationListCubit(
         gh<_i440.GetCertificationsUseCase>(),
@@ -382,6 +378,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i190.SignUp>(() => _i190.SignUp(gh<_i787.AuthRepository>()));
     gh.factory<_i975.VerifyOTP>(
       () => _i975.VerifyOTP(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i513.PaymentCubit>(
+      () => _i513.PaymentCubit(gh<_i903.ProcessPaymentUseCase>()),
     );
     gh.factory<_i381.WorkExperienceFormCubit>(
       () => _i381.WorkExperienceFormCubit(
