@@ -160,19 +160,19 @@ class AdvancedSearchPage extends StatelessWidget {
           subtitle: Text(
             '${candidate.skills ?? 'N/A'} - ${candidate.city ?? 'Anywhere'}',
           ),
-          trailing: IconButton(
-            icon: candidate.bookmarked
-                ? const Icon(Icons.bookmark)
-                : const Icon(Icons.bookmark_add_outlined),
-            color: Colors.blue,
-            onPressed: () {
-              // Dispatch bookmark event
-              context.read<CompanyBloc>().add(
-                AddCandidateBookmarkEvent(candidate.id),
-              );
+          // trailing: IconButton(
+          //   icon: candidate.bookmarked
+          //       ? const Icon(Icons.bookmark)
+          //       : const Icon(Icons.bookmark_add_outlined),
+          //   color: Colors.blue,
+          //   onPressed: () {
+          //     // Dispatch bookmark event
+          //     context.read<CompanyBloc>().add(
+          //       AddCandidateBookmarkEvent(candidate.id),
+          //     );
             
-            },
-          ),
+          //   },
+          // ),
           onTap: () {
             // Navigate to detailed candidate view
           },
