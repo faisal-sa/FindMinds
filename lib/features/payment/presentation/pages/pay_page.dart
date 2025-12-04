@@ -34,7 +34,10 @@ class PayPage extends StatelessWidget {
               final response = state.response!;
               //==================  Payment success  ===================//
               if (response.isPaid) {
+                // 1. Show Success Message
                 AppSnackbar.success(context, 'Payment Successful');
+
+                context.go('/company/search');
               } else {
                 AppSnackbar.warning(
                   context,
@@ -60,36 +63,26 @@ class PayPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               //==================  Payment amount  ===================//
-              //
-              //
               payTitleWidget('199 SAR'), // Edit The Amount Here
               const SizedBox(height: 16),
+
               //==================  Credit Card Widget  ===================//
-              //
-              //
               creditCardWidget(context),
-              //
-              //
-              //
               const SizedBox(height: 16),
+
               //==================  Card Details  ===================//
-              //
-              //
               buildSectionTitle('Card Details'),
+
               //==================  Card Input Form  ===================//
-              //
-              //
               const CardInputForm(),
               const SizedBox(height: 32),
+
               //==================  BlocBuilder for Pay Now Button  ===================//
-              //
-              //
               BlocBuilder<PaymentCubit, PaymentState>(
                 builder: (context, state) {
                   final isLoading = state.status == PaymentStatus.loading;
+
                   //==================  Pay Now Button  ===================//
-                  //
-                  //
                   return ElevatedButton(
                     onPressed: isLoading
                         ? null
@@ -102,8 +95,6 @@ class PayPage extends StatelessWidget {
                     ),
                     child: isLoading
                         //==================  Pay Now Button Loading  ===================//
-                        //
-                        //
                         ? const SizedBox(
                             height: 20,
                             width: 20,
@@ -115,8 +106,6 @@ class PayPage extends StatelessWidget {
                             ),
                           )
                         // ==================  Pay Now Button Text  =================== //
-                        //
-                        //
                         : const Text(
                             'Pay Now',
                             style: TextStyle(

@@ -7,8 +7,66 @@ import 'package:graduation_project/features/company_portal/domain/entities/compa
 import 'package:graduation_project/core/storage/company_local_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CompleteCompanyProfilePage extends StatelessWidget {
+// ✅ Change to StatefulWidget
+class CompleteCompanyProfilePage extends StatefulWidget {
   const CompleteCompanyProfilePage({super.key});
+
+  @override
+  State<CompleteCompanyProfilePage> createState() =>
+      _CompleteCompanyProfilePageState();
+}
+
+class _CompleteCompanyProfilePageState
+    extends State<CompleteCompanyProfilePage> {
+  final _formKey = GlobalKey<FormState>();
+
+  // ✅ Define Controllers here (State keeps them alive)
+  late TextEditingController nameController;
+  late TextEditingController industryController;
+  late TextEditingController cityController;
+  late TextEditingController descController;
+  late TextEditingController websiteController;
+  late TextEditingController addressController;
+  late TextEditingController emailController;
+  late TextEditingController phoneController;
+
+  String? selectedSize;
+
+  final sizeOptions = [
+    '1-50 employees',
+    '51-200 employees',
+    '201-1000 employees',
+    '1000+ employees',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // ✅ Initialize Controllers once
+    // Removed "a" text for production readiness
+    nameController = TextEditingController();
+    industryController = TextEditingController();
+    cityController = TextEditingController();
+    descController = TextEditingController();
+    websiteController = TextEditingController();
+    addressController = TextEditingController();
+    emailController = TextEditingController();
+    phoneController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // ✅ Dispose to prevent memory leaks
+    nameController.dispose();
+    industryController.dispose();
+    cityController.dispose();
+    descController.dispose();
+    websiteController.dispose();
+    addressController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
   Widget _buildVerticalSpace({double height = 16.0}) =>
       SizedBox(height: height);
@@ -27,75 +85,58 @@ class CompleteCompanyProfilePage extends StatelessWidget {
     );
   }
 
+  void _saveProfile(CompanyEntity company) {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final updated = company.copyWith(
+        companyName: nameController.text.trim(),
+        industry: industryController.text.trim(),
+        city: cityController.text.trim(),
+        description: descController.text.trim(),
+        website: websiteController.text.trim(),
+        address: addressController.text.trim(),
+        email: emailController.text.trim(),
+        phone: phoneController.text.trim(),
+        companySize: selectedSize ?? company.companySize,
+        updatedAt: DateTime.now(),
+      );
+
+      context.read<CompanyBloc>().add(
+        UpdateCompanyProfileEvent(company: updated),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final nameController = TextEditingController(text: "a");
-    final industryController = TextEditingController(text: "a");
-    final cityController = TextEditingController(text: "a");
-    final descController = TextEditingController(text: "a");
-    final websiteController = TextEditingController();
-    final addressController = TextEditingController();
-    final emailController = TextEditingController();
-    final phoneController = TextEditingController();
-
-    final sizeOptions = [
-      '1-50 employees',
-      '51-200 employees',
-      '201-1000 employees',
-      '1000+ employees',
-    ];
-    String? selectedSize;
-
-    // The logic remains untouched
-    void saveProfile(CompanyEntity company) {
-      if (formKey.currentState!.validate()) {
-        // Ensure DropdownButtonFormField updates the selectedSize value
-        formKey.currentState!.save();
-
-        final updated = company.copyWith(
-          companyName: nameController.text,
-          industry: industryController.text,
-          city: cityController.text,
-          description: descController.text,
-          website: websiteController.text.isNotEmpty
-              ? websiteController.text
-              : company.website,
-          address: addressController.text.isNotEmpty
-              ? addressController.text
-              : company.address,
-          email: emailController.text.isNotEmpty
-              ? emailController.text
-              : company.email,
-          phone: phoneController.text.isNotEmpty
-              ? phoneController.text
-              : company.phone,
-          companySize: selectedSize ?? company.companySize,
-          updatedAt: DateTime.now(),
-        );
-
-        context.read<CompanyBloc>().add(
-          UpdateCompanyProfileEvent(company: updated),
-        );
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Complete Company Profile'),
+        // Using safe fallback for colors if theme is null
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
       ),
       body: BlocConsumer<CompanyBloc, CompanyState>(
         listener: (context, state) async {
           if (state is CompanyLoaded) {
-            await CompanyLocalStorage.saveCompanyId(
-              serviceLocator.get<SupabaseClient>().auth.currentUser!.id,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Profile saved successfully!')),
-            );
-            context.go('/company/payment');
+            // ✅ Save ID locally for future use
+            final userId = serviceLocator
+                .get<SupabaseClient>()
+                .auth
+                .currentUser
+                ?.id;
+            if (userId != null) {
+              await CompanyLocalStorage.saveCompanyId(userId);
+            }
+
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Profile saved successfully!')),
+              );
+              // ✅ Navigate to Payment
+              context.go('/company/payment');
+            }
           } else if (state is CompanyError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -106,44 +147,29 @@ class CompleteCompanyProfilePage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is CompanyLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+          // Use current company data if available, or create a skeleton
+          final company = (state is CompanyLoaded)
+              ? state.company
+              : CompanyEntity(
+                  companyName: '',
+                  industry: '',
+                  description: '',
+                  city: '',
+                  logoUrl: "",
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                );
 
-          CompanyEntity company;
-          if (state is CompanyLoaded) {
-            company = state.company;
-          } else {
-            company = CompanyEntity(
-              companyName: '',
-              industry: '',
-              description: '',
-              city: '',
-              logoUrl: "x",
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now(),
-            );
-          }
+          // Note: If you want to PRE-FILL data from the DB, you should do it
+          // inside `initState` or a `BlocListener`, not here in `build`,
+          // otherwise you will overwrite what the user is typing.
 
-          // // Fill fields with existing values (unchanged logic)
-          // nameController.text = company.companyName;
-          // industryController.text = company.industry;
-          // cityController.text = company.city;
-          // descController.text = company.description;
-          // websiteController.text = company.website ?? '';
-          // addressController.text = company.address ?? '';
-          // emailController.text = company.email ?? '';
-          // phoneController.text = company.phone ?? '';
-          selectedSize = company.companySize;
-
-          // UI Refactoring begins here
           return SafeArea(
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: ListView(
                 padding: const EdgeInsets.all(24.0),
                 children: [
-                  // --- Section 1: Core Company Information ---
                   const Text(
                     'Step 1: Core Company Information',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -191,12 +217,14 @@ class CompleteCompanyProfilePage extends StatelessWidget {
                       border: OutlineInputBorder(),
                       hintText: 'Select Company Size',
                     ),
-                    initialValue: selectedSize,
+                    value: selectedSize, // Use the state variable
                     items: sizeOptions
                         .map((s) => DropdownMenuItem(value: s, child: Text(s)))
                         .toList(),
                     onChanged: (v) {
-                      selectedSize = v;
+                      setState(() {
+                        selectedSize = v;
+                      });
                     },
                     onSaved: (v) => selectedSize = v,
                   ),
@@ -216,7 +244,6 @@ class CompleteCompanyProfilePage extends StatelessWidget {
                   ),
                   _buildVerticalSpace(height: 30),
 
-                  // --- Section 2: Contact Information ---
                   const Text(
                     'Step 2: Contact Details (Optional)',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -266,10 +293,11 @@ class CompleteCompanyProfilePage extends StatelessWidget {
                   ),
                   _buildVerticalSpace(height: 40),
 
-                  // --- Save Button ---
                   Center(
                     child: ElevatedButton(
-                      onPressed: () => saveProfile(company),
+                      onPressed: state is CompanyLoading
+                          ? null // Disable button while loading
+                          : () => _saveProfile(company),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 40,
@@ -296,7 +324,7 @@ class CompleteCompanyProfilePage extends StatelessWidget {
                             ),
                     ),
                   ),
-                  _buildVerticalSpace(height: 20), // Final space at the bottom
+                  _buildVerticalSpace(height: 20),
                 ],
               ),
             ),
