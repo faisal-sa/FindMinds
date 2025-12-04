@@ -29,8 +29,13 @@ import '../../features/auth/domain/usecases/verify_otp.dart' as _i975;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
 import '../../features/company_portal/data/data_sources/company_portal_data_source.dart'
     as _i252;
+<<<<<<< HEAD
 import '../../features/company_portal/data/repositories/company_repository_impl.dart'
     as _i571;
+=======
+import '../../features/company_portal/data/repositories/company_portal_repository_impl.dart'
+    as _i624;
+>>>>>>> abbass
 import '../../features/company_portal/domain/repositories/company_portal_repository.dart'
     as _i786;
 import '../../features/company_portal/domain/usecases/add_candidate_bookmark.dart'
@@ -47,6 +52,8 @@ import '../../features/company_portal/domain/usecases/search_candidates.dart'
     as _i754;
 import '../../features/company_portal/domain/usecases/update_company_profile.dart'
     as _i923;
+import '../../features/company_portal/domain/usecases/verify_company_qr.dart'
+    as _i742;
 import '../../features/company_portal/presentation/blocs/bloc/company_bloc.dart'
     as _i401;
 import '../../features/individuals/features/about_me/data/datasources/about_me_remote_data_source.dart'
@@ -162,6 +169,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.supabaseClient,
       preResolve: true,
     );
+<<<<<<< HEAD
     await gh.factoryAsync<_i460.SharedPreferences>(
       () => registerModule.prefs,
       preResolve: true,
@@ -199,10 +207,16 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i250.SaveAboutMeUseCase>(
       () => _i250.SaveAboutMeUseCase(gh<_i542.AboutMeRepository>()),
+=======
+    gh.factory<_i36.ProfileCubit>(() => _i36.ProfileCubit());
+    gh.lazySingleton<_i252.CompanyRemoteDataSource>(
+      () => _i252.CompanyRemoteDataSource(gh<_i454.SupabaseClient>()),
+>>>>>>> abbass
     );
     gh.lazySingleton<_i161.AuthRemoteDataSource>(
       () => _i161.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+<<<<<<< HEAD
     gh.lazySingleton<_i843.EducationRepository>(
       () =>
           _i999.EducationRepositoryImpl(gh<_i380.EducationRemoteDataSource>()),
@@ -298,6 +312,19 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i476.UpdateJobPreferencesUseCase(
         gh<_i248.JobPreferencesRepository>(),
       ),
+=======
+    gh.factory<_i786.CompanyRepository>(
+      () => _i624.CompanyRepositoryImpl(gh<_i252.CompanyRemoteDataSource>()),
+    );
+    gh.lazySingleton<_i787.AuthRepository>(
+      () => _i153.AuthRepositoryImpl(gh<_i161.AuthRemoteDataSource>()),
+    );
+    gh.factory<_i468.RegisterCompany>(
+      () => _i468.RegisterCompany(gh<_i786.CompanyRepository>()),
+    );
+    gh.factory<_i742.VerifyCompanyQR>(
+      () => _i742.VerifyCompanyQR(gh<_i786.CompanyRepository>()),
+>>>>>>> abbass
     );
     gh.factory<_i533.AddCandidateBookmark>(
       () => _i533.AddCandidateBookmark(gh<_i786.CompanyRepository>()),
@@ -311,9 +338,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i303.GetCompanyProfile>(
       () => _i303.GetCompanyProfile(gh<_i786.CompanyRepository>()),
     );
+<<<<<<< HEAD
     gh.factory<_i468.RegisterCompany>(
       () => _i468.RegisterCompany(gh<_i786.CompanyRepository>()),
     );
+=======
+>>>>>>> abbass
     gh.factory<_i754.SearchCandidates>(
       () => _i754.SearchCandidates(gh<_i786.CompanyRepository>()),
     );
@@ -329,6 +359,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i831.GetCompanyBookmarks>(),
         gh<_i528.CheckCompanyStatus>(),
         gh<_i468.RegisterCompany>(),
+<<<<<<< HEAD
       ),
     );
     gh.lazySingleton<_i432.ProcessPaymentUseCase>(
@@ -377,6 +408,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i56.UpdateWorkExperienceUseCase>(),
       ),
     );
+=======
+        gh<_i742.VerifyCompanyQR>(),
+      ),
+    );
+>>>>>>> abbass
     gh.factory<_i111.GetCurrentUser>(
       () => _i111.GetCurrentUser(gh<_i787.AuthRepository>()),
     );

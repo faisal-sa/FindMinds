@@ -20,6 +20,9 @@ class UnknownFailure extends Failure {
   const UnknownFailure(super.message);
 }
 
+// -----------------------------------------------------
+// -----------------------------------------------------
+
 class NotFoundFailure extends Failure {
   const NotFoundFailure(super.message);
 }

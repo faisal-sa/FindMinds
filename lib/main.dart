@@ -9,12 +9,12 @@ import 'package:graduation_project/core/theme/theme.dart';
 import 'package:graduation_project/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project/firebase_options.dart';
 
-// final model = FirebaseAI.googleAI().generativeModel(
-//   model: 'gemini-2.5-flash-lite',
-// );
+final model = FirebaseAI.googleAI().generativeModel(
+  model: 'gemini-2.5-flash-lite',
+);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await configureDependencies();
   runApp(const MainApp());
 }

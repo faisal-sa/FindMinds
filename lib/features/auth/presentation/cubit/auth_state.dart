@@ -15,7 +15,14 @@ class AuthLoading extends AuthState {}
 class AuthAuthenticated extends AuthState {
   final User user;
   final String? role;
-  const AuthAuthenticated(this.user, {this.role});
+  final String userId; // <--- FIX: Added userId getter
+
+  AuthAuthenticated(this.user, {this.role})
+    // FIX: Initialize userId using the User entity's ID
+    : userId = user.id;
+
+  @override
+  List<Object?> get props => [user, role, userId];
 }
 
 class AuthUnauthenticated extends AuthState {}
