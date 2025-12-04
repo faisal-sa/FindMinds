@@ -33,7 +33,11 @@ class _SignupPageState extends State<SignupPage> {
         if (state is AuthAuthenticated) {
           if (state.role == 'Company') {
 <<<<<<< HEAD
+<<<<<<< HEAD
             context.go('/company');
+=======
+            context.go('/company/onboarding-router');
+>>>>>>> abbass
 =======
             context.go('/company/onboarding-router');
 >>>>>>> abbass

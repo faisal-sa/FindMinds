@@ -251,6 +251,7 @@ final GoRouter router = GoRouter(
         // 4a. PROFILE COMPLETION (Mandatory) - First step after login
         GoRoute(
 <<<<<<< HEAD
+<<<<<<< HEAD
           path: 'complete-profile',
           name: 'company-complete-profile',
           builder: (context, state) => CompleteCompanyProfilePage(),
@@ -285,6 +286,8 @@ final GoRouter router = GoRouter(
             ),
           ],
 =======
+=======
+>>>>>>> abbass
           path: 'search-results',
           name: 'company-search-results',
           builder: (context, state) {
