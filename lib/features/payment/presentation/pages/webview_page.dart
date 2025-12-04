@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:graduation_project/core/exports/app_exports.dart';
+=======
+>>>>>>> origin/azoz
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebViewPage extends StatefulWidget {
@@ -23,6 +26,7 @@ class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
   void _initializeWebView() {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+<<<<<<< HEAD
       ..setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) {
@@ -44,6 +48,8 @@ class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
           },
         ),
       )
+=======
+>>>>>>> origin/azoz
       ..loadRequest(Uri.parse(widget.url));
   }
 

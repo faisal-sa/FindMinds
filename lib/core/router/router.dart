@@ -15,6 +15,13 @@ import 'package:graduation_project/features/company_portal/presentation/screens/
 import 'package:graduation_project/features/company_portal/presentation/screens/complete_company_profile_page.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/payment_page.dart';
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> origin/azoz
 // keep it here for now
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -230,6 +237,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/company/payment',
       name: 'company-payment',
+<<<<<<< HEAD
       builder: (context, state) {
         return BlocProvider(
           create: (context) => getIt<PaymentCubit>(),
@@ -238,6 +246,12 @@ final GoRouter router = GoRouter(
       },
     ),
 
+=======
+      builder: (context, state) => const PaymentPage(),
+    ),
+
+    // 4. MAIN FEATURE: Search Candidates (if all prerequisites are met)
+>>>>>>> origin/azoz
     GoRoute(
       path: '/company/search',
       name: 'company-search',
