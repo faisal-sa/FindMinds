@@ -149,15 +149,8 @@ import '../../features/individuals/features/work_experience/domain/usecases/get_
     as _i786;
 import '../../features/individuals/features/work_experience/domain/usecases/update_work_experience_usecase.dart'
     as _i56;
-<<<<<<< HEAD
 import '../../features/individuals/features/work_experience/presentation/cubit/work_experience_cubit.dart'
     as _i760;
-=======
-import '../../features/individuals/features/work_experience/presentation/cubit/form/work_experience_form_cubit.dart'
-    as _i381;
-import '../../features/individuals/features/work_experience/presentation/cubit/list/work_experience_list_cubit.dart'
-    as _i620;
->>>>>>> origin/payments_new
 import '../../features/payment/data/datasources/payment_remote_data_source.dart'
     as _i811;
 import '../../features/payment/data/repositories/payment_repository_impl.dart'
@@ -190,9 +183,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i252.CompanyRemoteDataSource>(
       () => _i252.CompanyRemoteDataSource(gh<_i454.SupabaseClient>()),
-    );
-    gh.lazySingleton<_i811.PaymentRemoteDataSource>(
-      () => _i811.PaymentRemoteDataSourceImpl(),
     );
     gh.lazySingleton<_i811.PaymentRemoteDataSource>(
       () => _i811.PaymentRemoteDataSourceImpl(),
@@ -276,15 +266,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i903.PaymentRepository>(
       () => _i265.PaymentRepositoryImpl(gh<_i903.PaymentRemoteDataSource>()),
     );
-<<<<<<< HEAD
     gh.factory<_i468.RegisterCompany>(
       () => _i468.RegisterCompany(gh<_i786.CompanyRepository>()),
     );
     gh.factory<_i742.VerifyCompanyQR>(
       () => _i742.VerifyCompanyQR(gh<_i786.CompanyRepository>()),
     );
-=======
->>>>>>> origin/payments_new
     gh.lazySingleton<_i965.AddEducationUseCase>(
       () => _i965.AddEducationUseCase(gh<_i843.EducationRepository>()),
     );
@@ -339,7 +326,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i248.JobPreferencesRepository>(),
       ),
     );
-<<<<<<< HEAD
     gh.lazySingleton<_i243.RemoveCandidateBookmark>(
       () => _i243.RemoveCandidateBookmark(gh<_i786.CompanyRepository>()),
     );
@@ -376,13 +362,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i742.VerifyCompanyQR>(),
         gh<_i243.RemoveCandidateBookmark>(),
       ),
-=======
-    gh.lazySingleton<_i432.ProcessPaymentUseCase>(
-      () => _i432.ProcessPaymentUseCase(gh<_i903.PaymentRepository>()),
     );
     gh.factory<_i550.CrInfoCubit>(
       () => _i550.CrInfoCubit(getCrInfo: gh<_i333.GetCrInfo>()),
->>>>>>> origin/payments_new
     );
     gh.factory<_i387.JobPreferencesCubit>(
       () => _i387.JobPreferencesCubit(
@@ -442,15 +424,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i513.PaymentCubit>(
       () => _i513.PaymentCubit(gh<_i903.ProcessPaymentUseCase>()),
-<<<<<<< HEAD
-=======
-    );
-    gh.factory<_i381.WorkExperienceFormCubit>(
-      () => _i381.WorkExperienceFormCubit(
-        gh<_i794.AddWorkExperienceUseCase>(),
-        gh<_i56.UpdateWorkExperienceUseCase>(),
-      ),
->>>>>>> origin/payments_new
     );
     gh.lazySingleton<_i961.SaveBasicInfoUseCase>(
       () => _i961.SaveBasicInfoUseCase(gh<_i591.BasicInfoRepository>()),

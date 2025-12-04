@@ -135,7 +135,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
                 ),
 
                 const Gap(24),
-<<<<<<< HEAD
                 _buildLabel('Employment Type'),
                 _buildSelectionChips(
                   options: _availableEmpTypes,
@@ -145,18 +144,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
                         ? _employmentTypes.remove(val)
                         : _employmentTypes.add(val);
                   }),
-=======
-                _buildSectionHeader('Current Work Status'),
-                DropdownButtonFormField<String>(
-                  initialValue: _currentWorkStatus,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  items: _workStatuses
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                      .toList(),
-                  onChanged: (val) => setState(() => _currentWorkStatus = val),
->>>>>>> origin/payments_new
                 ),
 
                 const Gap(24),
