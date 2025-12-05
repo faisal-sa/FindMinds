@@ -84,7 +84,7 @@ class _SignupPageState extends State<SignupPage> {
                               borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -110,7 +110,7 @@ class _SignupPageState extends State<SignupPage> {
                               borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.black),
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -136,7 +136,7 @@ class _SignupPageState extends State<SignupPage> {
                               borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.black),
                           obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -162,8 +162,9 @@ class _SignupPageState extends State<SignupPage> {
                               borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
-                          style: const TextStyle(color: Colors.white),
-                          dropdownColor: const Color(0xFF1a1a1a),
+                          style: const TextStyle(color: Colors.black),
+
+                          dropdownColor: Colors.white,
                           items: const [
                             DropdownMenuItem(
                               value: 'Individual',

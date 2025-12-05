@@ -13,7 +13,6 @@ import 'package:graduation_project/features/company_portal/presentation/screens/
 import 'package:graduation_project/features/company_portal/presentation/screens/company_search_page.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/company_settings_page.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/complete_company_profile_page.dart';
-import 'package:graduation_project/features/company_portal/presentation/screens/payment_page.dart';
 
 // keep it here for now
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
