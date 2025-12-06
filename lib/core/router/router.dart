@@ -1,5 +1,6 @@
 import 'package:graduation_project/core/exports/app_exports.dart';
 import 'package:graduation_project/features/CRinfo/presentation/cubit/cr_info_cubit.dart';
+import 'package:graduation_project/features/individuals/AI_quiz/pages/ai_skill_check_page.dart';
 import 'package:graduation_project/features/individuals/match_strength/cubit/match_strength_cubit.dart';
 import 'package:graduation_project/features/individuals/match_strength/pages/match_strength_page.dart';
 
@@ -93,21 +94,27 @@ final GoRouter router = GoRouter(
                       'match-strength', // route will be /insights/match-strength
                   parentNavigatorKey: _rootNavigatorKey, // Hides bottom navbar
                   builder: (context, state) {
-                    // 1. Get the UserCubit
                     final userCubit = serviceLocator.get<UserCubit>();
                     final currentUser = userCubit.state.user;
 
-                    // 2. Create the MatchStrengthCubit and trigger logic
                     return BlocProvider(
                       create: (context) {
                         final cubit = MatchStrengthCubit();
-                        // Trigger analysis with current user data
                         cubit.analyzeProfile(currentUser);
                         return cubit;
                       },
-                      // 3. Pass the job title explicitly to the page
                       child: MatchStrengthPage(jobTitle: currentUser.jobTitle),
                     );
+                  },
+                ),
+                GoRoute(
+                  path: 'ai-skill-check',
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) {
+                    final userCubit = serviceLocator.get<UserCubit>();
+                    final currentUser = userCubit.state.user;
+
+                    return AiSkillCheckPage(user: currentUser);
                   },
                 ),
               ],

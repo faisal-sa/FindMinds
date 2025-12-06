@@ -113,6 +113,9 @@ class InsightsTab extends StatelessWidget {
                     Expanded(
                       child: isComplete
                           ? FeatureCard(
+                              onTap: () {
+                                context.go('/insights/ai-skill-check');
+                              },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
