@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/theme/theme.dart';
+import 'package:graduation_project/features/individuals/engagement/presentation/widgets/engagement_section.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/widgets/feature_card.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/widgets/locked_feature_card.dart';
 import 'package:graduation_project/features/shared/user_cubit.dart';
@@ -195,145 +196,8 @@ class InsightsTab extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 24),
-                const Text(
-                  "Recent Activity",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 12),
+                EngagementSection(isProfileComplete: isComplete),
 
-                if (isComplete)
-                  Column(
-                    children: [
-                      _buildAnalyticsSection(),
-                      const SizedBox(height: 16),
-
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.grey.shade200),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Profile Traffic",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.bar_chart,
-                                  color: AppColors.bluePrimary,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            // Visual placeholder for a Graph
-                            SizedBox(
-                              height: 100,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: List.generate(7, (index) {
-                                  // Generate random heights for a fake bar chart look
-                                  final height = [
-                                    40.0,
-                                    60.0,
-                                    30.0,
-                                    80.0,
-                                    50.0,
-                                    90.0,
-                                    65.0,
-                                  ][index];
-                                  return Container(
-                                    width: 30, // Adjust based on screen width
-                                    height: height,
-                                    decoration: BoxDecoration(
-                                      color: index == 5
-                                          ? AppColors.bluePrimary
-                                          : Colors
-                                                .grey
-                                                .shade200, // Highlight one bar
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Mon",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  "Tue",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  "Wed",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  "Thu",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  "Fri",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  "Sat",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  "Sun",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                  
-                else
-                  const LockedFeatureCard(
-                    icon: Icons.trending_up,
-                    title: "Advanced Analytics",
-                    unlockText: "Upload resume to track engagement.",
-                  ),
               ],
             ),
           );
@@ -583,76 +447,6 @@ class InsightsTab extends StatelessWidget {
           ],
         ],
       ),
-    );
-  }
-
-  Widget _buildAnalyticsSection() {
-    return Row(
-      children: [
-        // Card 1: Appeared in Searches
-        Expanded(
-          child: FeatureCard(
-            child: _buildStatContent(
-              label: "Appeared in Searches",
-              count: "342", // Replace with real data
-              icon: Icons.person_search_rounded,
-            ),
-          ),
-        ),
-        const SizedBox(width: 16), // Spacing between the two cards
-        // Card 2: Profile Views
-        Expanded(
-          child: FeatureCard(
-            child: _buildStatContent(
-              label: "Profile Views",
-              count: "86", // Replace with real data
-              icon: Icons.visibility_rounded,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Helper widget to keep the internals of the two cards identical
-  Widget _buildStatContent({
-    required String label,
-    required String count,
-    required IconData icon,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Icon with a light background circle
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: AppColors.bluePrimary.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: AppColors.bluePrimary, size: 24,
-          ),
-        ),
-        const SizedBox(height: 20),
-        // The Big Number
-        Text(
-          count,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 28,
-            color: Colors.black87,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            color: AppColors.textSub,
-            height: 1.4,
-          ),
-        ),
-      ],
     );
   }
 }

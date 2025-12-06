@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/features/company_portal/presentation/blocs/bloc/company_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/entities/candidate_entity.dart';
 
 class CandidateResultsPage extends StatelessWidget {
@@ -276,9 +278,9 @@ class CandidateResultsPage extends StatelessWidget {
     CandidateEntity c,
     Color primaryColor,
     bool isBookmarked,
-  ) {
+  ) async {
     final bool hasAvatar = c.avatarUrl != null && c.avatarUrl!.isNotEmpty;
-
+    logProfileView(c.id);
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -400,5 +402,21 @@ class CandidateResultsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+Future<void> logProfileView(String candidateId) async {
+  // Don't log if viewing your own profile
+  final supabase = serviceLocator.get<SupabaseClient>();
+  if (candidateId == supabase.auth.currentUser?.id) return;
+
+  try {
+    await supabase.rpc(
+      'track_profile_view',
+      params: {'target_user_id': candidateId},
+    );
+  } catch (e) {
+    print("Error logging view: $e");
   }
 }

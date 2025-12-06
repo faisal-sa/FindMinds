@@ -145,7 +145,24 @@ class CompanyRemoteDataSource {
       }
 
       final result = await query;
-      return List<Map<String, dynamic>>.from(result);
+      final data = List<Map<String, dynamic>>.from(result);
+      if (data.isNotEmpty) {
+        final List<String> foundIds = data
+            .map((user) => user['id'] as String)
+            .toList();
+
+        // Fire and forget (don't await this, don't block the UI)
+        supabase
+            .rpc(
+              'track_search_appearances',
+              params: {'candidate_ids': foundIds},
+            )
+            .catchError((e) {
+              // Silently fail logging to not disrupt user experience
+              print('Error tracking search stats: $e');
+            });
+      }
+      return data;
     });
   }
 
