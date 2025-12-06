@@ -1,5 +1,7 @@
 import 'package:graduation_project/core/exports/app_exports.dart';
 import 'package:graduation_project/features/CRinfo/presentation/cubit/cr_info_cubit.dart';
+import 'package:graduation_project/features/individuals/match_strength/cubit/match_strength_cubit.dart';
+import 'package:graduation_project/features/individuals/match_strength/pages/match_strength_page.dart';
 
 import 'package:graduation_project/features/payment/presentation/cubit/payment_cubit.dart';
 import 'package:graduation_project/features/payment/presentation/pages/pay_page.dart';
@@ -84,6 +86,31 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/insights',
               builder: (context, state) => const InsightsTab(),
+              routes: [
+                // --- ADD THIS ROUTE ---
+                GoRoute(
+                  path:
+                      'match-strength', // route will be /insights/match-strength
+                  parentNavigatorKey: _rootNavigatorKey, // Hides bottom navbar
+                  builder: (context, state) {
+                    // 1. Get the UserCubit
+                    final userCubit = serviceLocator.get<UserCubit>();
+                    final currentUser = userCubit.state.user;
+
+                    // 2. Create the MatchStrengthCubit and trigger logic
+                    return BlocProvider(
+                      create: (context) {
+                        final cubit = MatchStrengthCubit();
+                        // Trigger analysis with current user data
+                        cubit.analyzeProfile(currentUser);
+                        return cubit;
+                      },
+                      // 3. Pass the job title explicitly to the page
+                      child: MatchStrengthPage(jobTitle: currentUser.jobTitle),
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

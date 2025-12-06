@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/theme/theme.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/widgets/feature_card.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/widgets/locked_feature_card.dart';
@@ -53,6 +54,10 @@ class InsightsTab extends StatelessWidget {
                     Expanded(
                       child: isComplete
                           ? FeatureCard(
+                              onTap: () {
+                                // Navigate to the new page
+                                context.go('/insights/match-strength');
+                              },
                               child: Column(
                                 children: [
                                   const Icon(
