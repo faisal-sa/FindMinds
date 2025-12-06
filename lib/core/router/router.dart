@@ -88,14 +88,14 @@ final GoRouter router = GoRouter(
           ],
         ),
 
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/chats',
-              builder: (context, state) => const ChatsTab(),
-            ),
-          ],
-        ),
+        // StatefulShellBranch(
+        //   routes: [
+        //     GoRoute(
+        //       path: '/chats',
+        //       builder: (context, state) => const ChatsTab(),
+        //     ),
+        //   ],
+        // ),
 
         StatefulShellBranch(
           routes: [
@@ -152,9 +152,18 @@ final GoRouter router = GoRouter(
                   path: 'experience',
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {
+                    final userCubit = serviceLocator.get<UserCubit>();
+                    final initialExperiences =
+                        userCubit.state.user.workExperiences;
+
                     return BlocProvider(
-                      create: (context) =>
-                          serviceLocator.get<WorkExperienceCubit>(),
+                      create: (context) {
+                        final cubit = serviceLocator.get<WorkExperienceCubit>();
+
+                        cubit.initialize(initialExperiences);
+
+                        return cubit;
+                      },
                       child: const WorkExperienceListPage(),
                     );
                   },

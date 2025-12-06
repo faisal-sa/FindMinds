@@ -46,10 +46,10 @@ class IndividualsHomePage extends StatelessWidget {
               icon: Icon(Icons.bar_chart),
               label: 'Insights',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble_outline),
-              label: 'Chats',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.chat_bubble_outline),
+            //   label: 'Chats',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
               label: 'Profile',

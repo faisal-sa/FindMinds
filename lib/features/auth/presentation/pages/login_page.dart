@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:graduation_project/core/di/service_locator.dart';
+import 'package:graduation_project/features/shared/user_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
@@ -28,7 +29,9 @@ class LoginPage extends StatelessWidget {
               "Company") {
             context.go('/company/onboarding-router');
           } else {
-            context.go('/insights'); // Individual user flow
+                serviceLocator.get<UserCubit>().fetchUserProfile();
+
+            context.go('/insights'); 
           }
         }
       },

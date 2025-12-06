@@ -22,6 +22,19 @@ class WorkExperienceCubit extends Cubit<WorkExperienceState> {
     this._updateWorkExperienceUseCase,
   ) : super(const WorkExperienceState());
 
+void initialize(List<WorkExperience> initialExperiences) {
+    if (state.status == ListStatus.initial) {
+      final sortedList = List<WorkExperience>.from(initialExperiences)
+        ..sort((a, b) => b.startDate.compareTo(a.startDate));
+
+      emit(
+        WorkExperienceState(
+          status: ListStatus.success,
+          experiences: sortedList,
+        ),
+      );
+    }
+  }
   Future<void> loadExperiences() async {
     emit(const WorkExperienceState(status: ListStatus.loading));
     try {

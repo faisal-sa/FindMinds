@@ -13,12 +13,14 @@ import 'package:injectable/injectable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 @LazySingleton()
 class UserCubit extends Cubit<UserState> {
   final SharedPreferences _prefs;
+  final SupabaseClient _supabase;
   static const String _storageKey = 'user_entity_data';
-  UserCubit(this._prefs) : super(const UserState()) {
+  UserCubit(this._prefs, this._supabase) : super(const UserState()) {
     _loadUserFromStorage();
   }
 
@@ -40,6 +42,102 @@ class UserCubit extends Cubit<UserState> {
     if (change.nextState.user != change.currentState.user) {
       _saveUserToStorage(change.nextState.user);
     }
+  }
+
+  Future<void> fetchUserProfile() async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) {
+        print("UserCubit: No logged-in user found.");
+        return;
+      }
+
+      // 1. Fetch Profile with Relations
+      // We use the foreign key relationships to fetch everything in one query.
+      // Ensure your Supabase Foreign Keys match the names used here.
+      print("fetching now");
+      final response = await _supabase
+          .from('profiles')
+          .select('''
+        *,
+        educations (*),
+        work_experiences (*)
+      ''')
+          .eq('id', userId)
+          .single();
+
+      final fetchedUser = _mapSupabaseResponseToEntity(response);
+      print("Your entity: $fetchedUser");
+      emit(state.copyWith(user: fetchedUser));
+      _saveUserToStorage(fetchedUser);
+    } catch (e) {
+      print("Error fetching user profile from Supabase: $e");
+      // Optional: emit(state.copyWith(error: e.toString()));
+    }
+  }
+
+  /// Helper to map Supabase snake_case JSON to UserEntity
+  UserEntity _mapSupabaseResponseToEntity(Map<String, dynamic> data) {
+    // Map Educations (using your existing EducationModel logic if available, or manual map)
+    final educationList =
+        (data['educations'] as List<dynamic>?)
+            ?.map((e) => _mapSupabaseEducation(e))
+            .toList() ??
+        [];
+
+    // Map Work Experiences
+    final workList =
+        (data['work_experiences'] as List<dynamic>?)
+            ?.map((e) => _mapSupabaseWorkExperience(e))
+            .toList() ??
+        [];
+
+    return UserEntity(
+      firstName: data['first_name'] ?? '',
+      lastName: data['last_name'] ?? '',
+      jobTitle: data['job_title'] ?? '',
+      phoneNumber: data['phone_number'] ?? '',
+      email: data['email'] ?? '',
+      location: data['location'] ?? '',
+      summary:
+          data['about_me'] ?? '', // DB uses 'about_me', Entity uses 'summary'
+      avatarUrl: data['avatar_url'],
+      videoUrl: data['intro_video_url'],
+      educations: educationList,
+      workExperiences: workList,
+    );
+  }
+
+  /// Helper for WorkExperience (Snake Case DB -> Camel Case Entity)
+  WorkExperience _mapSupabaseWorkExperience(Map<String, dynamic> map) {
+    return WorkExperience(
+      id: map['id']?.toString() ?? '',
+      jobTitle: map['job_title'] ?? '',
+      companyName: map['company_name'] ?? '',
+      employmentType: map['employment_type'] ?? '',
+      location: map['location'] ?? '',
+      responsibilities: List<String>.from(map['responsibilities'] ?? []),
+      startDate: DateTime.parse(map['start_date']),
+      endDate: map['end_date'] != null ? DateTime.parse(map['end_date']) : null,
+      isCurrentlyWorking: map['is_currently_working'] ?? false,
+    );
+  }
+
+  /// Helper for Education (Snake Case DB -> Camel Case Entity)
+  /// Note: If you use EducationModel.fromJson, ensure it matches DB keys exactly.
+  Education _mapSupabaseEducation(Map<String, dynamic> map) {
+    return Education(
+      id: map['id']?.toString() ?? '',
+      degreeType: map['degree_type'] ?? '',
+      institutionName: map['institution_name'] ?? '',
+      fieldOfStudy: map['field_of_study'] ?? '',
+      startDate: DateTime.parse(map['start_date']),
+      endDate: DateTime.parse(map['end_date']),
+      gpa: map['gpa']?.toString(), // Handle potential numeric types from DB
+      activities: List<String>.from(map['activities'] ?? []),
+      graduationCertificateUrl: map['graduation_certificate_url'],
+      academicRecordUrl: map['academic_record_url'],
+    );
   }
 
   Future<void> _saveUserToStorage(UserEntity user) async {
