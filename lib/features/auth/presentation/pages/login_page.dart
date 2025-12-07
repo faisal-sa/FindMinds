@@ -20,6 +20,7 @@ class LoginPage extends StatelessWidget {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
+
         if (state is AuthAuthenticated) {
           if (serviceLocator
                   .get<SupabaseClient>()
@@ -29,8 +30,7 @@ class LoginPage extends StatelessWidget {
               "Company") {
             context.go('/company/onboarding-router');
           } else {
-                serviceLocator.get<UserCubit>().fetchUserProfile();
-
+            serviceLocator.get<UserCubit>().fetchUserProfile();
             context.go('/insights'); 
           }
         }

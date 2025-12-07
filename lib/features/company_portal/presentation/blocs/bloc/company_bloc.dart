@@ -176,19 +176,24 @@ class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
 
     final result = await _addCandidateBookmark(companyId, event.candidateId);
 
-    result.when((success) {}, (failure) {
-      updatedBookmarks.remove(event.candidateId);
+    result.when(
+      (success) {
+        emit(const CandidateBookmarkedSuccess());
+      },
+      (failure) {
+        updatedBookmarks.remove(event.candidateId);
 
-      emit(
-        CandidateResults(
-          currentState.candidates,
-          company: currentState.company,
-          bookmarkedIds: updatedBookmarks,
-        ),
-      );
+        emit(
+          CandidateResults(
+            currentState.candidates,
+            company: currentState.company,
+            bookmarkedIds: updatedBookmarks,
+          ),
+        );
 
-      emit(CompanyError(failure.message));
-    });
+        emit(CompanyError(failure.message));
+      },
+    );
   }
 
   Future<void> _onGetBookmarks(

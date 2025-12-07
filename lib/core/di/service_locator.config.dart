@@ -27,6 +27,18 @@ import '../../features/auth/domain/usecases/sign_out.dart' as _i568;
 import '../../features/auth/domain/usecases/sign_up.dart' as _i190;
 import '../../features/auth/domain/usecases/verify_otp.dart' as _i975;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
+import '../../features/candidate_details/data/data_sources/candidate_details_data_source.dart'
+    as _i149;
+import '../../features/candidate_details/data/repositories/candidate_details_repository_impl.dart'
+    as _i265;
+import '../../features/candidate_details/domain/repositories/candidate_details_repository.dart'
+    as _i309;
+import '../../features/candidate_details/domain/usecases/get_candidate_profile_usecase.dart'
+    as _i57;
+import '../../features/candidate_details/domain/usecases/unlock_candidate_usecase.dart'
+    as _i322;
+import '../../features/candidate_details/presentation/cubit/candidate_details_cubit.dart'
+    as _i1061;
 import '../../features/company_portal/data/data_sources/company_portal_data_source.dart'
     as _i252;
 import '../../features/company_portal/data/repositories/company_portal_repository_impl.dart'
@@ -178,8 +190,15 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
+    gh.lazySingleton<_i149.CandidateRemoteDataSource>(
+      () => _i149.CandidateRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i252.CompanyRemoteDataSource>(
       () => _i252.CompanyRemoteDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i309.CandidateRepository>(
+      () =>
+          _i265.CandidateRepositoryImpl(gh<_i149.CandidateRemoteDataSource>()),
     );
     gh.lazySingleton<_i811.PaymentRemoteDataSource>(
       () => _i811.PaymentRemoteDataSourceImpl(),
@@ -214,6 +233,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i161.AuthRemoteDataSource>(
       () => _i161.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i57.GetCandidateProfileUseCase>(
+      () => _i57.GetCandidateProfileUseCase(gh<_i309.CandidateRepository>()),
+    );
+    gh.factory<_i322.UnlockCandidateUseCase>(
+      () => _i322.UnlockCandidateUseCase(gh<_i309.CandidateRepository>()),
+    );
+    gh.factory<_i1061.CandidateProfileCubit>(
+      () => _i1061.CandidateProfileCubit(gh<_i309.CandidateRepository>()),
     );
     gh.lazySingleton<_i843.EducationRepository>(
       () =>

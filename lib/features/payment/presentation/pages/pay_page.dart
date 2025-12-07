@@ -20,40 +20,53 @@ class PayPage extends StatelessWidget {
 
       //==================  Body  ===================//
       body: BlocListener<PaymentCubit, PaymentState>(
-        listener: (context, state) {
+        // في ملف features/payment/presentation/pages/pay_page.dart
+
+        // ... داخل BlocListener
+        listener: (context, state) async {
+          // <-- أضف async هنا
           switch (state.status) {
             case PaymentStatus.requiresAuth:
-              //==================  Payment requires authentication  ===================//
               if (state.authUrl != null) {
-                context.push(
+                // 1. نذهب لصفحة الويب وننتظر النتيجة
+                final bool? webViewResult = await context.push<bool>(
                   '/payment-webview?url=${Uri.encodeComponent(state.authUrl!)}',
                 );
+
+                // 2. إذا عادت صفحة الويب بـ true، يعني أن المصادقة نجحت
+                if (webViewResult == true && context.mounted) {
+                  // نغلق صفحة الدفع ونعود لصفحة البروفايل بنجاح
+                  context.pop(true);
+                }
               }
               break;
+
             case PaymentStatus.success:
               final response = state.response!;
-              //==================  Payment success  ===================//
               if (response.isPaid) {
-                // 1. Show Success Message
                 AppSnackbar.success(context, 'Payment Successful');
 
-                context.go('/company/search');
+                // إذا كان الدفع مباشراً بدون 3DS
+                if (context.canPop()) {
+                  context.pop(true);
+                } else {
+                  context.go('/company/search');
+                }
               } else {
-                AppSnackbar.warning(
-                  context,
-                  'Payment Failed. Please try again.',
-                );
+                AppSnackbar.warning(context, 'Payment Failed');
               }
               break;
+
+            // ... بقية الحالات
+            case PaymentStatus.initial:
+              // TODO: Handle this case.
+              throw UnimplementedError();
+            case PaymentStatus.loading:
+              // TODO: Handle this case.
+              throw UnimplementedError();
             case PaymentStatus.failure:
-              //==================  Payment failed  ===================//
-              AppSnackbar.error(
-                context,
-                state.errorMessage ?? 'Payment failed',
-              );
-              break;
-            default:
-              break;
+              // TODO: Handle this case.
+              throw UnimplementedError();
           }
         },
         //==================  Main Widget  ===================//

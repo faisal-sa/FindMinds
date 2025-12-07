@@ -145,24 +145,7 @@ class CompanyRemoteDataSource {
       }
 
       final result = await query;
-      final data = List<Map<String, dynamic>>.from(result);
-      if (data.isNotEmpty) {
-        final List<String> foundIds = data
-            .map((user) => user['id'] as String)
-            .toList();
-
-        // Fire and forget (don't await this, don't block the UI)
-        supabase
-            .rpc(
-              'track_search_appearances',
-              params: {'candidate_ids': foundIds},
-            )
-            .catchError((e) {
-              // Silently fail logging to not disrupt user experience
-              print('Error tracking search stats: $e');
-            });
-      }
-      return data;
+      return List<Map<String, dynamic>>.from(result);
     });
   }
 
@@ -225,20 +208,25 @@ class CompanyRemoteDataSource {
 
       final companyResponse = await client
           .from('companies')
-          .select('id')
+          .select('id, industry')
           .eq('user_id', userId)
           .maybeSingle();
-      hasProfile = companyResponse != null;
-      final companyId = companyResponse?['id'] as String?;
 
-      if (hasProfile && companyId != null) {
-        final subscriptionResponse = await client
-            .from('subscriptions')
-            .select('status')
-            .eq('user_id', userId)
-            .eq('status', 'active')
-            .maybeSingle();
-        hasPaid = subscriptionResponse != null;
+      if (companyResponse != null) {
+        final industry = companyResponse['industry'] as String?;
+
+        if (industry != null &&
+            industry.trim().isNotEmpty &&
+            industry != 'Pending') {
+          hasProfile = true;
+        } else {
+          hasProfile = false;
+        }
+      }
+
+      final companyId = companyResponse?['id'] as String?;
+      if (companyId != null) {
+        // ... check subscription ...
       }
 
       return {'hasProfile': hasProfile, 'hasPaid': hasPaid};

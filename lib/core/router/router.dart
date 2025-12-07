@@ -1,5 +1,13 @@
 import 'package:graduation_project/core/exports/app_exports.dart';
 import 'package:graduation_project/features/CRinfo/presentation/cubit/cr_info_cubit.dart';
+import 'package:graduation_project/features/candidate_details/presentation/screens/candidate_profile_page.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/onboarding/company_onboarding_router_page.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/onboarding/company_qr_page.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/profile/company_bookmarks_page.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/profile/company_settings_page.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/profile/complete_company_profile_page.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/search/CandidateResultsPage.dart';
+import 'package:graduation_project/features/company_portal/presentation/screens/search/company_search_page.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/pages/ai_skill_check_page.dart';
 import 'package:graduation_project/features/individuals/match_strength/cubit/match_strength_cubit.dart';
 import 'package:graduation_project/features/individuals/match_strength/pages/match_strength_page.dart';
@@ -8,14 +16,7 @@ import 'package:graduation_project/features/payment/presentation/cubit/payment_c
 import 'package:graduation_project/features/payment/presentation/pages/pay_page.dart';
 import 'package:graduation_project/features/payment/presentation/pages/webview_page.dart';
 
-import 'package:graduation_project/features/company_portal/presentation/screens/CandidateResultsPage.dart';
-import 'package:graduation_project/features/company_portal/presentation/screens/company_bookmarks_page.dart';
-import 'package:graduation_project/features/company_portal/presentation/screens/company_onboarding_router_page.dart';
-import 'package:graduation_project/features/company_portal/presentation/screens/company_qr_page.dart';
 
-import 'package:graduation_project/features/company_portal/presentation/screens/company_search_page.dart';
-import 'package:graduation_project/features/company_portal/presentation/screens/company_settings_page.dart';
-import 'package:graduation_project/features/company_portal/presentation/screens/complete_company_profile_page.dart';
 
 // keep it here for now
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -301,6 +302,15 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
+          path: 'candidate-details/:id', // نمرر الـ ID في الرابط
+          name: 'candidate-details',
+          builder: (context, state) {
+            final candidateId = state.pathParameters['id']!;
+            // نستدعي الصفحة التي بنيناها في الخطوات السابقة
+            return CandidateProfilePage(candidateId: candidateId);
+          },
+        ),
+        GoRoute(
           path: 'bookmarks',
           name: 'company-bookmarks',
           builder: (context, state) => BlocProvider(
@@ -324,8 +334,5 @@ final GoRouter router = GoRouter(
         ),
       ],
     ),
-
-    //▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲ ROUTE END ▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼▲▼
-    //
   ],
 );

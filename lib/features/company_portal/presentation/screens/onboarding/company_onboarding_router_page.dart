@@ -38,9 +38,10 @@ class _CompanyOnboardingRouterPageState
   void _routeToNextStep(BuildContext context, CompanyStatusChecked state) {
     if (!state.hasProfile) {
       context.go('/company/complete-profile');
-    } else if (!state.hasPaid) {
-      context.go('/company/payment');
-    } else {
+    }
+    // }
+    // ---------------------------
+    else {
       context.go('/company/search');
     }
   }

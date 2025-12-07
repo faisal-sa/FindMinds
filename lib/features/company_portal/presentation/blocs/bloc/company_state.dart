@@ -79,3 +79,7 @@ class CompanyStatusChecked extends CompanyState {
 class QRVerificationSuccess extends CompanyState {
   const QRVerificationSuccess();
 }
+
+class CandidateBookmarkedSuccess extends CompanyState {
+  const CandidateBookmarkedSuccess();
+}

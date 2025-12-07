@@ -1,5 +1,6 @@
 /// Payment Feature - Path Center
 /// Single export file for all payment feature components.
+library;
 
 // ==================  Domain Layer  =================== //
 
