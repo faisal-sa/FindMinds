@@ -11,6 +11,7 @@ import 'package:graduation_project/features/company_portal/presentation/screens/
 import 'package:graduation_project/features/individuals/AI_quiz/pages/ai_skill_check_page.dart';
 import 'package:graduation_project/features/individuals/match_strength/cubit/match_strength_cubit.dart';
 import 'package:graduation_project/features/individuals/match_strength/pages/match_strength_page.dart';
+import 'package:graduation_project/features/onbording/intro_page.dart';
 
 import 'package:graduation_project/features/payment/presentation/cubit/payment_cubit.dart';
 import 'package:graduation_project/features/payment/presentation/pages/pay_page.dart';
@@ -27,7 +28,7 @@ final GoRouter router = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
   routes: [
-    GoRoute(path: '/', builder: (context, state) => const LoginPage()),
+    GoRoute(path: '/', builder: (context, state) => const IntroPage()),
     GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),
     GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
     GoRoute(
