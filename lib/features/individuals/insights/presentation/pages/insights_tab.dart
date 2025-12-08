@@ -74,7 +74,7 @@ class InsightsTab extends StatelessWidget {
                                         size: 32.r,
                                       ),
                                     ),
-                                    const Column(
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -82,35 +82,36 @@ class InsightsTab extends StatelessWidget {
                                           "Match Strength",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                            fontSize: 16.r,
                                           ),
                                         ),
-                                        SizedBox(height: 4),
+                                        SizedBox(height: 4.h),
                                         Text(
                                           "Check job fit",
                                           style: TextStyle(
-                                            fontSize: 11,
+                                            fontSize: 11.r,
                                             color: AppColors.textSub,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    const Row(
+                                    Row(
                                       children: [
                                         Text(
                                           "View Score",
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.r,
                                             color: AppColors.bluePrimary,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(width: 4),
+                                        SizedBox(width: 4.h),
                                         Icon(
                                           Icons.arrow_forward,
-                                          size: 14,
+                                          size: 14.r,
                                           color: AppColors.bluePrimary,
                                         ),
+
                                       ],
                                     ),
                                   ],
@@ -142,7 +143,7 @@ class InsightsTab extends StatelessWidget {
                                         size: 32.r,
                                       ),
                                     ),
-                                    const Column(
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -150,33 +151,33 @@ class InsightsTab extends StatelessWidget {
                                           "AI Skill Check",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                            fontSize: 16.r,
                                           ),
                                         ),
-                                        SizedBox(height: 4),
+                                        SizedBox(height: 4.h),
                                         Text(
                                           "Validate top skills",
                                           style: TextStyle(
-                                            fontSize: 11,
+                                            fontSize: 11.r,
                                             color: AppColors.textSub,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    const Row(
+                                    Row(
                                       children: [
                                         Text(
                                           "Start Quiz",
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.r,
                                             color: AppColors.bluePrimary,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
-                                        SizedBox(width: 4),
+                                        SizedBox(width: 4.w),
                                         Icon(
                                           Icons.arrow_forward,
-                                          size: 14,
+                                          size: 14.r,
                                           color: AppColors.bluePrimary,
                                         ),
                                       ],
@@ -258,7 +259,7 @@ class InsightsTab extends StatelessWidget {
           const SizedBox(height: 24),
 
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.r),
             decoration: BoxDecoration(
               color: AppColors.blueDark.withOpacity(0.3),
               borderRadius: BorderRadius.circular(12),
@@ -281,7 +282,7 @@ class InsightsTab extends StatelessWidget {
                       "$progressPercent% Complete",
                       style: TextStyle(
                         color: Colors.blue.shade100,
-                        fontSize: 12,
+                        fontSize: 12.r,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

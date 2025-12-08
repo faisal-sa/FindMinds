@@ -304,6 +304,14 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(user: newUser));
   }
 
+  void updateWorkExperiencesList(List<WorkExperience> experiences) {
+    final sortedList = List<WorkExperience>.from(experiences)
+      ..sort((a, b) => b.startDate.compareTo(a.startDate));
+
+    emit(
+      state.copyWith(user: state.user.copyWith(workExperiences: sortedList)),
+    );
+  }
   void addWorkExperience(WorkExperience experience) {
     final currentList = List<WorkExperience>.from(state.user.workExperiences);
     currentList.add(experience);

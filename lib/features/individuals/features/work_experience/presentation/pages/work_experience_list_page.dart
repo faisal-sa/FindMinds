@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/domain/entities/work_experience.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/work_experience_cubit.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/work_experience_state.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/widgets/add_work_experience_modal.dart';
 import 'package:graduation_project/features/individuals/features/work_experience/presentation/widgets/experience_card.dart';
+import 'package:graduation_project/features/shared/user_cubit.dart';
 
 class WorkExperienceListPage extends StatelessWidget {
   const WorkExperienceListPage({super.key});
@@ -53,37 +55,48 @@ class WorkExperienceListPage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<WorkExperienceCubit, WorkExperienceState>(
-        builder: (context, state) {
-          if (state.status == ListStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state.status == ListStatus.failure) {
-            return Center(
-              child: Text(state.errorMessage ?? "Error loading data"),
+      body: BlocListener<WorkExperienceCubit, WorkExperienceState>(
+        listener: (context, state) {
+          if (state.status == ListStatus.success ||
+              (state.experiences.isNotEmpty &&
+                  state.status != ListStatus.loading)) {
+            serviceLocator.get<UserCubit>().updateWorkExperiencesList(
+              state.experiences,
             );
           }
-
-          if (state.experiences.isEmpty) {
-            return _EmptyExperienceView(onAdd: () => _openModal(context));
-          }
-
-          return ListView.separated(
-            padding: EdgeInsets.all(24.w),
-            itemCount: state.experiences.length,
-            separatorBuilder: (_, _) => SizedBox(height: 16.h),
-            itemBuilder: (context, index) {
-              final exp = state.experiences[index];
-              return ExperienceCard(
-                experience: exp,
-                onDelete: () => context
-                    .read<WorkExperienceCubit>()
-                    .deleteExperience(exp.id),
-                onEdit: () => _openModal(context, exp),
-              );
-            },
-          );
         },
+        child: BlocBuilder<WorkExperienceCubit, WorkExperienceState>(
+          builder: (context, state) {
+            if (state.status == ListStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state.status == ListStatus.failure) {
+              return Center(
+                child: Text(state.errorMessage ?? "Error loading data"),
+              );
+            }
+
+            if (state.experiences.isEmpty) {
+              return _EmptyExperienceView(onAdd: () => _openModal(context));
+            }
+
+            return ListView.separated(
+              padding: EdgeInsets.all(24.w),
+              itemCount: state.experiences.length,
+              separatorBuilder: (_, _) => SizedBox(height: 16.h),
+              itemBuilder: (context, index) {
+                final exp = state.experiences[index];
+                return ExperienceCard(
+                  experience: exp,
+                  onDelete: () => context
+                      .read<WorkExperienceCubit>()
+                      .deleteExperience(exp.id),
+                  onEdit: () => _openModal(context, exp),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
