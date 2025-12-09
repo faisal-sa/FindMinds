@@ -96,110 +96,6 @@ class CompanyRemoteDataSource {
     });
   }
 
-  Future<List<Map<String, dynamic>>> searchCandidates({
-    String? location,
-    List<String>? skills,
-    List<String>? employmentTypes,
-    bool? canRelocate,
-    List<String>? languages,
-    List<String>? workModes,
-    String? jobTitle,
-    List<String>? targetRoles,
-  }) async {
-    return await _handleSupabaseCall(() async {
-      PostgrestFilterBuilder query = supabase
-          .from('profiles')
-          .select(
-            'id, first_name, last_name, job_title, location, skills,avatar_url',
-          );
-      if (location != null && location.isNotEmpty) {
-        query = query.ilike('location', '%$location%');
-      }
-
-      if (skills != null && skills.isNotEmpty) {
-        query = query.overlaps('skills', skills);
-      }
-
-      if (employmentTypes != null && employmentTypes.isNotEmpty) {
-        query = query.overlaps('employment_types', employmentTypes);
-      }
-
-      if (canRelocate != null) {
-        query = query.eq('can_relocate', canRelocate);
-      }
-
-      if (languages != null && languages.isNotEmpty) {
-        query = query.overlaps('languages', languages);
-      }
-
-      if (workModes != null && workModes.isNotEmpty) {
-        query = query.overlaps('work_modes', workModes);
-      }
-
-      if (jobTitle != null && jobTitle.isNotEmpty) {
-        query = query.ilike('job_title', '%$jobTitle%');
-      }
-
-      if (targetRoles != null && targetRoles.isNotEmpty) {
-        query = query.overlaps('target_roles', targetRoles);
-      }
-
-      final result = await query;
-      return List<Map<String, dynamic>>.from(result);
-    });
-  }
-
-  Future<void> addCandidateBookmark(
-    String companyId,
-    String candidateId,
-  ) async {
-    return await _handleSupabaseCall(() async {
-      if (companyId.isEmpty || candidateId.isEmpty) {
-        throw SupabaseException(
-          'Invalid uuid: companyId or candidateId cannot be empty.',
-        );
-      }
-
-      await supabase
-          .from('company_bookmarks')
-          .upsert(
-            {'company_id': companyId, 'candidate_id': candidateId},
-            onConflict: 'company_id, candidate_id',
-            ignoreDuplicates: true,
-          );
-    });
-  }
-
-  Future<void> removeCandidateBookmark(
-    String companyId,
-    String candidateId,
-  ) async {
-    return await _handleSupabaseCall(() async {
-      await supabase
-          .from('company_bookmarks')
-          .delete()
-          .eq('company_id', companyId)
-          .eq('candidate_id', candidateId);
-    });
-  }
-
-  Future<List<Map<String, dynamic>>> getCompanyBookmarks(
-    String companyId,
-  ) async {
-    return await _handleSupabaseCall(() async {
-      final result = await supabase
-          .from('company_bookmarks')
-          .select(
-            'candidate_id, profiles(first_name, last_name, skills, location, job_title, avatar_url,id)',
-          )
-          .eq('company_id', companyId);
-
-      print("🔍 Bookmarks Result: $result");
-
-      return List<Map<String, dynamic>>.from(result);
-    });
-  }
-
   Future<Map<String, dynamic>> checkCompanyStatus(String userId) async {
     return await _handleSupabaseCall(() async {
       final client = supabase;
@@ -225,9 +121,7 @@ class CompanyRemoteDataSource {
       }
 
       final companyId = companyResponse?['id'] as String?;
-      if (companyId != null) {
-        // ... check subscription ...
-      }
+      if (companyId != null) {}
 
       return {'hasProfile': hasProfile, 'hasPaid': hasPaid};
     });

@@ -14,6 +14,14 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
+import '../../features/ai_analysis/data/data_sources/ai_analysis_data_source.dart'
+    as _i1065;
+import '../../features/ai_analysis/data/repositories/ai_analysis_repository_impl.dart'
+    as _i944;
+import '../../features/ai_analysis/domain/repositories/ai_analysis_repository.dart'
+    as _i497;
+import '../../features/ai_analysis/presentation/cubit/ai_analysis_cubit.dart'
+    as _i335;
 import '../../features/auth/data/datasources/auth_remote_datasource.dart'
     as _i161;
 import '../../features/auth/data/repositories/auth_repository_impl.dart'
@@ -27,32 +35,60 @@ import '../../features/auth/domain/usecases/sign_out.dart' as _i568;
 import '../../features/auth/domain/usecases/sign_up.dart' as _i190;
 import '../../features/auth/domain/usecases/verify_otp.dart' as _i975;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
+import '../../features/candidate_details/data/data_sources/candidate_details_data_source.dart'
+    as _i149;
+import '../../features/candidate_details/data/repositories/candidate_details_repository_impl.dart'
+    as _i265;
+import '../../features/candidate_details/domain/repositories/candidate_details_repository.dart'
+    as _i309;
+import '../../features/candidate_details/domain/usecases/get_candidate_profile_usecase.dart'
+    as _i57;
+import '../../features/candidate_details/domain/usecases/unlock_candidate_usecase.dart'
+    as _i322;
+import '../../features/candidate_details/presentation/cubit/candidate_details_cubit.dart'
+    as _i1061;
+import '../../features/company_bookmarks/data/data_sources/company_bookmarks_data_source.dart'
+    as _i626;
+import '../../features/company_bookmarks/data/repositories/company_bookmarks_repository_impl.dart'
+    as _i269;
+import '../../features/company_bookmarks/domain/repositories/company_bookmarks_repository.dart'
+    as _i731;
+import '../../features/company_bookmarks/domain/usecases/add_candidate_bookmark.dart'
+    as _i476;
+import '../../features/company_bookmarks/domain/usecases/get_company_bookmarks.dart'
+    as _i814;
+import '../../features/company_bookmarks/domain/usecases/remove_candidate_bookmark.dart'
+    as _i513;
+import '../../features/company_bookmarks/presentation/blocs/bloc/bookmarks_bloc.dart'
+    as _i916;
 import '../../features/company_portal/data/data_sources/company_portal_data_source.dart'
     as _i252;
 import '../../features/company_portal/data/repositories/company_portal_repository_impl.dart'
     as _i624;
 import '../../features/company_portal/domain/repositories/company_portal_repository.dart'
     as _i786;
-import '../../features/company_portal/domain/usecases/add_candidate_bookmark.dart'
-    as _i533;
 import '../../features/company_portal/domain/usecases/check_company_status.dart'
     as _i528;
-import '../../features/company_portal/domain/usecases/get_company_bookmarks.dart'
-    as _i831;
 import '../../features/company_portal/domain/usecases/get_company_profile.dart'
     as _i303;
 import '../../features/company_portal/domain/usecases/register_company.dart'
     as _i468;
-import '../../features/company_portal/domain/usecases/remove_candidate_bookmark.dart'
-    as _i243;
-import '../../features/company_portal/domain/usecases/search_candidates.dart'
-    as _i754;
 import '../../features/company_portal/domain/usecases/update_company_profile.dart'
     as _i923;
 import '../../features/company_portal/domain/usecases/verify_company_qr.dart'
     as _i742;
 import '../../features/company_portal/presentation/blocs/bloc/company_bloc.dart'
     as _i401;
+import '../../features/company_search/data/data_sources/company_search_data_source.dart'
+    as _i7;
+import '../../features/company_search/data/repositories/company_search_repository_impl.dart'
+    as _i1065;
+import '../../features/company_search/domain/repositories/company_search_repository.dart'
+    as _i104;
+import '../../features/company_search/domain/usecases/search_candidates.dart'
+    as _i979;
+import '../../features/company_search/presentation/blocs/bloc/search_bloc.dart'
+    as _i214;
 import '../../features/CRinfo/data/datasources/wathq_remote_datasource.dart'
     as _i697;
 import '../../features/CRinfo/data/repositories/cr_info_repository_impl.dart'
@@ -178,11 +214,27 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
+    gh.lazySingleton<_i149.CandidateRemoteDataSource>(
+      () => _i149.CandidateRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i171.UserCubit>(
       () => _i171.UserCubit(gh<_i460.SharedPreferences>()),
     );
+    gh.lazySingleton<_i1065.AiRemoteDataSource>(
+      () => _i1065.AiRemoteDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i626.BookmarksRemoteDataSource>(
+      () => _i626.BookmarksRemoteDataSource(gh<_i454.SupabaseClient>()),
+    );
     gh.lazySingleton<_i252.CompanyRemoteDataSource>(
       () => _i252.CompanyRemoteDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i7.SearchRemoteDataSource>(
+      () => _i7.SearchRemoteDataSource(gh<_i454.SupabaseClient>()),
+    );
+    gh.lazySingleton<_i309.CandidateRepository>(
+      () =>
+          _i265.CandidateRepositoryImpl(gh<_i149.CandidateRemoteDataSource>()),
     );
     gh.lazySingleton<_i811.PaymentRemoteDataSource>(
       () => _i811.PaymentRemoteDataSourceImpl(),
@@ -192,6 +244,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i697.WathqRemoteDataSource>(
       () => _i697.WathqRemoteDataSourceImpl(),
+    );
+    gh.factory<_i497.AiRepository>(
+      () => _i944.AiRepositoryImpl(gh<_i1065.AiRemoteDataSource>()),
     );
     gh.lazySingleton<_i861.CrInfoRepository>(
       () => _i319.CrInfoRepositoryImpl(gh<_i697.WathqRemoteDataSource>()),
@@ -205,6 +260,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i380.EducationRemoteDataSource>(
       () => _i380.EducationRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
     );
+    gh.factory<_i335.AiAnalysisCubit>(
+      () => _i335.AiAnalysisCubit(gh<_i497.AiRepository>()),
+    );
     gh.lazySingleton<_i466.JobPreferencesRemoteDataSource>(
       () =>
           _i466.JobPreferencesRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
@@ -217,6 +275,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i161.AuthRemoteDataSource>(
       () => _i161.AuthRemoteDataSourceImpl(gh<_i454.SupabaseClient>()),
+    );
+    gh.factory<_i57.GetCandidateProfileUseCase>(
+      () => _i57.GetCandidateProfileUseCase(gh<_i309.CandidateRepository>()),
+    );
+    gh.factory<_i322.UnlockCandidateUseCase>(
+      () => _i322.UnlockCandidateUseCase(gh<_i309.CandidateRepository>()),
+    );
+    gh.factory<_i1061.CandidateProfileCubit>(
+      () => _i1061.CandidateProfileCubit(gh<_i309.CandidateRepository>()),
     );
     gh.lazySingleton<_i843.EducationRepository>(
       () =>
@@ -249,8 +316,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i466.JobPreferencesRemoteDataSource>(),
       ),
     );
+    gh.factory<_i104.SearchRepository>(
+      () => _i1065.SearchRepositoryImpl(gh<_i7.SearchRemoteDataSource>()),
+    );
     gh.factory<_i201.SkillsLanguagesCubit>(
       () => _i201.SkillsLanguagesCubit(gh<_i122.SkillsLanguagesRepository>()),
+    );
+    gh.factory<_i731.BookmarksRepository>(
+      () =>
+          _i269.BookmarksRepositoryImpl(gh<_i626.BookmarksRemoteDataSource>()),
     );
     gh.factory<_i786.CompanyRepository>(
       () => _i624.CompanyRepositoryImpl(gh<_i252.CompanyRemoteDataSource>()),
@@ -326,42 +400,17 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i248.JobPreferencesRepository>(),
       ),
     );
-    gh.lazySingleton<_i243.RemoveCandidateBookmark>(
-      () => _i243.RemoveCandidateBookmark(gh<_i786.CompanyRepository>()),
-    );
-    gh.factory<_i533.AddCandidateBookmark>(
-      () => _i533.AddCandidateBookmark(gh<_i786.CompanyRepository>()),
-    );
     gh.factory<_i528.CheckCompanyStatus>(
       () => _i528.CheckCompanyStatus(gh<_i786.CompanyRepository>()),
     );
-    gh.factory<_i831.GetCompanyBookmarks>(
-      () => _i831.GetCompanyBookmarks(gh<_i786.CompanyRepository>()),
-    );
     gh.factory<_i303.GetCompanyProfile>(
       () => _i303.GetCompanyProfile(gh<_i786.CompanyRepository>()),
-    );
-    gh.factory<_i754.SearchCandidates>(
-      () => _i754.SearchCandidates(gh<_i786.CompanyRepository>()),
     );
     gh.factory<_i923.UpdateCompanyProfile>(
       () => _i923.UpdateCompanyProfile(gh<_i786.CompanyRepository>()),
     );
     gh.lazySingleton<_i432.ProcessPaymentUseCase>(
       () => _i432.ProcessPaymentUseCase(gh<_i903.PaymentRepository>()),
-    );
-    gh.factory<_i401.CompanyBloc>(
-      () => _i401.CompanyBloc(
-        gh<_i303.GetCompanyProfile>(),
-        gh<_i923.UpdateCompanyProfile>(),
-        gh<_i754.SearchCandidates>(),
-        gh<_i533.AddCandidateBookmark>(),
-        gh<_i831.GetCompanyBookmarks>(),
-        gh<_i528.CheckCompanyStatus>(),
-        gh<_i468.RegisterCompany>(),
-        gh<_i742.VerifyCompanyQR>(),
-        gh<_i243.RemoveCandidateBookmark>(),
-      ),
     );
     gh.factory<_i550.CrInfoCubit>(
       () => _i550.CrInfoCubit(getCrInfo: gh<_i333.GetCrInfo>()),
@@ -372,6 +421,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i476.UpdateJobPreferencesUseCase>(),
       ),
     );
+    gh.lazySingleton<_i979.SearchCandidatesUseCase>(
+      () => _i979.SearchCandidatesUseCase(gh<_i104.SearchRepository>()),
+    );
     gh.lazySingleton<_i591.BasicInfoRepository>(
       () => _i500.BasicInfoRepositoryImpl(gh<_i25.BasicInfoRemoteDataSource>()),
     );
@@ -381,6 +433,24 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i244.DeleteCertificationUseCase>(),
         gh<_i289.AddCertificationUseCase>(),
         gh<_i860.UpdateCertificationUseCase>(),
+      ),
+    );
+    gh.lazySingleton<_i814.GetBookmarksUseCase>(
+      () => _i814.GetBookmarksUseCase(gh<_i731.BookmarksRepository>()),
+    );
+    gh.lazySingleton<_i513.RemoveBookmarkUseCase>(
+      () => _i513.RemoveBookmarkUseCase(gh<_i731.BookmarksRepository>()),
+    );
+    gh.factory<_i476.AddCandidateBookmark>(
+      () => _i476.AddCandidateBookmark(gh<_i731.BookmarksRepository>()),
+    );
+    gh.factory<_i401.CompanyBloc>(
+      () => _i401.CompanyBloc(
+        gh<_i303.GetCompanyProfile>(),
+        gh<_i923.UpdateCompanyProfile>(),
+        gh<_i528.CheckCompanyStatus>(),
+        gh<_i468.RegisterCompany>(),
+        gh<_i742.VerifyCompanyQR>(),
       ),
     );
     gh.lazySingleton<_i794.AddWorkExperienceUseCase>(
@@ -425,11 +495,21 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i513.PaymentCubit>(
       () => _i513.PaymentCubit(gh<_i903.ProcessPaymentUseCase>()),
     );
+    gh.factory<_i214.SearchBloc>(
+      () => _i214.SearchBloc(gh<_i979.SearchCandidatesUseCase>()),
+    );
     gh.lazySingleton<_i961.SaveBasicInfoUseCase>(
       () => _i961.SaveBasicInfoUseCase(gh<_i591.BasicInfoRepository>()),
     );
     gh.factory<_i37.BasicInfoCubit>(
       () => _i37.BasicInfoCubit(gh<_i961.SaveBasicInfoUseCase>()),
+    );
+    gh.factory<_i916.BookmarksBloc>(
+      () => _i916.BookmarksBloc(
+        gh<_i814.GetBookmarksUseCase>(),
+        gh<_i476.AddCandidateBookmark>(),
+        gh<_i513.RemoveBookmarkUseCase>(),
+      ),
     );
     gh.factory<_i117.AuthCubit>(
       () => _i117.AuthCubit(

@@ -3,11 +3,9 @@ import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 
 import '../../../../core/error/failures.dart';
-import '../../domain/entities/candidate_entity.dart';
-import '../../domain/entities/company_entity.dart';
+import '../../../shared/data/domain/entities/company_entity.dart';
 import '../../domain/repositories/company_portal_repository.dart';
-import '../models/candidate_model.dart';
-import '../models/company_model.dart';
+import '../../../shared/data/models/company_model.dart';
 
 Failure _mapExceptionToFailure(Exception e) {
   if (e is SupabaseException) {
@@ -89,84 +87,6 @@ class CompanyRepositoryImpl implements CompanyRepository {
       final CompanyModel updatedModel = CompanyModelMapper.ensureInitialized()
           .decodeMap(updatedData);
       return Success(updatedModel.toEntity());
-    } on Exception catch (e) {
-      return Error(_mapExceptionToFailure(e));
-    }
-  }
-
-  @override
-  Future<Result<List<CandidateEntity>, Failure>> searchCandidates({
-    String? location,
-    List<String>? skills,
-    List<String>? employmentTypes,
-    bool? canRelocate,
-    List<String>? languages,
-    List<String>? workModes,
-    String? jobTitle,
-    List<String>? targetRoles,
-  }) async {
-    try {
-      final results = await remote.searchCandidates(
-        location: location,
-        skills: skills,
-        employmentTypes: employmentTypes,
-        canRelocate: canRelocate,
-        languages: languages,
-        workModes: workModes,
-        jobTitle: jobTitle,
-        targetRoles: targetRoles,
-      );
-      final entities = results.map<CandidateEntity>((data) {
-        final CandidateModel model = CandidateModelMapper.ensureInitialized()
-            .decodeMap(data);
-        return model.toEntity();
-      }).toList();
-      return Success(entities);
-    } on Exception catch (e) {
-      return Error(_mapExceptionToFailure(e));
-    }
-  }
-
-  @override
-  Future<Result<void, Failure>> addCandidateBookmark(
-    String companyId,
-    String candidateId,
-  ) async {
-    try {
-      await remote.addCandidateBookmark(companyId, candidateId);
-      return const Success(null);
-    } on Exception catch (e) {
-      return Error(_mapExceptionToFailure(e));
-    }
-  }
-
-  @override
-  Future<Result<void, Failure>> removeCandidateBookmark(
-    String companyId,
-    String candidateId,
-  ) async {
-    try {
-      await remote.removeCandidateBookmark(companyId, candidateId);
-      return const Success(null);
-    } on Exception catch (e) {
-      return Error(_mapExceptionToFailure(e));
-    }
-  }
-
-  @override
-  Future<Result<List<CandidateEntity>, Failure>> getCompanyBookmarks(
-    String companyId,
-  ) async {
-    try {
-      final results = await remote.getCompanyBookmarks(companyId);
-
-      final entities = results.map<CandidateEntity>((data) {
-        final CandidateModel model = CandidateModelMapper.ensureInitialized()
-            .decodeMap(data);
-        return model.toEntity();
-      }).toList();
-
-      return Success(entities);
     } on Exception catch (e) {
       return Error(_mapExceptionToFailure(e));
     }

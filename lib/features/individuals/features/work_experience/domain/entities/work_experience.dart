@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 class WorkExperience extends Equatable {
@@ -52,7 +50,6 @@ class WorkExperience extends Equatable {
       isCurrentlyWorking: map['isCurrentlyWorking'] ?? false,
     );
   }
-
 
   @override
   List<Object?> get props => [
