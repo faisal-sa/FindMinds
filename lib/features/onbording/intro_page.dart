@@ -99,11 +99,11 @@ class _IntroPageState extends State<IntroPage> {
               children: List.generate(introText.length, (index) {
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  width: _currentPage == index ? 16 : 8,
+                  margin: const EdgeInsets.symmetric(horizontal: 7),
+                  width: _currentPage == index ? 60 : 30,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: _currentPage == index ? Colors.black : Colors.grey,
+                    color: _currentPage == index ? Colors.blue : Colors.grey,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 );
@@ -118,8 +118,8 @@ class _IntroPageState extends State<IntroPage> {
                     context.go('/login');
                   } else {
                     _controller.nextPage(
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeOut,
+                      duration: const Duration(milliseconds: 350),
+                      curve: Curves.easeInOut,
                     );
                   }
                 },
@@ -129,15 +129,15 @@ class _IntroPageState extends State<IntroPage> {
                     vertical: 16,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     _currentPage == introText.length - 1
                         ? "Get Started"
                         : "Next",
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),

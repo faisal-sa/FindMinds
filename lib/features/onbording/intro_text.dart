@@ -2,19 +2,19 @@
 //
 final List<Map<String, String>> introText = [
   {
-    "title": "Welcome",
+    "title": "Build Your Future",
     "description":
-        "Discover amazing features and get started with your journey. We're here to help you every step of the way.",
+        "Start shaping your professional journey and showcase your skills with confidence.",
   },
   {
-    "title": "Easy to Use",
+    "title": "Connect & Grow",
     "description":
-        "Our intuitive interface makes it simple for you to navigate and find what you need quickly and efficiently.",
+        "Network with professionals, expand your opportunities, and grow your career.",
   },
   {
-    "title": "Get Started",
+    "title": "Show Your Potential",
     "description":
-        "You're all set! Start exploring and make the most out of your experience with us.",
+        "Share your experience, highlight your strengths, and unlock your full potential.",
   },
 ];
 /*
