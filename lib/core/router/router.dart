@@ -164,7 +164,7 @@ final GoRouter router = GoRouter(
 
                     return MultiBlocProvider(
                       providers: [
-                        BlocProvider.value(value: userCubit),
+                   
 
                         BlocProvider(
                           create: (context) {

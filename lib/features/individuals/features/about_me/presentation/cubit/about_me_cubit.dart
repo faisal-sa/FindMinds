@@ -12,12 +12,13 @@ class AboutMeCubit extends Cubit<AboutMeState> {
     : super(const AboutMeState());
 
   void initialize(String? currentSummary, String? currentVideoUrl) {
-    emit(
-      state.copyWith(
+    final mystate = state.copyWith(
         summary: currentSummary ?? '',
         existingVideoUrl: currentVideoUrl,
         status: FormStatus.initial,
-      ),
+    );
+    print("emitting this state : $mystate");
+    emit(mystate
     );
   }
 

@@ -47,6 +47,7 @@ class UserEntity extends Equatable {
     List<WorkExperience>? workExperiences,
     List<Education>? educations,
     List<Certification>? certifications,
+    bool forceClearVideo = false,
   }) {
     return UserEntity(
       firstName: firstName ?? this.firstName,
@@ -56,7 +57,7 @@ class UserEntity extends Equatable {
       email: email ?? this.email,
       location: location ?? this.location,
       summary: summary ?? this.summary,
-      videoUrl: videoUrl ?? this.videoUrl,
+videoUrl: forceClearVideo ? null : (videoUrl ?? this.videoUrl),
       avatarUrl: avatarUrl ?? this.avatarUrl,
       workExperiences: workExperiences ?? this.workExperiences,
       educations: educations ?? this.educations,

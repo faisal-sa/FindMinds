@@ -37,13 +37,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  @override
-  void onChange(Change<UserState> change) {
-    super.onChange(change);
-    if (change.nextState.user != change.currentState.user) {
-      _saveUserToStorage(change.nextState.user);
-    }
-  }
+  
 
   Future<void> fetchUserProfile() async {
     try {
@@ -303,12 +297,77 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(user: updatedUser));
   }
 
-  void updateAboutMe({String? summary, String? videoUrl}) {
-    final updatedUser = state.user.copyWith(
-      summary: summary,
+void updateAboutMe({String? summary, String? videoUrl}) {
+    final u = state.user;
+
+    // We DO NOT use copyWith here because copyWith ignores nulls.
+    // We want to allow 'videoUrl' to be null if the user deleted it.
+    final updatedUser = UserEntity(
+      // Keep these fields the same
+      firstName: u.firstName,
+      lastName: u.lastName,
+      jobTitle: u.jobTitle,
+      phoneNumber: u.phoneNumber,
+      email: u.email,
+      location: u.location,
+      avatarUrl: u.avatarUrl,
+      workExperiences: u.workExperiences,
+      educations: u.educations,
+      certifications: u.certifications,
+
+      // UPDATE these fields explicitly
+      // If summary is passed, use it; otherwise keep old.
+      summary: summary ?? u.summary,
+
+      // DIRECTLY ASSIGN videoUrl.
+      // If videoUrl is passed as null (deleted), this sets it to null.
       videoUrl: videoUrl,
     );
+
     emit(state.copyWith(user: updatedUser));
+  }
+
+  // Also ensure you have this specific delete helper (from the previous step)
+  // for immediate deletion without waiting for the Save button
+  void deleteUserVideo() {
+    print("UserCubit: Deleting user video..."); // Debug log
+
+    // 1. Create the update explicitly
+    final u = state.user;
+    final updatedUser = UserEntity(
+      firstName: u.firstName,
+      lastName: u.lastName,
+      jobTitle: u.jobTitle,
+      phoneNumber: u.phoneNumber,
+      email: u.email,
+      location: u.location,
+      summary: u.summary,
+      avatarUrl: u.avatarUrl,
+      workExperiences: u.workExperiences,
+      educations: u.educations,
+      certifications: u.certifications,
+      videoUrl: null, // Force NULL
+    );
+
+    // 2. Emit new state
+    emit(state.copyWith(user: updatedUser));
+
+    // 3. Force save immediately (Optional: safeguards against onChange failing)
+    _saveUserToStorage(updatedUser);
+  }
+
+  // Debugging the Change
+  @override
+  void onChange(Change<UserState> change) {
+    super.onChange(change);
+    print(
+      "UserCubit Change: ${change.currentState.user.videoUrl} -> ${change.nextState.user.videoUrl}",
+    );
+
+    if (change.nextState.user != change.currentState.user) {
+      print("UserCubit: User entity changed, saving to storage...");
+      _saveUserToStorage(change.nextState.user);
+    }
   }
 
   void updateUser(UserEntity newUser) {

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/features/individuals/features/about_me/presentation/cubit/about_me_cubit.dart';
 import 'package:graduation_project/features/individuals/features/about_me/presentation/cubit/about_me_state.dart';
 import 'package:graduation_project/features/shared/user_cubit.dart';
@@ -27,7 +28,7 @@ class AboutMePage extends StatelessWidget {
       body: BlocListener<AboutMeCubit, AboutMeState>(
         listener: (context, state) {
           if (state.status == FormStatus.success) {
-            context.read<UserCubit>().updateAboutMe(
+            serviceLocator.get<UserCubit>().updateAboutMe(
               summary: state.summary,
               videoUrl: state.existingVideoUrl,
             );
@@ -293,12 +294,18 @@ class _VideoPickerSection extends StatelessWidget {
                               child: const Text("Cancel"),
                             ),
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 Navigator.pop(context);
-                                context
+                                await context
                                     .read<AboutMeCubit>()
                                     .deleteExistingVideo();
+                                if (context.mounted) {
+                                  serviceLocator
+                                      .get<UserCubit>()
+                                      .deleteUserVideo();
+                                }
                               },
+                             
                               child: const Text(
                                 "Delete",
                                 style: TextStyle(color: Colors.red),
