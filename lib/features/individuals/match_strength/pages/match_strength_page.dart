@@ -40,6 +40,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF8FAFC),
         elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         title: const Text(
           "Profile Analysis",
@@ -134,14 +135,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              gradient: const LinearGradient(
-                colors: [
-                  Color(0xFF3B82F6),
-                  Color(0xFF1D4ED8),
-                ], // Bright Blue to Darker Blue
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: Color(0xFF1D4ED8),
               boxShadow: [
                 BoxShadow(
                   color: const Color(0xFF2563EB).withOpacity(0.4),
@@ -204,12 +198,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.5),
-                            blurRadius: 10,
-                          ),
-                        ],
+                       
                       ),
                     ),
                   ),
@@ -382,11 +371,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
                     ),
                   ),
                 ),
-                const Icon(
-                  Icons.arrow_forward,
-                  size: 14,
-                  color: Color(0xFF2563EB),
-                )
+               
               ],
             ),
           ),

@@ -26,6 +26,7 @@ class AiSkillCheckPage extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
+          scrolledUnderElevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, size: 18),
             onPressed: () => Navigator.of(context).pop(),

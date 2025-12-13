@@ -12,7 +12,6 @@ import 'package:graduation_project/features/individuals/insights/presentation/wi
 import 'package:graduation_project/features/individuals/insights/presentation/widgets/locked_feature_card.dart';
 import 'package:graduation_project/features/individuals/shared/user/presentation/cubit/user_cubit.dart';
 import 'package:graduation_project/features/individuals/shared/user/presentation/cubit/user_state.dart';
-
 class InsightsTab extends StatelessWidget {
   const InsightsTab({super.key});
 
@@ -27,7 +26,8 @@ class InsightsTab extends StatelessWidget {
               SnackBar(
                 content: Text(
                   state.resumeError!,
-                  style: TextStyle(fontSize: 14.sp),
+                  // Use spMin to prevent text exploding on wide screens
+                  style: TextStyle(fontSize: 14.spMin),
                 ),
                 backgroundColor: Colors.red,
               ),
@@ -41,7 +41,8 @@ class InsightsTab extends StatelessWidget {
             final isComplete = completionRatio >= 0.8;
 
             return SingleChildScrollView(
-              padding: EdgeInsets.all(24.r),
+              // Use fixed padding (24) instead of 24.r so margins don't become huge on desktop
+              padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -54,7 +55,8 @@ class InsightsTab extends StatelessWidget {
                   Text(
                     "Your Insights",
                     style: TextStyle(
-                      fontSize: 18.sp,
+                      // FIXED: spMin prevents this from becoming 50px on desktop
+                      fontSize: 18.spMin, 
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -95,15 +97,17 @@ class WelcomeCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(24.r),
+      // FIXED: Fixed padding ensures the card content doesn't get crushed or spaced out wildly
+      padding: const EdgeInsets.all(24), 
       decoration: BoxDecoration(
         color: AppColors.bluePrimary,
-        borderRadius: BorderRadius.circular(24.r),
+        // FIXED: Fixed radius
+        borderRadius: BorderRadius.circular(24), 
         boxShadow: [
           BoxShadow(
             color: AppColors.bluePrimary.withAlpha(77),
-            blurRadius: 20.r,
-            offset: Offset(0, 10.h),
+            blurRadius: 20,
+            offset: Offset(0, 10),
           ),
         ],
         gradient: const LinearGradient(
@@ -121,7 +125,8 @@ class WelcomeCard extends StatelessWidget {
                 : "Welcome to FINDMinds! 👋",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22.sp,
+              // FIXED: spMin caps the size
+              fontSize: 22.spMin, 
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -130,7 +135,8 @@ class WelcomeCard extends StatelessWidget {
             isComplete
                 ? "Your profile is active and ready to match."
                 : "Let's get your profile ready for top companies.",
-            style: TextStyle(color: Colors.blue.shade100, fontSize: 14.sp),
+            // FIXED: spMin
+            style: TextStyle(color: Colors.blue.shade100, fontSize: 14.spMin), 
           ),
           SizedBox(height: 24.h),
 
@@ -146,7 +152,7 @@ class WelcomeCard extends StatelessWidget {
               style: TextStyle(
                 color: Colors.blue.shade100,
                 fontWeight: FontWeight.bold,
-                fontSize: 11.sp,
+                fontSize: 11.spMin, // FIXED
                 letterSpacing: 1.2,
               ),
             ),
@@ -171,10 +177,10 @@ class _ProfileStrengthIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.r),
+      padding: const EdgeInsets.all(16), // Fixed padding
       decoration: BoxDecoration(
         color: AppColors.blueDark.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: Column(
@@ -186,7 +192,7 @@ class _ProfileStrengthIndicator extends StatelessWidget {
                 "Profile Strength",
                 style: TextStyle(
                   color: Colors.blue.shade100,
-                  fontSize: 12.sp,
+                  fontSize: 12.spMin, // FIXED
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -194,7 +200,7 @@ class _ProfileStrengthIndicator extends StatelessWidget {
                 "$progressPercent% Complete",
                 style: TextStyle(
                   color: Colors.blue.shade100,
-                  fontSize: 12.sp,
+                  fontSize: 12.spMin, // FIXED
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -204,22 +210,21 @@ class _ProfileStrengthIndicator extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 8.h,
+                height: 8, // Fixed height looks cleaner on desktop
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.blueDark,
-                  borderRadius: BorderRadius.circular(4.r),
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
               AnimatedContainer(
                 duration: const Duration(seconds: 1),
                 curve: Curves.easeOutExpo,
-                height: 8.h,
-                width:
-                    MediaQuery.of(context).size.width * completionRatio,
+                height: 8,
+                width: MediaQuery.of(context).size.width * completionRatio,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(4.r),
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
             ],
@@ -245,17 +250,17 @@ class _ResumeUploadButton extends StatelessWidget {
             : () {
                 context.read<UserCubit>().uploadAndExtractResume();
               },
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
         child: Container(
-          padding: EdgeInsets.all(12.r),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
-                blurRadius: 10.r,
-                offset: Offset(0, 5.h),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
               ),
             ],
           ),
@@ -264,8 +269,8 @@ class _ResumeUploadButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 24.r,
-                      height: 24.r,
+                      width: 24,
+                      height: 24,
                       child: CircularProgressIndicator(strokeWidth: 2.w),
                     ),
                     SizedBox(width: 12.w),
@@ -274,7 +279,7 @@ class _ResumeUploadButton extends StatelessWidget {
                       style: TextStyle(
                         color: AppColors.textMain,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14.sp,
+                        fontSize: 14.spMin, // FIXED
                       ),
                     ),
                   ],
@@ -282,15 +287,15 @@ class _ResumeUploadButton extends StatelessWidget {
               : Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8.r),
+                      padding: const EdgeInsets.all(8),
                       decoration: const BoxDecoration(
                         color: AppColors.blueLight,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.upload_file,
                         color: AppColors.bluePrimary,
-                        size: 20.r,
+                        size: 20, // Fixed size
                       ),
                     ),
                     SizedBox(width: 12.w),
@@ -303,14 +308,14 @@ class _ResumeUploadButton extends StatelessWidget {
                             style: TextStyle(
                               color: AppColors.textMain,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14.sp,
+                              fontSize: 14.spMin, // FIXED
                             ),
                           ),
                           Text(
                             "Auto-fill 80% of profile",
                             style: TextStyle(
                               color: AppColors.textSub,
-                              fontSize: 11.sp,
+                              fontSize: 11.spMin, // FIXED
                             ),
                           ),
                         ],
@@ -383,7 +388,7 @@ class InsightsFeatureGrid extends StatelessWidget {
                     unlockText: "Complete profile to see scores.",
                   ),
           ),
-          SizedBox(width: 16.w),
+          SizedBox(width: 16),
           Expanded(
             child: isComplete
                 ? FeatureCard(
@@ -409,14 +414,13 @@ class InsightsFeatureGrid extends StatelessWidget {
     );
   }
 }
-
 class _FeatureCardContent extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final String title;
   final String subtitle;
   final String actionText;
-  final VoidCallback? onTap; // Added onTap here
+  final VoidCallback? onTap;
 
   const _FeatureCardContent({
     required this.icon,
@@ -430,64 +434,64 @@ class _FeatureCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      // 1. Align everything in the column to the center
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          child: Icon(icon, color: iconColor, size: 32.r),
+          // FIXED: Changed 32.r to 32. 
+          // Icons shouldn't scale infinitely on desktop.
+          child: Icon(icon, color: iconColor, size: 32),
         ),
-        SizedBox(height: 12.h),
+        // FIXED: Fixed vertical spacing
+        const SizedBox(height: 12),
         Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.center, // Center internal column
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               title,
-              textAlign: TextAlign.center, // Center text alignment
+              textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.spMin),
             ),
-            SizedBox(height: 4.h),
+            const SizedBox(height: 4),
             Text(
               subtitle,
-              textAlign: TextAlign.center, // Center text alignment
+              textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 11.sp,
+                // FIXED: spMin
+                fontSize: 11.spMin, 
                 color: Colors.grey,
-              ), // Assuming AppColors.textSub
+              ),
             ),
           ],
         ),
         const Spacer(),
-        SizedBox(height: 12.h),
+        const SizedBox(height: 12),
         
-        // 2. Wrap specifically the blue text row in an InkWell/GestureDetector
         InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(8),
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             child: Row(
-              mainAxisSize: MainAxisSize.min, // Shrink row to fit text
-              mainAxisAlignment:
-                  MainAxisAlignment.center, // Center the row content
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   actionText,
                   style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Color(0xff225ae3), // Assuming AppColors.bluePrimary
+                    fontSize: 12.spMin,
+                    color: const Color(0xff225ae3),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(width: 4.w),
+                const SizedBox(width: 4),
                 Icon(
                   Icons.arrow_forward,
-                  size: 14.r,
-                  color: Color(0xff225ae3), // Assuming AppColors.bluePrimary
+                  size: 14,
+                  color: const Color(0xff225ae3),
                 ),
               ],
             ),
