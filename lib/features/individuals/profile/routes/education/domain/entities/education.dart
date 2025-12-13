@@ -19,13 +19,12 @@ abstract class Education with _$Education {
     String? graduationCertificateUrl,
     String? academicRecordUrl,
     
-    // --- ADD THESE MISSING FIELDS ---
     @JsonKey(includeFromJson: false) String? graduationCertificateName,
     @JsonKey(includeFromJson: false) String? academicRecordName,
 
-    // Existing byte fields
     @JsonKey(includeFromJson: false) Uint8List? graduationCertificateBytes,
     @JsonKey(includeFromJson: false) Uint8List? academicRecordBytes,
+
   }) = _Education;
 
   factory Education.fromJson(Map<String, dynamic> json) =>

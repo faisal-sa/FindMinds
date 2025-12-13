@@ -61,8 +61,31 @@ class _AddEducationModalState extends State<AddEducationModal> {
       _startDate = edu.startDate;
       _endDate = edu.endDate;
       _activities = List.from(edu.activities);
+      
+      // LOGIC FOR URLS
       _keepExistingGradCert = edu.graduationCertificateUrl != null;
       _keepExistingAcademicRecord = edu.academicRecordUrl != null;
+
+      // --- NEW FIX: RESTORE LOCAL FILES (BYTES) ---
+
+      // 1. Restore Graduation Certificate if bytes exist but URL doesn't (Local state)
+      if (edu.graduationCertificateBytes != null &&
+          edu.graduationCertificateName != null) {
+        _selectedGradCertificate = PlatformFile(
+          name: edu.graduationCertificateName!,
+          size: edu.graduationCertificateBytes!.length,
+          bytes: edu.graduationCertificateBytes,
+        );
+      }
+
+      // 2. Restore Academic Record if bytes exist
+      if (edu.academicRecordBytes != null && edu.academicRecordName != null) {
+        _selectedAcademicRecord = PlatformFile(
+          name: edu.academicRecordName!,
+          size: edu.academicRecordBytes!.length,
+          bytes: edu.academicRecordBytes,
+        );
+      }
     }
   }
 
@@ -156,6 +179,23 @@ class _AddEducationModalState extends State<AddEducationModal> {
         ? widget.education?.academicRecordUrl
         : null;
 
+    // 2. Determine the Name to save (NEW LOGIC)
+    // If we picked a new file, use its name.
+    // If not, but we have bytes/url from before, keep the old name.
+    String? gradName = _selectedGradCertificate?.name;
+    if (gradName == null &&
+        (_keepExistingGradCert ||
+            (widget.education?.graduationCertificateBytes != null))) {
+      gradName = widget.education?.graduationCertificateName;
+    }
+
+    String? academicName = _selectedAcademicRecord?.name;
+    if (academicName == null &&
+        (_keepExistingAcademicRecord ||
+            (widget.education?.academicRecordBytes != null))) {
+      academicName = widget.education?.academicRecordName;
+    }
+
     final newEducation = Education(
       id: widget.education?.id ?? const Uuid().v4(),
       institutionName: _institutionController.text,
@@ -166,17 +206,32 @@ class _AddEducationModalState extends State<AddEducationModal> {
       gpa: _gpaController.text,
       activities: _activities,
 
-      graduationCertificateBytes: _selectedGradCertificate?.bytes,
-      //graduationCertificateName: _selectedGradCertificate?.name,
+      // Pass the Bytes
+      graduationCertificateBytes:
+          _selectedGradCertificate?.bytes ??
+          (_keepExistingGradCert
+              ? null
+              : widget.education?.graduationCertificateBytes),
 
-      academicRecordBytes: _selectedAcademicRecord?.bytes,
-      //academicRecordName: _selectedAcademicRecord?.name,
+      // UNCOMMENT AND FIX THIS:
+      graduationCertificateName: gradName,
+
+      // Pass the Bytes
+      academicRecordBytes:
+          _selectedAcademicRecord?.bytes ??
+          (_keepExistingAcademicRecord
+              ? null
+              : widget.education?.academicRecordBytes),
+
+      // UNCOMMENT AND FIX THIS:
+      academicRecordName: academicName,
 
       graduationCertificateUrl: gradUrlToSave,
       academicRecordUrl: academicUrlToSave,
     );
 
     Navigator.pop(context, newEducation);
+  
   }
 
   @override

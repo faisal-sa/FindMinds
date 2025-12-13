@@ -15,9 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Education {
 
- String get id; String get degreeType; String get institutionName; String get fieldOfStudy; DateTime get startDate; DateTime get endDate; String? get gpa; List<String> get activities; String? get graduationCertificateUrl; String? get academicRecordUrl;// --- ADD THESE MISSING FIELDS ---
-@JsonKey(includeFromJson: false) String? get graduationCertificateName;@JsonKey(includeFromJson: false) String? get academicRecordName;// Existing byte fields
-@JsonKey(includeFromJson: false) Uint8List? get graduationCertificateBytes;@JsonKey(includeFromJson: false) Uint8List? get academicRecordBytes;
+ String get id; String get degreeType; String get institutionName; String get fieldOfStudy; DateTime get startDate; DateTime get endDate; String? get gpa; List<String> get activities; String? get graduationCertificateUrl; String? get academicRecordUrl;@JsonKey(includeFromJson: false) String? get graduationCertificateName;@JsonKey(includeFromJson: false) String? get academicRecordName;@JsonKey(includeFromJson: false) Uint8List? get graduationCertificateBytes;@JsonKey(includeFromJson: false) Uint8List? get academicRecordBytes;
 /// Create a copy of Education
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -243,10 +241,8 @@ class _Education implements Education {
 
 @override final  String? graduationCertificateUrl;
 @override final  String? academicRecordUrl;
-// --- ADD THESE MISSING FIELDS ---
 @override@JsonKey(includeFromJson: false) final  String? graduationCertificateName;
 @override@JsonKey(includeFromJson: false) final  String? academicRecordName;
-// Existing byte fields
 @override@JsonKey(includeFromJson: false) final  Uint8List? graduationCertificateBytes;
 @override@JsonKey(includeFromJson: false) final  Uint8List? academicRecordBytes;
 
