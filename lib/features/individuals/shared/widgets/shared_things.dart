@@ -29,6 +29,7 @@ class BaseFormSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity, // Force full width
       decoration: const BoxDecoration(
         color: Color(0xFFF8FAFC),
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -39,11 +40,10 @@ class BaseFormSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Handle Bar
           SizedBox(height: 12.h),
           Container(
-            width: 40.w,
-            height: 4.h,
+            width: 40, // Fixed width for handle looks better on desktop
+            height: 4, 
             decoration: BoxDecoration(
               color: Colors.grey[300],
               borderRadius: BorderRadius.circular(2),
@@ -53,14 +53,16 @@ class BaseFormSheet extends StatelessWidget {
 
           // Header
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            // Clamp horizontal padding: At least 24, max 50
+            padding: EdgeInsets.symmetric(horizontal: 24.w.clamp(24, 50)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    // Clamp Font: At least 18, max 24
+                    fontSize: 18.sp.clamp(18, 24), 
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -76,12 +78,12 @@ class BaseFormSheet extends StatelessWidget {
           // Scrollable Form Body
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(24.w),
+              // Clamp padding here too
+              padding: EdgeInsets.all(24.w.clamp(24, 50)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   child,
-                  // Bottom padding to ensure content isn't hidden behind sticky button
                   SizedBox(height: 80.h),
                 ],
               ),
@@ -90,7 +92,7 @@ class BaseFormSheet extends StatelessWidget {
 
           // Sticky Bottom Button
           Container(
-            padding: EdgeInsets.all(24.w),
+            padding: EdgeInsets.all(24.w.clamp(24, 50)),
             decoration: const BoxDecoration(
               color: Colors.white,
               border: Border(top: BorderSide(color: Color(0xFFE2E8F0))),
@@ -98,7 +100,7 @@ class BaseFormSheet extends StatelessWidget {
             child: SafeArea(
               child: SizedBox(
                 width: double.infinity,
-                height: 50.h,
+                height: 50.h.clamp(50, 60), // Don't let button get too tall
                 child: ElevatedButton(
                   onPressed: isLoading ? null : onSubmit,
                   style: ElevatedButton.styleFrom(
@@ -112,7 +114,7 @@ class BaseFormSheet extends StatelessWidget {
                       : Text(
                           submitLabel,
                           style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: 16.sp.clamp(16, 20), // Clamp font
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
@@ -126,6 +128,9 @@ class BaseFormSheet extends StatelessWidget {
     );
   }
 }
+
+
+
 
 class FormFileUploadButton extends StatelessWidget {
   final String label;

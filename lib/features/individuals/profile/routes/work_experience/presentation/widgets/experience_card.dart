@@ -23,7 +23,11 @@ class ExperienceCard extends StatelessWidget {
         "${fmt.format(experience.startDate)} - ${experience.isCurrentlyWorking ? 'Present' : (experience.endDate != null ? fmt.format(experience.endDate!) : '')}";
 
     return Container(
-      padding: EdgeInsets.all(16.w),
+      // 1. Clamp Padding:
+      // On mobile, 16.w might be 16px. On Desktop 16.w might be 60px.
+      // .clamp(16, 32) ensures it never gets bigger than 32px padding.
+      padding: EdgeInsets.all(16.w.clamp(16, 32)),
+      
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -41,7 +45,6 @@ class ExperienceCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Content Column
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +52,9 @@ class ExperienceCard extends StatelessWidget {
                     Text(
                       experience.jobTitle,
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        // 2. Clamp Font Size:
+                        // Keeps it readable on mobile (16) but stops it being huge on web (max 22)
+                        fontSize: 16.sp.clamp(16, 22), 
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -57,7 +62,7 @@ class ExperienceCard extends StatelessWidget {
                     Text(
                       "${experience.companyName} • ${experience.employmentType}",
                       style: TextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 14.sp.clamp(14, 18),
                         color: Colors.grey[700],
                       ),
                     ),
@@ -65,35 +70,37 @@ class ExperienceCard extends StatelessWidget {
                     Text(
                       dateStr,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 12.sp.clamp(12, 16),
                         color: Colors.grey[500],
                       ),
                     ),
                   ],
                 ),
               ),
-              // Actions Row
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
                     onPressed: onEdit,
-                    constraints: const BoxConstraints(), // Reduces padding
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    constraints: const BoxConstraints(),
+                    padding: EdgeInsets.symmetric(horizontal: 8.w.clamp(8, 12)),
                     icon: Icon(
                       Icons.edit_outlined,
                       color: Colors.blue[400],
-                      size: 20.sp,
+                      // 3. Clamp Icons:
+                      
+                      // Icons scaling to 100px looks bad. Max size 24.
+                      size: 20.sp.clamp(20, 24),
                     ),
                   ),
                   IconButton(
                     onPressed: onDelete,
                     constraints: const BoxConstraints(),
-                    padding: EdgeInsets.only(left: 8.w),
+                    padding: EdgeInsets.only(left: 8.w.clamp(8, 12)),
                     icon: Icon(
                       Icons.delete_outline,
                       color: Colors.red[300],
-                      size: 20.sp,
+                      size: 20.sp.clamp(20, 24),
                     ),
                   ),
                 ],
@@ -112,7 +119,8 @@ class ExperienceCard extends StatelessWidget {
                       padding: EdgeInsets.only(top: 6.h),
                       child: Icon(
                         Icons.circle,
-                        size: 5.sp,
+                        // Fix bullet point size
+                        size: 5.sp.clamp(5, 8), 
                         color: Colors.grey[600],
                       ),
                     ),
@@ -121,7 +129,8 @@ class ExperienceCard extends StatelessWidget {
                       child: Text(
                         r,
                         style: TextStyle(
-                          fontSize: 13.sp,
+                          // Fix Responsibility text size
+                          fontSize: 13.sp.clamp(13, 16),
                           color: Colors.grey[700],
                           height: 1.4,
                         ),
@@ -136,4 +145,6 @@ class ExperienceCard extends StatelessWidget {
       ),
     );
   }
+
 }
+

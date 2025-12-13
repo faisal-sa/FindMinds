@@ -8,6 +8,7 @@ import 'package:graduation_project/features/individuals/profile/routes/work_expe
 import 'package:graduation_project/features/individuals/profile/routes/work_experience/presentation/widgets/add_work_experience_modal.dart';
 import 'package:graduation_project/features/individuals/profile/routes/work_experience/presentation/widgets/experience_card.dart';
 import 'package:graduation_project/features/individuals/shared/user/presentation/cubit/user_cubit.dart';
+import 'package:graduation_project/features/individuals/shared/widgets/responsive_constraints.dart';
 
 class WorkExperienceListPage extends StatelessWidget {
   const WorkExperienceListPage({super.key});
@@ -81,7 +82,7 @@ class WorkExperienceListPage extends StatelessWidget {
             }
 
             return ListView.separated(
-              padding: EdgeInsets.all(24.w),
+              padding: EdgeInsets.all(16),
               itemCount: state.experiences.length,
               separatorBuilder: (_, _) => SizedBox(height: 16.h),
               itemBuilder: (context, index) {

@@ -21,6 +21,7 @@ class AddWorkExperienceModal extends StatefulWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       useSafeArea: true,
+
       builder: (ctx) => AddWorkExperienceModal(experience: experience),
     );
   }
