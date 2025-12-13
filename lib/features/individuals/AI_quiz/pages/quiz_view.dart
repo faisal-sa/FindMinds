@@ -15,9 +15,6 @@ class QuizView extends StatefulWidget {
 class _QuizViewState extends State<QuizView> {
   int _currentIndex = 0;
   late List<int?> _userAnswers;
-  
-  // Timer dummy implementation for visual
-  int _secondsRemaining = 120; 
 
   @override
   void initState() {
@@ -37,7 +34,6 @@ class _QuizViewState extends State<QuizView> {
         _currentIndex++;
       });
     } else {
-      // Submit
       context.read<AiSkillCheckCubit>().submitQuizAnswers(_userAnswers);
     }
   }
@@ -46,115 +42,163 @@ class _QuizViewState extends State<QuizView> {
   Widget build(BuildContext context) {
     final question = widget.questions[_currentIndex];
     final selectedOption = _userAnswers[_currentIndex];
+    final progress = (_currentIndex + 1) / widget.questions.length;
 
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header: Question Counter & Timer
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Question ${_currentIndex + 1}/${widget.questions.length}",
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+    return Column(
+      children: [
+        // Linear Progress Bar at the top
+        LinearProgressIndicator(
+          value: progress,
+          backgroundColor: Colors.grey.shade100,
+          valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF4285F4)),
+          minHeight: 4,
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Clean Question Counter
+                Text(
+                  "Question ${_currentIndex + 1} of ${widget.questions.length}",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey.shade500,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.red.shade50,
-                  borderRadius: BorderRadius.circular(20),
+                const SizedBox(height: 16),
+
+                // Question Text
+                Text(
+                  question.question,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    height: 1.4,
+                    color: Color(0xFF1F2937),
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.timer, size: 16, color: Colors.red.shade400),
-                    const SizedBox(width: 4),
-                    Text(
-                      "01:25", // Static for UI demo, can implement Timer logic
-                      style: TextStyle(
-                        color: Colors.red.shade400,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 32),
-
-          // Question Text
-          Text(
-            question.question,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              height: 1.3,
-            ),
-          ),
-          const SizedBox(height: 32),
-
-          // Options
-          Expanded(
-            child: ListView.separated(
-              itemCount: question.options.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 16),
-              itemBuilder: (context, index) {
-                final isSelected = selectedOption == index;
-                final optionLabel = String.fromCharCode(65 + index); // A, B, C, D
-
-                return GestureDetector(
-                  onTap: () => _onOptionSelected(index),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isSelected ? const Color(0xFFE3F2FD) : Colors.white,
-                      border: Border.all(
-                        color: isSelected ? Colors.blue : Colors.grey.shade200,
-                        width: isSelected ? 2 : 1,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 32,
-                          height: 32,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: isSelected ? Colors.blue : Colors.grey.shade100,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            optionLabel,
-                            style: TextStyle(
-                              color: isSelected ? Colors.white : Colors.grey.shade600,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            question.options[index],
-                            style: const TextStyle(fontSize: 15, height: 1.4),
-                          ),
-                        ),
-                      ],
+                const SizedBox(height: 8),
+                // Category Tag
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    question.category,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blue.shade700,
                     ),
                   ),
-                );
-              },
+                ),
+                const SizedBox(height: 32),
+
+                // Options List
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: question.options.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final isSelected = selectedOption == index;
+                    final optionLabel = String.fromCharCode(65 + index);
+
+                    return GestureDetector(
+                      onTap: () => _onOptionSelected(index),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? const Color(0xFFEFF6FF)
+                              : Colors.white,
+                          border: Border.all(
+                            color: isSelected
+                                ? const Color(0xFF4285F4)
+                                : Colors.grey.shade200,
+                            width: isSelected ? 2 : 1,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: isSelected
+                              ? [
+                                  BoxShadow(
+                                    color: const Color(
+                                      0xFF4285F4,
+                                    ).withOpacity(0.1),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ]
+                              : [],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 32,
+                              height: 32,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? const Color(0xFF4285F4)
+                                    : Colors.grey.shade100,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                optionLabel,
+                                style: TextStyle(
+                                  color: isSelected
+                                      ? Colors.white
+                                      : Colors.grey.shade600,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                question.options[index],
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: isSelected
+                                      ? const Color(0xFF1F2937)
+                                      : const Color(0xFF4B5563),
+                                  fontWeight: isSelected
+                                      ? FontWeight.w600
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                            if (isSelected)
+                              const Icon(
+                                Icons.check_circle,
+                                color: Color(0xFF4285F4),
+                                size: 20,
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
-
-          // Next Button
-          SizedBox(
+        ),
+        
+        // Next Button Area
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: SizedBox(
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
@@ -162,12 +206,16 @@ class _QuizViewState extends State<QuizView> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF4285F4),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                disabledBackgroundColor: Colors.grey.shade300,
+                elevation: 0,
+                disabledBackgroundColor: Colors.grey.shade200,
+                disabledForegroundColor: Colors.grey.shade400,
               ),
               child: Text(
-                _currentIndex == widget.questions.length - 1 ? "Finish" : "Next",
+                _currentIndex == widget.questions.length - 1
+                    ? "Submit Assessment"
+                    : "Next Question",
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -176,8 +224,8 @@ class _QuizViewState extends State<QuizView> {
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

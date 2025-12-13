@@ -5,8 +5,8 @@ import 'package:graduation_project/features/individuals/AI_quiz/cubit/ai_skill_c
 import 'package:graduation_project/features/individuals/AI_quiz/cubit/ai_skill_check_state.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/pages/quiz_view.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/pages/result_view.dart';
+import 'package:graduation_project/features/individuals/AI_quiz/widgets/modren_loading.dart';
 import 'package:graduation_project/features/individuals/shared/user/domain/entities/user_entity.dart';
-
 class AiSkillCheckPage extends StatelessWidget {
   final UserEntity user;
 
@@ -14,10 +14,8 @@ class AiSkillCheckPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Inject Cubit here assuming 'model' is available in serviceLocator or similar
     return BlocProvider(
-      create: (context) => AiSkillCheckCubit(
-      )..generateQuiz(user),
+      create: (context) => AiSkillCheckCubit()..generateQuiz(user),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -30,21 +28,22 @@ class AiSkillCheckPage extends StatelessWidget {
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, size: 18),
-            onPressed: () => context.pop(),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: () {},
-            )
-          ],
+          // Actions removed as requested
         ),
         body: BlocBuilder<AiSkillCheckCubit, AiSkillCheckState>(
           builder: (context, state) {
             if (state is AiSkillCheckLoading) {
-              return const Center(child: CircularProgressIndicator());
+              // Using the custom loader here
+              return const ModernAnalysisLoader();
             } else if (state is AiSkillCheckError) {
-              return Center(child: Text(state.message));
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(state.message, textAlign: TextAlign.center),
+                ),
+              );
             } else if (state is AiSkillCheckQuestionsLoaded) {
               return QuizView(questions: state.questions);
             } else if (state is AiSkillCheckCompleted) {
@@ -52,7 +51,7 @@ class AiSkillCheckPage extends StatelessWidget {
                 score: state.totalScore,
                 breakdown: state.breakdown,
                 onRetake: () {
-                   context.read<AiSkillCheckCubit>().generateQuiz(user);
+                  context.read<AiSkillCheckCubit>().generateQuiz(user);
                 },
               );
             }
