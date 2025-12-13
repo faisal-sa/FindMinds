@@ -14,30 +14,30 @@ export 'package:graduation_project/features/company_portal/presentation/blocs/bl
 export 'package:graduation_project/features/individuals/chat/presentation/pages/chats_tab.dart';
 
 // Individuals – About Me
-export 'package:graduation_project/features/individuals/features/about_me/presentation/cubit/about_me_cubit.dart';
-export 'package:graduation_project/features/individuals/features/about_me/presentation/pages/about_me_page.dart';
+export 'package:graduation_project/features/individuals/profile/routes/about_me/presentation/cubit/about_me_cubit.dart';
+export 'package:graduation_project/features/individuals/profile/routes/about_me/presentation/pages/about_me_page.dart';
 
 // Individuals – Basic Info
-export 'package:graduation_project/features/individuals/features/basic_info/presentation/cubit/basic_info_cubit.dart';
-export 'package:graduation_project/features/individuals/features/basic_info/presentation/pages/basic_info_page.dart';
+export 'package:graduation_project/features/individuals/profile/routes/basic_info/presentation/cubit/basic_info_cubit.dart';
+export 'package:graduation_project/features/individuals/profile/routes/basic_info/presentation/pages/basic_info_page.dart';
 
 // Individuals – Certifications
-export 'package:graduation_project/features/individuals/features/certifications/presentation/cubit/certification_cubit.dart';
-export 'package:graduation_project/features/individuals/features/certifications/presentation/pages/certification_page.dart';
+export 'package:graduation_project/features/individuals/profile/routes/certifications/presentation/cubit/certification_cubit.dart';
+export 'package:graduation_project/features/individuals/profile/routes/certifications/presentation/pages/certification_page.dart';
 
 // Individuals – Education
-export 'package:graduation_project/features/individuals/features/education/presentation/cubit/education_cubit.dart';
-export 'package:graduation_project/features/individuals/features/education/presentation/pages/education_page.dart';
+export 'package:graduation_project/features/individuals/profile/routes/education/presentation/cubit/education_cubit.dart';
+export 'package:graduation_project/features/individuals/profile/routes/education/presentation/pages/education_page.dart';
 
 // Individuals – Job Preferences
-export 'package:graduation_project/features/individuals/features/job_preferences/presentation/pages/job_preferences_page.dart';
+export 'package:graduation_project/features/individuals/profile/routes/job_preferences/presentation/pages/job_preferences_page.dart';
 
 // Individuals – Skills & Languages
-export 'package:graduation_project/features/individuals/features/skills_languages/presentation/pages/skills_page.dart';
+export 'package:graduation_project/features/individuals/profile/routes/skills_languages/presentation/pages/skills_page.dart';
 
 // Individuals – Work Experience
-export 'package:graduation_project/features/individuals/features/work_experience/presentation/cubit/work_experience_cubit.dart';
-export 'package:graduation_project/features/individuals/features/work_experience/presentation/pages/work_experience_list_page.dart';
+export 'package:graduation_project/features/individuals/profile/routes/work_experience/presentation/cubit/work_experience_cubit.dart';
+export 'package:graduation_project/features/individuals/profile/routes/work_experience/presentation/pages/work_experience_list_page.dart';
 
 // Individuals – Insights
 export 'package:graduation_project/features/individuals/insights/presentation/pages/insights_tab.dart';
@@ -58,6 +58,6 @@ export 'package:graduation_project/features/auth/presentation/pages/signup_page.
 export 'package:graduation_project/features/auth/presentation/pages/otp_verification_page.dart';
 
 // Shared
-export 'package:graduation_project/features/shared/presentation/cubit/user_cubit.dart';
+export 'package:graduation_project/features/individuals/shared/user/presentation/cubit/user_cubit.dart';
 
 

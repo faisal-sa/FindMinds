@@ -1,0 +1,103 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/individuals/profile/routes/certifications/domain/entities/certification.dart';
+import 'package:graduation_project/features/individuals/profile/routes/certifications/domain/usecases/add_certification_usecase.dart';
+import 'package:graduation_project/features/individuals/profile/routes/certifications/domain/usecases/delete_certification_usecase.dart';
+import 'package:graduation_project/features/individuals/profile/routes/certifications/domain/usecases/get_certifications_usecase.dart';
+import 'package:graduation_project/features/individuals/profile/routes/certifications/domain/usecases/update_certification_usecase.dart';
+import 'package:graduation_project/features/individuals/profile/routes/certifications/presentation/cubit/certification_state.dart';
+import 'package:graduation_project/features/individuals/profile/routes/work_experience/presentation/cubit/work_experience_state.dart';
+import 'package:injectable/injectable.dart';
+
+@injectable
+class CertificationCubit extends Cubit<CertificationState> {
+  final GetCertificationsUseCase _getCertificationsUseCase;
+  final DeleteCertificationUseCase _deleteCertificationUseCase;
+  final AddCertificationUseCase _addCertificationUseCase;
+  final UpdateCertificationUseCase _updateCertificationUseCase;
+
+  CertificationCubit(
+    this._getCertificationsUseCase,
+    this._deleteCertificationUseCase,
+    this._addCertificationUseCase,
+    this._updateCertificationUseCase,
+  ) : super(const CertificationState());
+
+  void initialize(List<Certification> initialCertifications) {
+    if (state.status == ListStatus.initial) {
+      final sortedList = List<Certification>.from(initialCertifications)
+        ..sort(
+          (a, b) => b.issueDate.compareTo(a.issueDate),
+        ); // Sort by newest first
+
+      emit(
+        CertificationState(
+          status: ListStatus.success,
+          certifications: sortedList,
+        ),
+      );
+    }
+  }
+
+  // Keep loadCertifications for pull-to-refresh if needed, but not for initial load
+  Future<void> loadCertifications() async {
+    emit(state.copyWith(status: ListStatus.loading));
+    try {
+      final list = await _getCertificationsUseCase();
+      emit(
+        CertificationState(status: ListStatus.success, certifications: list),
+      );
+    } catch (e) {
+      emit(
+        CertificationState(
+          status: ListStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+Future<void> addCertification(Certification certification) async {
+    try {
+      // Assuming your UseCase returns the result from the DataSource
+      // Update your UseCase signature to return Future<Certification>
+      final newCertification = await _addCertificationUseCase(certification);
+      
+      final currentList = List<Certification>.from(state.certifications);
+      currentList.add(newCertification); // Add the one with the real ID
+
+      // Sort list to keep UI consistent (optional, based on issue date)
+      currentList.sort((a, b) => b.issueDate.compareTo(a.issueDate));
+      
+      emit(state.copyWith(certifications: currentList));
+    } catch (e) {
+      debugPrint(e.toString());
+      // Optional: emit failure state or show snackbar via listener
+    }
+  }
+
+  Future<void> updateCertification(Certification certification) async {
+    try {
+      await _updateCertificationUseCase(certification);
+      final currentList = List<Certification>.from(state.certifications);
+      final index = currentList.indexWhere((e) => e.id == certification.id);
+      if (index != -1) {
+        currentList[index] = certification;
+        emit(state.copyWith(certifications: currentList));
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> deleteCertification(String id) async {
+    try {
+      await _deleteCertificationUseCase(id);
+      final currentList = List<Certification>.from(state.certifications);
+      currentList.removeWhere((e) => e.id == id);
+      emit(state.copyWith(certifications: currentList));
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+}

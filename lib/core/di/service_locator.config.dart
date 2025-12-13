@@ -74,95 +74,95 @@ import '../../features/CRinfo/domain/repositories/cr_info_repository.dart'
     as _i861;
 import '../../features/CRinfo/domain/usecases/get_cr_info.dart' as _i333;
 import '../../features/CRinfo/presentation/cubit/cr_info_cubit.dart' as _i550;
-import '../../features/individuals/features/about_me/data/datasources/about_me_remote_data_source.dart'
+import '../../features/individuals/profile/routes/about_me/data/datasources/about_me_remote_data_source.dart'
     as _i733;
-import '../../features/individuals/features/about_me/data/repositories/about_me_repository_impl.dart'
+import '../../features/individuals/profile/routes/about_me/data/repositories/about_me_repository_impl.dart'
     as _i633;
-import '../../features/individuals/features/about_me/domain/repositories/about_me_repository.dart'
+import '../../features/individuals/profile/routes/about_me/domain/repositories/about_me_repository.dart'
     as _i542;
-import '../../features/individuals/features/about_me/domain/usecases/delete_about_me_video_use_case.dart'
+import '../../features/individuals/profile/routes/about_me/domain/usecases/delete_about_me_video_use_case.dart'
     as _i1047;
-import '../../features/individuals/features/about_me/domain/usecases/save_about_me_use_case.dart'
+import '../../features/individuals/profile/routes/about_me/domain/usecases/save_about_me_use_case.dart'
     as _i250;
-import '../../features/individuals/features/about_me/presentation/cubit/about_me_cubit.dart'
+import '../../features/individuals/profile/routes/about_me/presentation/cubit/about_me_cubit.dart'
     as _i781;
-import '../../features/individuals/features/basic_info/data/datasources/basic_info_remote_data_source.dart'
+import '../../features/individuals/profile/routes/basic_info/data/datasources/basic_info_remote_data_source.dart'
     as _i25;
-import '../../features/individuals/features/basic_info/data/repositories/basic_info_repository_impl.dart'
+import '../../features/individuals/profile/routes/basic_info/data/repositories/basic_info_repository_impl.dart'
     as _i500;
-import '../../features/individuals/features/basic_info/domain/repositories/basic_info_repository.dart'
+import '../../features/individuals/profile/routes/basic_info/domain/repositories/basic_info_repository.dart'
     as _i591;
-import '../../features/individuals/features/basic_info/domain/usecases/save_basic_info_usecase.dart'
+import '../../features/individuals/profile/routes/basic_info/domain/usecases/save_basic_info_usecase.dart'
     as _i961;
-import '../../features/individuals/features/basic_info/presentation/cubit/basic_info_cubit.dart'
+import '../../features/individuals/profile/routes/basic_info/presentation/cubit/basic_info_cubit.dart'
     as _i37;
-import '../../features/individuals/features/certifications/data/datasources/certification_remote_data_source.dart'
+import '../../features/individuals/profile/routes/certifications/data/datasources/certification_remote_data_source.dart'
     as _i607;
-import '../../features/individuals/features/certifications/data/repositories/certification_repository_impl.dart'
+import '../../features/individuals/profile/routes/certifications/data/repositories/certification_repository_impl.dart'
     as _i852;
-import '../../features/individuals/features/certifications/domain/repositories/certification_repository.dart'
+import '../../features/individuals/profile/routes/certifications/domain/repositories/certification_repository.dart'
     as _i320;
-import '../../features/individuals/features/certifications/domain/usecases/add_certification_usecase.dart'
+import '../../features/individuals/profile/routes/certifications/domain/usecases/add_certification_usecase.dart'
     as _i289;
-import '../../features/individuals/features/certifications/domain/usecases/delete_certification_usecase.dart'
+import '../../features/individuals/profile/routes/certifications/domain/usecases/delete_certification_usecase.dart'
     as _i244;
-import '../../features/individuals/features/certifications/domain/usecases/get_certifications_usecase.dart'
+import '../../features/individuals/profile/routes/certifications/domain/usecases/get_certifications_usecase.dart'
     as _i440;
-import '../../features/individuals/features/certifications/domain/usecases/update_certification_usecase.dart'
+import '../../features/individuals/profile/routes/certifications/domain/usecases/update_certification_usecase.dart'
     as _i860;
-import '../../features/individuals/features/certifications/presentation/cubit/certification_cubit.dart'
+import '../../features/individuals/profile/routes/certifications/presentation/cubit/certification_cubit.dart'
     as _i848;
-import '../../features/individuals/features/education/data/datasources/education_remote_data_source.dart'
+import '../../features/individuals/profile/routes/education/data/datasources/education_remote_data_source.dart'
     as _i380;
-import '../../features/individuals/features/education/data/repositories/education_repository_impl.dart'
+import '../../features/individuals/profile/routes/education/data/repositories/education_repository_impl.dart'
     as _i999;
-import '../../features/individuals/features/education/domain/repositories/education_repository.dart'
+import '../../features/individuals/profile/routes/education/domain/repositories/education_repository.dart'
     as _i843;
-import '../../features/individuals/features/education/domain/usecases/add_education_usecase.dart'
+import '../../features/individuals/profile/routes/education/domain/usecases/add_education_usecase.dart'
     as _i965;
-import '../../features/individuals/features/education/domain/usecases/delete_education_usecase.dart'
+import '../../features/individuals/profile/routes/education/domain/usecases/delete_education_usecase.dart'
     as _i947;
-import '../../features/individuals/features/education/domain/usecases/get_educations_usecase.dart'
+import '../../features/individuals/profile/routes/education/domain/usecases/get_educations_usecase.dart'
     as _i947;
-import '../../features/individuals/features/education/domain/usecases/update_education_usecase.dart'
+import '../../features/individuals/profile/routes/education/domain/usecases/update_education_usecase.dart'
     as _i906;
-import '../../features/individuals/features/education/presentation/cubit/education_cubit.dart'
+import '../../features/individuals/profile/routes/education/presentation/cubit/education_cubit.dart'
     as _i803;
-import '../../features/individuals/features/job_preferences/data/datasources/job_preferences_remote_datasource.dart'
+import '../../features/individuals/profile/routes/job_preferences/data/datasources/job_preferences_remote_datasource.dart'
     as _i466;
-import '../../features/individuals/features/job_preferences/data/repositories/job_preferences_repository_impl.dart'
+import '../../features/individuals/profile/routes/job_preferences/data/repositories/job_preferences_repository_impl.dart'
     as _i942;
-import '../../features/individuals/features/job_preferences/domain/repositories/job_preferences_repository.dart'
+import '../../features/individuals/profile/routes/job_preferences/domain/repositories/job_preferences_repository.dart'
     as _i248;
-import '../../features/individuals/features/job_preferences/domain/usecases/get_job_preferences_usecase.dart'
+import '../../features/individuals/profile/routes/job_preferences/domain/usecases/get_job_preferences_usecase.dart'
     as _i43;
-import '../../features/individuals/features/job_preferences/domain/usecases/update_job_preferences_usecase.dart'
+import '../../features/individuals/profile/routes/job_preferences/domain/usecases/update_job_preferences_usecase.dart'
     as _i476;
-import '../../features/individuals/features/job_preferences/presentation/cubit/job_preferences_cubit.dart'
+import '../../features/individuals/profile/routes/job_preferences/presentation/cubit/job_preferences_cubit.dart'
     as _i387;
-import '../../features/individuals/features/skills_languages/data/datasources/skills_languages_remote_data_source.dart'
+import '../../features/individuals/profile/routes/skills_languages/data/datasources/skills_languages_remote_data_source.dart'
     as _i354;
-import '../../features/individuals/features/skills_languages/data/repositories/skills_language_repo_impl.dart'
+import '../../features/individuals/profile/routes/skills_languages/data/repositories/skills_language_repo_impl.dart'
     as _i221;
-import '../../features/individuals/features/skills_languages/domain/repositories/skills_languages_repository.dart'
+import '../../features/individuals/profile/routes/skills_languages/domain/repositories/skills_languages_repository.dart'
     as _i122;
-import '../../features/individuals/features/skills_languages/presentation/cubit/skills_languages_cubit.dart'
+import '../../features/individuals/profile/routes/skills_languages/presentation/cubit/skills_languages_cubit.dart'
     as _i201;
-import '../../features/individuals/features/work_experience/data/datasources/work_experience_remote_data_source.dart'
+import '../../features/individuals/profile/routes/work_experience/data/datasources/work_experience_remote_data_source.dart'
     as _i271;
-import '../../features/individuals/features/work_experience/data/repositories/work_experience_repository_impl.dart'
+import '../../features/individuals/profile/routes/work_experience/data/repositories/work_experience_repository_impl.dart'
     as _i51;
-import '../../features/individuals/features/work_experience/domain/repositories/work_experience_repository.dart'
+import '../../features/individuals/profile/routes/work_experience/domain/repositories/work_experience_repository.dart'
     as _i651;
-import '../../features/individuals/features/work_experience/domain/usecases/add_work_experience_usecase.dart'
+import '../../features/individuals/profile/routes/work_experience/domain/usecases/add_work_experience_usecase.dart'
     as _i794;
-import '../../features/individuals/features/work_experience/domain/usecases/delete_work_experience_usecase.dart'
+import '../../features/individuals/profile/routes/work_experience/domain/usecases/delete_work_experience_usecase.dart'
     as _i176;
-import '../../features/individuals/features/work_experience/domain/usecases/get_work_experiences_usecase.dart'
+import '../../features/individuals/profile/routes/work_experience/domain/usecases/get_work_experiences_usecase.dart'
     as _i786;
-import '../../features/individuals/features/work_experience/domain/usecases/update_work_experience_usecase.dart'
+import '../../features/individuals/profile/routes/work_experience/domain/usecases/update_work_experience_usecase.dart'
     as _i56;
-import '../../features/individuals/features/work_experience/presentation/cubit/work_experience_cubit.dart'
+import '../../features/individuals/profile/routes/work_experience/presentation/cubit/work_experience_cubit.dart'
     as _i760;
 import '../../features/payment/data/datasources/payment_remote_data_source.dart'
     as _i811;
@@ -172,24 +172,24 @@ import '../../features/payment/domain/usecases/process_payment_usecase.dart'
     as _i432;
 import '../../features/payment/export_payment.dart' as _i903;
 import '../../features/payment/presentation/cubit/payment_cubit.dart' as _i513;
-import '../../features/shared/data/datasources/AI_datasource.dart' as _i741;
-import '../../features/shared/data/datasources/user_local_datasource.dart'
+import '../../features/individuals/shared/user/data/datasources/AI_datasource.dart' as _i741;
+import '../../features/individuals/shared/user/data/datasources/user_local_datasource.dart'
     as _i156;
-import '../../features/shared/data/datasources/user_remote_datasource.dart'
+import '../../features/individuals/shared/user/data/datasources/user_remote_datasource.dart'
     as _i390;
-import '../../features/shared/data/repositories/user_repository_impl.dart'
+import '../../features/individuals/shared/user/data/repositories/user_repository_impl.dart'
     as _i310;
-import '../../features/shared/domain/repositories/user_repository.dart'
+import '../../features/individuals/shared/user/domain/repositories/user_repository.dart'
     as _i223;
-import '../../features/shared/domain/usecases/cache_user.dart' as _i210;
-import '../../features/shared/domain/usecases/fetch_user_profile.dart' as _i439;
-import '../../features/shared/domain/usecases/get_cached_user.dart' as _i597;
-import '../../features/shared/domain/usecases/parse_resume_with_ai.dart'
+import '../../features/individuals/shared/user/domain/usecases/cache_user.dart' as _i210;
+import '../../features/individuals/shared/user/domain/usecases/fetch_user_profile.dart' as _i439;
+import '../../features/individuals/shared/user/domain/usecases/get_cached_user.dart' as _i597;
+import '../../features/individuals/shared/user/domain/usecases/parse_resume_with_ai.dart'
     as _i372;
-import '../../features/shared/domain/usecases/sync_user_to_remote.dart'
+import '../../features/individuals/shared/user/domain/usecases/sync_user_to_remote.dart'
     as _i1043;
-import '../../features/shared/domain/usecases/update_user.dart' as _i228;
-import '../../features/shared/presentation/cubit/user_cubit.dart' as _i695;
+import '../../features/individuals/shared/user/domain/usecases/update_user.dart' as _i228;
+import '../../features/individuals/shared/user/presentation/cubit/user_cubit.dart' as _i695;
 import '../env_config/env_config.dart' as _i113;
 
 extension GetItInjectableX on _i174.GetIt {

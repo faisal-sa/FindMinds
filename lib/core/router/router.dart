@@ -9,8 +9,8 @@ import 'package:graduation_project/features/company_portal/presentation/screens/
 import 'package:graduation_project/features/company_portal/presentation/screens/search/CandidateResultsPage.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/search/company_search_page.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/pages/ai_skill_check_page.dart';
-import 'package:graduation_project/features/individuals/features/job_preferences/presentation/cubit/job_preferences_cubit.dart';
-import 'package:graduation_project/features/individuals/features/skills_languages/presentation/cubit/skills_languages_cubit.dart';
+import 'package:graduation_project/features/individuals/profile/routes/job_preferences/presentation/cubit/job_preferences_cubit.dart';
+import 'package:graduation_project/features/individuals/profile/routes/skills_languages/presentation/cubit/skills_languages_cubit.dart';
 import 'package:graduation_project/features/individuals/match_strength/cubit/match_strength_cubit.dart';
 import 'package:graduation_project/features/individuals/match_strength/pages/match_strength_page.dart';
 import 'package:graduation_project/features/onbording/intro_page.dart';
