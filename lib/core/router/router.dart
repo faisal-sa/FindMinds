@@ -23,7 +23,6 @@ import 'package:graduation_project/features/splash_screen/splash_screen.dart';
 
 // keep it here for now
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final getIt = GetIt.instance;
 
 final GoRouter router = GoRouter(

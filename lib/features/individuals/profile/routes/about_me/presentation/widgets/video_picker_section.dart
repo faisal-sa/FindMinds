@@ -153,16 +153,16 @@ class VideoPickerSection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // REPLACE BUTTON
-                  ElevatedButton.icon(
-                    onPressed: () => _pickVideo(context),
-                    icon: const Icon(Icons.edit, size: 16),
-                    label: const Text("Replace"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
+                  // ElevatedButton.icon(
+                  //   onPressed: () => _pickVideo(context),
+                  //   icon: const Icon(Icons.edit, size: 16),
+                  //   label: const Text("Replace"),
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: Colors.white,
+                  //     foregroundColor: Colors.black,
+                  //   ),
+                  // ),
+                  // const SizedBox(width: 12),
                   // DELETE BUTTON
                   ElevatedButton.icon(
                     onPressed: () {

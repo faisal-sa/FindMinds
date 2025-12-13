@@ -29,7 +29,7 @@ class AboutMeCubit extends Cubit<AboutMeState> {
     emit(state.copyWith(videoPath: path));
   }
 
-  void removeSelectedVideo() {
+void removeSelectedVideo() {
     emit(state.copyWith(videoPath: null));
   }
 
@@ -63,7 +63,7 @@ class AboutMeCubit extends Cubit<AboutMeState> {
     try {
       await _deleteVideoUseCase();
 
-      emit(state.copyWith(status: FormStatus.success, existingVideoUrl: null));
+emit(state.copyWith(status: FormStatus.success, existingVideoUrl: null));
     } catch (e) {
       emit(state.copyWith(status: FormStatus.failure));
     }
