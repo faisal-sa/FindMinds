@@ -5,7 +5,6 @@ import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import '../../../../core/error/failures.dart';
 import '../models/ai_score_model.dart';
-import 'package:flutter/foundation.dart';
 
 @Injectable(as: AiRepository)
 class AiRepositoryImpl implements AiRepository {
@@ -25,7 +24,6 @@ class AiRepositoryImpl implements AiRepository {
     try {
       final cachedResult = _localDataSource.getCachedAnalysis(cacheKey);
       if (cachedResult != null) {
-        if (kDebugMode) print("💾 Returning Cached Analysis for $cacheKey");
         return Success(cachedResult);
       }
 

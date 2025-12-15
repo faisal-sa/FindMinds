@@ -9,7 +9,7 @@ class PayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF121212),
+      backgroundColor: Colors.white,
 
       //==================  App Bar  =================== //
       appBar: AppBar(
@@ -20,22 +20,15 @@ class PayPage extends StatelessWidget {
 
       //==================  Body  ===================//
       body: BlocListener<PaymentCubit, PaymentState>(
-        // في ملف features/payment/presentation/pages/pay_page.dart
-
-        // ... داخل BlocListener
         listener: (context, state) async {
-          // <-- أضف async هنا
           switch (state.status) {
             case PaymentStatus.requiresAuth:
               if (state.authUrl != null) {
-                // 1. نذهب لصفحة الويب وننتظر النتيجة
                 final bool? webViewResult = await context.push<bool>(
                   '/payment-webview?url=${Uri.encodeComponent(state.authUrl!)}',
                 );
 
-                // 2. إذا عادت صفحة الويب بـ true، يعني أن المصادقة نجحت
                 if (webViewResult == true && context.mounted) {
-                  // نغلق صفحة الدفع ونعود لصفحة البروفايل بنجاح
                   context.pop(true);
                 }
               }
