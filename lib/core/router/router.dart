@@ -206,9 +206,8 @@ final GoRouter router = GoRouter(
         ),
       ],
     ),
-    // -------------------- COMPANY PORTAL FLOW --------------------
 
-    // 1. THE ROUTER: (لم نقم بتغيير هذا، يبقى يعتمد على CompanyBloc للتحقق من الحالة)
+    // -------------------- COMPANY PORTAL FLOW --------------------
     GoRoute(
       path: '/company/onboarding-router',
       name: 'company-onboarding-router',
@@ -218,7 +217,6 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    // 2. ONBOARDING STEP 1: (يبقى كما هو)
     GoRoute(
       path: '/company/complete-profile',
       name: 'company-complete-profile',
@@ -228,7 +226,6 @@ final GoRouter router = GoRouter(
       ),
     ),
 
-    // 3. ONBOARDING STEP 2: (يبقى كما هو)
     GoRoute(
       path: '/company/payment',
       name: 'company-payment',
@@ -240,12 +237,10 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    // 4. MAIN SEARCH PAGE (The new Entry Point)
     GoRoute(
       path: '/company/search',
       name: 'company-search',
       builder: (context, state) => BlocProvider(
-        // ✅ التغيير الأول: نستخدم SearchBloc هنا بدلاً من CompanyBloc
         create: (_) => getIt<SearchBloc>(),
         child: const CompanySearchPage(),
       ),
@@ -255,12 +250,8 @@ final GoRouter router = GoRouter(
           path: 'search-results',
           name: 'company-search-results',
           builder: (context, state) {
-            // نستقبل الـ SearchBloc الذي تم تمريره من الصفحة السابقة
             final searchBloc = state.extra as SearchBloc;
 
-            // ✅ التغيير الثاني: نستخدم MultiBlocProvider
-            // 1. لنمرر حالة البحث الحالية (value)
-            // 2. لننشئ BookmarksBloc جديد لكي يعمل زر الحفظ في الكروت
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: searchBloc),
@@ -271,13 +262,11 @@ final GoRouter router = GoRouter(
           },
         ),
 
-        // 4b. CANDIDATE DETAILS
         GoRoute(
           path: 'candidate-details/:id',
           name: 'candidate-details',
           builder: (context, state) {
             final candidateId = state.pathParameters['id']!;
-            // ✅ غالباً ستحتاج BookmarksBloc هنا أيضاً إذا كان هناك زر حفظ في التفاصيل
             return BlocProvider(
               create: (_) => getIt<BookmarksBloc>(),
               child: CandidateProfilePage(candidateId: candidateId),
@@ -285,18 +274,15 @@ final GoRouter router = GoRouter(
           },
         ),
 
-        // 4c. BOOKMARKS PAGE
         GoRoute(
           path: 'bookmarks',
           name: 'company-bookmarks',
           builder: (context, state) => BlocProvider(
-            // ✅ التغيير الثالث: نستخدم BookmarksBloc الخاص بهذه الميزة
             create: (_) => getIt<BookmarksBloc>(),
             child: const CompanyBookmarksPage(),
           ),
         ),
 
-        // 4d. QR SCANNER (لم نقم بفصله، يبقى CompanyBloc)
         GoRoute(
           path: 'qr',
           name: 'company-qr',
@@ -306,7 +292,6 @@ final GoRouter router = GoRouter(
           ),
         ),
 
-        // 4e. SETTINGS (لم نقم بفصله، يبقى كما هو)
         GoRoute(
           path: 'settings',
           name: 'company-settings',
