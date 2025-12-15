@@ -63,11 +63,13 @@ class _IntroPageState extends State<IntroPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        //
-                        // ==================  Contant Page =================== //
-                        //
+                        Icon(
+                          page['icon'] as IconData,
+                          size: 120,
+                          color: Colors.blue,
+                        ),
+                        const SizedBox(height: 32),
                         Text(
-                          //<<< Title start >>>
                           page['title']!,
                           style: const TextStyle(
                             fontSize: 32,
@@ -75,17 +77,19 @@ class _IntroPageState extends State<IntroPage> {
                             color: Colors.black87,
                           ),
                           textAlign: TextAlign.center,
-                        ), //<<< Title end >>>
+                        ),
                         const SizedBox(height: 24),
-                        Text(
-                          //<<< Description start >>>
-                          page['description']!,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
+                        SizedBox(
+                          width: 300,
+                          child: Text(
+                            page['description']!,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black54,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
-                        ), //<<< Description end >>>
+                        ),
                       ],
                     ),
                     // ==================  Contant Page End  =================== //

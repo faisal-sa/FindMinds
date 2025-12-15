@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
     it will reset the launchedBefore value to [false] ,
     mean show the intro page every time you restart the app ,
     dont forget to comment it again after testing ,
-    you need to reset the app 2 times to see the changes ,
+    you need to reset the app ``times to see the changes ,
     
     -trail one will get the value [true] .
     -trail two will move to the intro page .
@@ -70,8 +70,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     //==========================================
     //
-    // await prefs.remove('launchedBefore');
-    // print('launchedBefore: $launchedBefore');
+    await prefs.remove('launchedBefore');
+    print('launchedBefore: $launchedBefore');
     //
     //==========================================
   }

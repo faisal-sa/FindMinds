@@ -1,17 +1,22 @@
+import 'package:flutter/material.dart';
+
 //======================  DATA BASE !!OUT THT CLASS!!  =========================
 //
-final List<Map<String, String>> introText = [
+final List<Map<String, dynamic>> introText = [
   {
+    "icon": Icons.rocket_launch,
     "title": "Build Your Future",
     "description":
         "Start shaping your professional journey and showcase your skills with confidence.",
   },
   {
+    "icon": Icons.people,
     "title": "Connect & Grow",
     "description":
         "Network with professionals, expand your opportunities, and grow your career.",
   },
   {
+    "icon": Icons.star,
     "title": "Show Your Potential",
     "description":
         "Share your experience, highlight your strengths, and unlock your full potential.",

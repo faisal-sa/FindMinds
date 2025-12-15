@@ -1,5 +1,7 @@
 import 'package:graduation_project/core/exports/app_exports.dart';
 import 'package:graduation_project/features/CRinfo/presentation/cubit/cr_info_cubit.dart';
+import 'package:graduation_project/features/auth/presentation/pages/rest_passord_page.dart';
+import 'package:graduation_project/features/auth/presentation/pages/new_password_page.dart';
 import 'package:graduation_project/features/candidate_details/presentation/screens/candidate_profile_page.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/onboarding/company_onboarding_router_page.dart';
 import 'package:graduation_project/features/company_portal/presentation/screens/onboarding/company_qr_page.dart';
@@ -25,8 +27,16 @@ final getIt = GetIt.instance;
 
 final GoRouter router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/',
+  initialLocation: '/intro',
   routes: [
+    GoRoute(
+      path: '/reset-password',
+      builder: (context, state) => ResetPasswordPage(),
+    ),
+    GoRoute(
+      path: '/new-password',
+      builder: (context, state) => const NewPasswordPage(),
+    ),
     GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
     GoRoute(path: '/intro', builder: (context, state) => const IntroPage()),
     GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),

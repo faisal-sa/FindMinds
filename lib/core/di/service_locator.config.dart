@@ -22,10 +22,16 @@ import '../../features/auth/domain/repositories/auth_repository.dart' as _i787;
 import '../../features/auth/domain/usecases/get_current_user.dart' as _i111;
 import '../../features/auth/domain/usecases/login.dart' as _i428;
 import '../../features/auth/domain/usecases/resend_otp.dart' as _i152;
+import '../../features/auth/domain/usecases/reset_password.dart' as _i1066;
 import '../../features/auth/domain/usecases/send_otp.dart' as _i727;
+import '../../features/auth/domain/usecases/send_password_reset_otp.dart'
+    as _i665;
 import '../../features/auth/domain/usecases/sign_out.dart' as _i568;
 import '../../features/auth/domain/usecases/sign_up.dart' as _i190;
+import '../../features/auth/domain/usecases/update_password.dart' as _i455;
 import '../../features/auth/domain/usecases/verify_otp.dart' as _i975;
+import '../../features/auth/domain/usecases/verify_password_reset_otp.dart'
+    as _i500;
 import '../../features/auth/presentation/cubit/auth_cubit.dart' as _i117;
 import '../../features/candidate_details/data/data_sources/candidate_details_data_source.dart'
     as _i149;
@@ -447,20 +453,29 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i152.ResendOTP>(
       () => _i152.ResendOTP(gh<_i787.AuthRepository>()),
     );
+    gh.factory<_i1066.ResetPassword>(
+      () => _i1066.ResetPassword(gh<_i787.AuthRepository>()),
+    );
     gh.factory<_i727.SendOTP>(() => _i727.SendOTP(gh<_i787.AuthRepository>()));
+    gh.factory<_i665.SendPasswordResetOTP>(
+      () => _i665.SendPasswordResetOTP(gh<_i787.AuthRepository>()),
+    );
     gh.factory<_i568.SignOut>(() => _i568.SignOut(gh<_i787.AuthRepository>()));
     gh.factory<_i190.SignUp>(() => _i190.SignUp(gh<_i787.AuthRepository>()));
+    gh.factory<_i455.UpdatePassword>(
+      () => _i455.UpdatePassword(gh<_i787.AuthRepository>()),
+    );
     gh.factory<_i975.VerifyOTP>(
       () => _i975.VerifyOTP(gh<_i787.AuthRepository>()),
+    );
+    gh.factory<_i500.VerifyPasswordResetOTP>(
+      () => _i500.VerifyPasswordResetOTP(gh<_i787.AuthRepository>()),
     );
     gh.factory<_i513.PaymentCubit>(
       () => _i513.PaymentCubit(gh<_i903.ProcessPaymentUseCase>()),
     );
     gh.lazySingleton<_i961.SaveBasicInfoUseCase>(
       () => _i961.SaveBasicInfoUseCase(gh<_i591.BasicInfoRepository>()),
-    );
-    gh.factory<_i37.BasicInfoCubit>(
-      () => _i37.BasicInfoCubit(gh<_i961.SaveBasicInfoUseCase>()),
     );
     gh.factory<_i117.AuthCubit>(
       () => _i117.AuthCubit(
@@ -471,7 +486,14 @@ extension GetItInjectableX on _i174.GetIt {
         sendOTP: gh<_i727.SendOTP>(),
         resendOTP: gh<_i152.ResendOTP>(),
         verifyOTP: gh<_i975.VerifyOTP>(),
+        resetPasswordOTP: gh<_i1066.ResetPassword>(),
+        sendPasswordResetOTP: gh<_i665.SendPasswordResetOTP>(),
+        verifyPasswordResetOTP: gh<_i500.VerifyPasswordResetOTP>(),
+        updatePassword: gh<_i455.UpdatePassword>(),
       ),
+    );
+    gh.factory<_i37.BasicInfoCubit>(
+      () => _i37.BasicInfoCubit(gh<_i961.SaveBasicInfoUseCase>()),
     );
     return this;
   }
