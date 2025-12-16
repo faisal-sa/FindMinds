@@ -34,7 +34,7 @@ class AiScoreCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.indigo.shade50,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.indigo.withOpacity(0.2)),
+          border: Border.all(color: Colors.indigo.withAlpha(51)),
         ),
         child: BlocBuilder<AiAnalysisCubit, AiAnalysisState>(
           builder: (context, state) {

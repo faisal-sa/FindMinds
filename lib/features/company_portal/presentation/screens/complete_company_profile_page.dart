@@ -146,7 +146,7 @@ class _CompleteCompanyProfilePageState
                 await CompanyLocalStorage.saveCompanyId(userId);
               }
 
-              if (mounted) {
+              if (context.mounted) {
                 toastification.show(
                   context: context,
                   type: ToastificationType.success,
@@ -183,17 +183,7 @@ class _CompleteCompanyProfilePageState
             return const Center(child: CircularProgressIndicator());
           }
 
-          final company = (state is CompanyLoaded)
-              ? state.company
-              : CompanyEntity(
-                  companyName: '',
-                  industry: '',
-                  description: '',
-                  city: '',
-                  logoUrl: "",
-                  createdAt: DateTime.now(),
-                  updatedAt: DateTime.now(),
-                );
+         
 
           return CustomScrollView(
             slivers: [
@@ -344,7 +334,7 @@ class _CompleteCompanyProfilePageState
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 20,
             offset: const Offset(0, -5),
           ),
@@ -436,7 +426,7 @@ class _ModernTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -470,7 +460,7 @@ class _ModernTextField extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: Theme.of(context).primaryColor.withOpacity(0.5),
+              color: Theme.of(context).primaryColor.withAlpha(128),
               width: 1.5,
             ),
           ),
@@ -512,7 +502,7 @@ class _ModernDropdown extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -561,7 +551,7 @@ class _ModernDropdown extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: Theme.of(context).primaryColor.withOpacity(0.5),
+              color: Theme.of(context).primaryColor.withAlpha(128),
               width: 1.5,
             ),
           ),

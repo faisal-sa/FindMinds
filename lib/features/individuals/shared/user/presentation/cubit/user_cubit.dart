@@ -40,7 +40,7 @@ class UserCubit extends Cubit<UserState> {
 
   
  Future<void> _loadUserFromStorage() async {
-    print("loading user from storage");
+    debugPrint("loading user from storage");
     _isLoadingFromStorage = true; 
 
     try {
@@ -49,7 +49,7 @@ class UserCubit extends Cubit<UserState> {
         emit(state.copyWith(user: user));
       }
     } catch (e) {
-      print("Error loading local user: $e");
+      debugPrint("Error loading local user: $e");
     } finally {
       _isLoadingFromStorage = false; 
     }
@@ -219,7 +219,7 @@ class UserCubit extends Cubit<UserState> {
       emit(state.copyWith(user: fetchedUser));
 
     } catch (e) {
-      print("Error fetching user profile: $e");
+      debugPrint("Error fetching user profile: $e");
     }
   }
 

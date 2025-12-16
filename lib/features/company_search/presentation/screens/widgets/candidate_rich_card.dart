@@ -30,6 +30,7 @@ class _CandidateRichCardState extends State<CandidateRichCard> {
     isBookmarked = widget.initialIsBookmarked;
   }
 
+  @override
   void didUpdateWidget(covariant CandidateRichCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialIsBookmarked != oldWidget.initialIsBookmarked) {
@@ -71,7 +72,7 @@ class _CandidateRichCardState extends State<CandidateRichCard> {
                     height: 50,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: widget.primaryColor.withOpacity(0.1),
+                      color: widget.primaryColor.withAlpha(26),
                       image: widget.candidate.avatarUrl != null
                           ? DecorationImage(
                               image: NetworkImage(widget.candidate.avatarUrl!),
@@ -136,8 +137,8 @@ class _CandidateRichCardState extends State<CandidateRichCard> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isBookmarked
-                              ? widget.primaryColor.withOpacity(0.1)
-                              : Colors.grey.withOpacity(0.05),
+                              ? widget.primaryColor.withAlpha(26)
+                              : Colors.grey.withAlpha(13),
                         ),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),

@@ -103,8 +103,8 @@ class EngagementGraph extends StatelessWidget {
                       show: true,
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.bluePrimary.withOpacity(0.3),
-                          AppColors.bluePrimary.withOpacity(0.0),
+                          AppColors.bluePrimary.withAlpha(77),
+                          AppColors.bluePrimary.withAlpha(0),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,

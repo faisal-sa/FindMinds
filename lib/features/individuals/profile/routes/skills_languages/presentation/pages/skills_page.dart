@@ -71,7 +71,7 @@ class SkillsPage extends StatelessWidget {
                       },
                       onDelete: (item) {
                         context.read<SkillsLanguagesCubit>().removeLanguage(
-                          item as String,
+                          item ,
                         );
                       },
                     ),
@@ -133,7 +133,7 @@ class _SectionCardState extends State<_SectionCard> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:graduation_project/features/individuals/engagement/data/models/engagement_stats_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -38,7 +39,7 @@ class EngagementRemoteDataSourceImpl implements EngagementRemoteDataSource {
               final newStats = await _fetchFromRpc();
               streamController.add(newStats);
             } catch (e) {
-              print("Error refreshing realtime stats: $e");
+              debugPrint("Error refreshing realtime stats: $e");
             }
           },
         )

@@ -7,7 +7,6 @@ class CompanySettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const backgroundColor = Color(0xFFF8F9FD);
-    final primaryColor = Theme.of(context).primaryColor;
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -196,7 +195,7 @@ class _SettingsGroup extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -243,7 +242,7 @@ class _SettingsTile extends StatelessWidget {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: iconColor.withOpacity(0.12),
+                    color: iconColor.withAlpha(77),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(icon, color: iconColor, size: 20),

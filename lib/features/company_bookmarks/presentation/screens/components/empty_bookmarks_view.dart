@@ -17,7 +17,7 @@ class EmptyBookmarksView extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withAlpha(13),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),

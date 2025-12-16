@@ -125,7 +125,7 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha(13),
               blurRadius: 20,
               offset: const Offset(0, -5),
             ),
@@ -142,7 +142,7 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              shadowColor: primaryColor.withOpacity(0.5),
+              shadowColor: primaryColor.withAlpha(128),
             ),
             child: const Text(
               'Search Candidates',
@@ -198,7 +198,7 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.02),
+                            color: Colors.black.withAlpha(5),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -246,7 +246,7 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.02),
+                            color: Colors.black.withAlpha(5),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -287,7 +287,7 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.02),
+                            color: Colors.black.withAlpha(5),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),

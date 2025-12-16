@@ -35,7 +35,7 @@ class BookmarkCandidateCard extends StatelessWidget {
       alignment: Alignment.centerRight,
       padding: const EdgeInsets.only(right: 24),
       decoration: BoxDecoration(
-        color: Colors.redAccent.withOpacity(0.9),
+        color: Colors.redAccent.withAlpha(230),
         borderRadius: BorderRadius.circular(20),
       ),
       child: const Column(
@@ -74,7 +74,7 @@ class BookmarkCandidateCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withAlpha(8),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -92,7 +92,7 @@ class BookmarkCandidateCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  backgroundColor: primaryColor.withOpacity(0.08),
+                  backgroundColor: primaryColor.withAlpha(21),
                   foregroundImage: hasAvatar
                       ? NetworkImage(candidate.avatarUrl!)
                       : null,
@@ -171,7 +171,7 @@ class BookmarkCandidateCard extends StatelessWidget {
                   onPressed: () => _showRemoveDialog(context),
                   icon: Icon(
                     Icons.bookmark_remove_outlined,
-                    color: Colors.redAccent.withOpacity(0.8),
+                    color: Colors.redAccent.withAlpha(204),
                   ),
                 ),
               ],

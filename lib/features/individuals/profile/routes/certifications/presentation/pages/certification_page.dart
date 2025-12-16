@@ -81,7 +81,7 @@ class CertificationPage extends StatelessWidget {
             return ListView.separated(
               padding: EdgeInsets.all(24.w),
               itemCount: list.length,
-              separatorBuilder: (_, __) => SizedBox(height: 16.h),
+              separatorBuilder: (_, _) => SizedBox(height: 16.h),
               itemBuilder: (context, index) {
                 final cert = list[index];
                 return CertificationCard(

@@ -154,7 +154,7 @@ class FormFileUploadButton extends StatelessWidget {
     }
 
     final backgroundColor = hasContent
-        ? Colors.green.withOpacity(0.1)
+        ? Colors.green.withAlpha(26)
         : Colors.white;
     final borderColor = hasContent ? Colors.green : Colors.grey[300]!;
     final iconColor = hasContent ? Colors.green : Colors.grey[500];

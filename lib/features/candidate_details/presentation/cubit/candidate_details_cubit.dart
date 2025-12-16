@@ -22,7 +22,7 @@ class CandidateProfileCubit extends Cubit<CandidateProfileState> {
 
     result.fold(
       (failure) => emit(CandidateProfileState.error(failure.message)),
-      (profile) async {emit(CandidateProfileState.loaded(profile) ); print("emiting here");  await serviceLocator.get<SupabaseClient>().rpc(
+      (profile) async {emit(CandidateProfileState.loaded(profile) );   await serviceLocator.get<SupabaseClient>().rpc(
       'track_profile_view',
       params: {'target_user_id': candidateId},
     );}

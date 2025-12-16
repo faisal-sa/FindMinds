@@ -119,7 +119,7 @@ class ProfileHistoryWidget extends StatelessWidget {
             Text(edu.degreeType),
             Text(edu.fieldOfStudy, style: TextStyle(color: Colors.grey[600])),
             Text(
-              "${edu.startDate.year ?? ''} - ${edu.endDate?.year ?? ''}",
+              "${edu.startDate.year } - ${edu.endDate?.year ?? ''}",
               style: TextStyle(color: Colors.grey[500], fontSize: 12.sp),
             ),
           ],

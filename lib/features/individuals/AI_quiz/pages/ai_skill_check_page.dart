@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/cubit/ai_skill_check_cubit.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/cubit/ai_skill_check_state.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/pages/quiz_view.dart';

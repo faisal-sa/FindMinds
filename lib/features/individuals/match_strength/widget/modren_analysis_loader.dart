@@ -51,7 +51,7 @@ class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF2563EB).withOpacity(0.2),
+                  color: const Color(0xFF2563EB).withAlpha(51),
                   blurRadius: 30,
                   spreadRadius: 10,
                 )

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/features/individuals/engagement/data/datasources/engagement_remote_data_source.dart';
 import 'package:graduation_project/features/individuals/engagement/data/repositories/engagement_repository_impl.dart';
-import 'package:graduation_project/features/individuals/engagement/domain/usecases/get_engagement_stats.dart';
 import 'package:graduation_project/features/individuals/engagement/presentation/cubit/engagement_cubit.dart';
 import 'package:graduation_project/features/individuals/engagement/presentation/cubit/engagement_state.dart';
 import 'package:graduation_project/features/individuals/engagement/presentation/widgets/engagement_graph.dart';
@@ -35,7 +34,6 @@ class EngagementSection extends StatelessWidget {
           BlocProvider(
             create: (context) {
               final repository = EngagementRepositoryImpl(dataSource:  EngagementRemoteDataSourceImpl(supabase: serviceLocator.get<SupabaseClient>()));
-              final useCase = GetEngagementStats(repository);
               
          return EngagementCubit(
       repository: repository,

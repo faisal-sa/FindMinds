@@ -111,7 +111,7 @@ class SearchRemoteDataSource {
 
       return candidates;
     } on PostgrestException catch (e) {
-      throw SupabaseException(e.message ?? 'Database error during search.');
+      throw SupabaseException(e.message);
     } catch (e) {
       throw SupabaseException('Unexpected error: ${e.toString()}');
     }

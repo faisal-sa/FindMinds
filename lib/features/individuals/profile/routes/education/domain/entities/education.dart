@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:graduation_project/core/utils/json_converters.dart';
 
 part 'education.freezed.dart';
 part 'education.g.dart';

@@ -21,9 +21,9 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
           ? user.jobTitle
           : "Professional";
       
-      final skills = user.skills.isNotEmpty
-          ? user.skills.take(10).join(", ")
-          : "General Professional Skills";
+      // final skills = user.skills.isNotEmpty
+      //     ? user.skills.take(10).join(", ")
+      //     : "General Professional Skills";
 
       final recentExperience = user.workExperiences.isNotEmpty
           ? user.workExperiences
@@ -32,36 +32,36 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
                 .join(", ")
           : "No specific recent work history";
 
-      final education = user.educations.isNotEmpty
-          ? user.educations
-                .map((e) => "${e.degreeType} in ${e.fieldOfStudy}")
-                .join(", ")
-          : "No specific education listed";
+      // final education = user.educations.isNotEmpty
+      //     ? user.educations
+      //           .map((e) => "${e.degreeType} in ${e.fieldOfStudy}")
+      //           .join(", ")
+      //     : "No specific education listed";
 
-      final prompt = '''
-        You are a senior technical recruiter and domain expert. 
-        Create a technical skill assessment quiz for a candidate with the following profile:
-        - Target Role: $jobTitle
-        - Key Skills: $skills
-        - Recent Experience: $recentExperience
-        - Education: $education
+      // final prompt = '''
+      //   You are a senior technical recruiter and domain expert. 
+      //   Create a technical skill assessment quiz for a candidate with the following profile:
+      //   - Target Role: $jobTitle
+      //   - Key Skills: $skills
+      //   - Recent Experience: $recentExperience
+      //   - Education: $education
         
-        Generate 5 multiple-choice questions.
-        Rules:
-        1. Questions should be scenario-based or technical, not just definitions.
-        2. Adjust difficulty based on the profile (if they have Senior in title, make it hard).
-        3. Cover different categories relevant to the skills provided (e.g., if they have Flutter, ask about State Management).
+      //   Generate 5 multiple-choice questions.
+      //   Rules:
+      //   1. Questions should be scenario-based or technical, not just definitions.
+      //   2. Adjust difficulty based on the profile (if they have Senior in title, make it hard).
+      //   3. Cover different categories relevant to the skills provided (e.g., if they have Flutter, ask about State Management).
         
-        Return valid JSON ONLY (no markdown formatting, no ```json tags):
-        [
-          {
-            "question": "Question text?",
-            "options": ["A", "B", "C", "D"],
-            "correctIndex": 0,
-            "category": "Category Name (e.g. Architecture, Syntax, Optimization)"
-          }
-        ]
-      ''';
+      //   Return valid JSON ONLY (no markdown formatting, no ```json tags):
+      //   [
+      //     {
+      //       "question": "Question text?",
+      //       "options": ["A", "B", "C", "D"],
+      //       "correctIndex": 0,
+      //       "category": "Category Name (e.g. Architecture, Syntax, Optimization)"
+      //     }
+      //   ]
+      // ''';
 
 
       
@@ -78,7 +78,7 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
           "category": "Architecture"
         },
         {
-          "question": "When optimizing for performance in ${jobTitle}, what is the highest priority?",
+          "question": "When optimizing for performance in $jobTitle, what is the highest priority?",
           "options": ["Code comments", "Memory management", "Variable naming", "File structure"],
           "correctIndex": 1,
           "category": "Optimization"

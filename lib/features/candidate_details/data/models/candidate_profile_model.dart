@@ -1,4 +1,6 @@
 
+// ignore_for_file: overridden_fields
+
 import 'package:dart_mappable/dart_mappable.dart';
 import '../../domain/entities/candidate_profile_entity.dart';
 import 'work_experience_model.dart';

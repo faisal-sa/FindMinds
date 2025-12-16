@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:dart_mappable/dart_mappable.dart';
 import '../domain/entities/candidate_entity.dart';
 part 'candidate_model.mapper.dart';

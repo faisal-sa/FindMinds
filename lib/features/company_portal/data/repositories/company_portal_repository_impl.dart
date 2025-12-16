@@ -72,7 +72,7 @@ class CompanyRepositoryImpl implements CompanyRepository {
 
         return Success(_getEmptyCompany());
       }
-    } catch (e, s) {
+    } catch (e) {
       return Success(_getEmptyCompany());
     }
   }

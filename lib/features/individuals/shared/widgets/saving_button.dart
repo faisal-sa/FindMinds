@@ -29,7 +29,7 @@ class SavingButton extends StatelessWidget {
           onPressed: (isLoading || onPressed == null) ? null : onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
-            disabledBackgroundColor: backgroundColor.withOpacity(0.5),
+            disabledBackgroundColor: backgroundColor.withAlpha(128),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8), 
             ),

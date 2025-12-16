@@ -48,6 +48,8 @@ dependencies:
   toastification: ^3.0.3
   chewie: ^1.13.0
   google_generative_ai: ^0.4.7
+  video_player: ^2.10.1
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

@@ -6,7 +6,6 @@ import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/core/router/router.dart';
 import 'package:graduation_project/core/theme/theme.dart';
 import 'package:graduation_project/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 void main() async {

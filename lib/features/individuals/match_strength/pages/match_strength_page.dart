@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:graduation_project/core/theme/theme.dart';
 import 'package:graduation_project/features/individuals/match_strength/cubit/match_strength_cubit.dart';
 import 'package:graduation_project/features/individuals/match_strength/cubit/match_strength_state.dart';
 import 'package:graduation_project/features/individuals/match_strength/widget/modren_analysis_loader.dart';
@@ -134,7 +131,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
               color: Color(0xFF1D4ED8),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF2563EB).withOpacity(0.4),
+                  color: const Color(0xFF2563EB).withAlpha(102),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -167,7 +164,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withAlpha(51),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Icon(
@@ -183,7 +180,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
                   height: 12,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withAlpha(51),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: FractionallySizedBox(
@@ -257,7 +254,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
         border: Border.all(color: const Color(0xFFE2E8F0)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -296,7 +293,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
         border: Border.all(color: const Color(0xFFE2E8F0)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withAlpha(5),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

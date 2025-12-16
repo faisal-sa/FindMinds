@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,10 +44,11 @@ class CandidateProfilePage extends StatelessWidget {
         throw 'Could not launch $url';
       }
     } catch (e) {
+      if(context.mounted){
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Could not open CV: $e")));
-    }
+      }}
   }
 
   @override
@@ -132,7 +135,7 @@ class CandidateProfilePage extends StatelessWidget {
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withAlpha(13),
                             blurRadius: 10,
                             offset: const Offset(0, -5),
                           ),
@@ -257,7 +260,7 @@ class CandidateProfilePage extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withAlpha(8),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -271,7 +274,7 @@ class CandidateProfilePage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.1),
+                  color: iconColor.withAlpha(26),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, color: iconColor, size: 20.sp),

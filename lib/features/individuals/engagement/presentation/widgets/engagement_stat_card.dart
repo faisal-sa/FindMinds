@@ -23,7 +23,7 @@ class EngagementStatCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.bluePrimary.withOpacity(0.1),
+              color: AppColors.bluePrimary.withAlpha(26),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: AppColors.bluePrimary, size: 24),

@@ -103,7 +103,7 @@ class _QuizViewState extends State<QuizView> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: question.options.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  separatorBuilder: (_, _) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
                     final isSelected = selectedOption == index;
                     final optionLabel = String.fromCharCode(65 + index);
@@ -129,7 +129,7 @@ class _QuizViewState extends State<QuizView> {
                                   BoxShadow(
                                     color: const Color(
                                       0xFF4285F4,
-                                    ).withOpacity(0.1),
+                                    ).withAlpha(26),
                                     blurRadius: 8,
                                     offset: const Offset(0, 4),
                                   ),

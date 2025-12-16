@@ -106,7 +106,7 @@ class CandidateResultsPage extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: primaryColor.withOpacity(0.1),
+                          color: primaryColor.withAlpha(26),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -236,7 +236,7 @@ class CandidateResultsPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withAlpha(10),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),

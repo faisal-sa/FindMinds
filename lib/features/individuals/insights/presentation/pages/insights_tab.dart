@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/core/theme/theme.dart';
-import 'package:graduation_project/core/usecasesAbstract/no_params.dart';
-import 'package:graduation_project/features/auth/presentation/cubit/auth_cubit.dart';
+
 import 'package:graduation_project/features/individuals/engagement/presentation/widgets/engagement_section.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/widgets/feature_card.dart';
 import 'package:graduation_project/features/individuals/insights/presentation/widgets/insights_app_bar.dart';
@@ -169,9 +167,9 @@ class _ProfileStrengthIndicator extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16), 
       decoration: BoxDecoration(
-        color: AppColors.blueDark.withOpacity(0.3),
+        color: AppColors.blueDark.withAlpha(77),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
+        border: Border.all(color: Colors.white.withAlpha(26)),
       ),
       child: Column(
         children: [
@@ -248,7 +246,7 @@ class _ResumeUploadButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withAlpha(26),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),
