@@ -19,7 +19,6 @@ class ResultView extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          // Header Section
           const Text(
             "AI Skill Check",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -31,7 +30,6 @@ class ResultView extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // Circular Score (Custom build for simplicity)
           Stack(
             alignment: Alignment.center,
             children: [

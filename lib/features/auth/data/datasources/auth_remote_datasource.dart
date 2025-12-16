@@ -69,12 +69,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String email,
     required String password,
   }) async {
-    print("in data source now");
     final response = await _supabase.auth.signInWithPassword(
       email: email,
       password: password,
     );
-    print(response);
 
     if (response.user == null) {
       throw Exception('Sign in failed: User is null');
@@ -116,8 +114,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<void> sendPasswordResetOTP({required String email}) async {
-    // For password recovery, Supabase sends OTP via resetPasswordForEmail
-    // The OTP can then be verified using verifyOTP with OtpType.recovery
     await _supabase.auth.resetPasswordForEmail(email);
   }
 

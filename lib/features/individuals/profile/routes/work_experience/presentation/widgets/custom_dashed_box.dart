@@ -95,7 +95,6 @@ class EmptyStateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      // Optional padding around the dashed box itself
       padding: EdgeInsets.symmetric(horizontal: 0.w), 
       child: CustomDashedBox(
         color: Colors.grey[300]!,

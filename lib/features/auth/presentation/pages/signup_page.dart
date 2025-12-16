@@ -34,7 +34,7 @@ class _SignupPageState extends State<SignupPage> {
           if (state.role == 'Company') {
             context.go('/company/onboarding-router');
           } else {
-            context.go('/insights'); // Individual user flow
+            context.go('/insights'); 
           }
         }
         if (state is OTPSent) {

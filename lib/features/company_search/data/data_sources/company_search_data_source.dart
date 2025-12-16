@@ -1,3 +1,4 @@
+import 'package:graduation_project/core/exports/app_exports.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -66,6 +67,21 @@ class SearchRemoteDataSource {
       final List<Map<String, dynamic>> candidates =
           List<Map<String, dynamic>>.from(result);
 
+          
+      if (candidates.isNotEmpty) {
+        final List<String> foundIds = candidates
+            .map((user) => user['id'] as String)
+            .toList();
+
+        supabase
+            .rpc(
+              'track_search_appearances',
+              params: {'candidate_ids': foundIds},
+            )
+            .catchError((e) {
+              debugPrint('Error tracking search stats: $e');
+            });
+      }
       final companyId = supabase.auth.currentUser?.id;
 
       for (var candidate in candidates) {
@@ -89,7 +105,7 @@ class SearchRemoteDataSource {
             }
           }
         } catch (e) {
-          print("Error fetching bookmarks: $e");
+          debugPrint("Error fetching bookmarks: $e");
         }
       }
 

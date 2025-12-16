@@ -40,7 +40,6 @@ class EducationCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Content Column
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +82,6 @@ class EducationCard extends StatelessWidget {
                   ],
                 ),
               ),
-              // Actions Row
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -112,7 +110,6 @@ class EducationCard extends StatelessWidget {
             ],
           ),
 
-          // Attachments Indicator
           if ((education.graduationCertificateBytes != null ||
                   education.graduationCertificateUrl != null) ||
               (education.academicRecordBytes != null ||

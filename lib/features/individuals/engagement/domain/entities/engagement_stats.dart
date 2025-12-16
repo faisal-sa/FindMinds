@@ -1,7 +1,7 @@
 class EngagementStats {
   final int searchAppearances;
   final int profileViews;
-  final List<double> weeklyTraffic; // 7 days of data
+  final List<double> weeklyTraffic; 
 
   const EngagementStats({
     required this.searchAppearances,

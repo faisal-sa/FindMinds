@@ -15,10 +15,9 @@ class AuthLoading extends AuthState {}
 class AuthAuthenticated extends AuthState {
   final User user;
   final String? role;
-  final String userId; // <--- FIX: Added userId getter
+  final String userId; 
 
   AuthAuthenticated(this.user, {this.role})
-    // FIX: Initialize userId using the User entity's ID
     : userId = user.id;
 
   @override

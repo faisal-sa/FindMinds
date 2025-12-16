@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-//this might be duplicated
 class DashedBorderPainter extends CustomPainter {
   final Color color;
   final double strokeWidth;

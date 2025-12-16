@@ -21,15 +21,11 @@ class WorkExperienceRemoteDataSourceImpl
     final user = _supabaseClient.auth.currentUser;
     if (user == null) throw Exception("User not authenticated");
 
-    // Get the JSON map from the model
     final data = model.toJson();
 
-    // FORCE the user_id to be the current logged-in user.
-    // This satisfies the "WITH CHECK (auth.uid() = user_id)" policy.
     data['user_id'] = user.id;
 
-    // Ideally, remove 'id' if you want Postgres to auto-generate it
-    // data.remove('id');
+  
 
     await _supabaseClient.from('work_experiences').insert(data);
   }

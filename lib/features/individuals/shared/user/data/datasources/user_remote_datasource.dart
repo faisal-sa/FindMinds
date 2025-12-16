@@ -21,8 +21,7 @@ class UserRemoteDataSource {
 
   Future<void> updateProfile(UserEntity user) async {
     final userId = supabase.auth.currentUser!.id;
-    // Note: You might need to separate updates for related tables (educations, etc.)
-    // based on how Supabase upserts work, but this follows your existing logic.
+
     await supabase.from('profiles').update(user.toJson()).eq('id', userId);
   }
 }

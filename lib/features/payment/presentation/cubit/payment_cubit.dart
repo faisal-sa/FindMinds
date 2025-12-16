@@ -8,10 +8,8 @@ import 'package:uuid/uuid.dart';
 class PaymentCubit extends Cubit<PaymentState> {
   final ProcessPaymentUseCase _processPaymentUseCase;
 
-  // Form key
   final formKey = GlobalKey<FormState>();
 
-  // Form controllers
   final cardNameController = TextEditingController();
   final cardNumberController = TextEditingController(text: '4111111111111111');
   final cardMonthController = TextEditingController(text: '12');
@@ -27,7 +25,7 @@ class PaymentCubit extends Cubit<PaymentState> {
 
     final request = PaymentRequest(
       givenId: const Uuid().v4(),
-      amount: 19900, // Fixed amount for now
+      amount: 19900, 
       callbackUrl: 'https://example.com/checkout/payer-return',
       source: PaymentSource(
         name: cardNameController.text.trim(),

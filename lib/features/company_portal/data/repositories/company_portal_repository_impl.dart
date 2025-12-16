@@ -69,9 +69,7 @@ class CompanyRepositoryImpl implements CompanyRepository {
         final model = CompanyModelMapper.fromMap(data);
         return Success(model.toEntity());
       } catch (mappingError) {
-        print(
-          "⚠️ Mapping Error (Returning empty to prevent crash): $mappingError",
-        );
+
         return Success(_getEmptyCompany());
       }
     } catch (e, s) {
@@ -120,7 +118,6 @@ class CompanyRepositoryImpl implements CompanyRepository {
     }
   }
 
-  // دالة مساعدة لإنشاء شركة فارغة
   CompanyEntity _getEmptyCompany() {
     return CompanyEntity(
       companyName: '',

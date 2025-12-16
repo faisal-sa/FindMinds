@@ -1,4 +1,3 @@
-// lib/features/candidate_details/data/repositories/candidate_repository_impl.dart
 
 import 'package:fpdart/fpdart.dart';
 import 'package:injectable/injectable.dart';

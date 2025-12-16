@@ -56,7 +56,7 @@ class EducationRemoteDataSourceImpl implements EducationRemoteDataSource {
     }
 
     final model = EducationModel(
-      id: '', // This will be ignored/removed
+      id: '', 
       degreeType: education.degreeType,
       institutionName: education.institutionName,
       fieldOfStudy: education.fieldOfStudy,
@@ -71,7 +71,6 @@ class EducationRemoteDataSourceImpl implements EducationRemoteDataSource {
     final data = model.toJson();
     data.remove('id'); 
     
-    // 👇 THIS IS THE MISSING LINE
     data['user_id'] = _userId; 
 
     await _supabase.from('educations').insert(data);
@@ -79,22 +78,18 @@ class EducationRemoteDataSourceImpl implements EducationRemoteDataSource {
 
   @override
   Future<void> updateEducation(Education education) async {
-    // 1. Validate ID
     if (education.id.isEmpty) {
       throw Exception("Cannot update education: ID is missing.");
     }
 
-    // 2. Fetch the CURRENT state using maybeSingle() instead of single()
     final currentRecord = await _supabase
         .from('educations')
         .select()
         .eq('id', education.id)
-        .maybeSingle(); // <--- Use maybeSingle() prevents the crash
+        .maybeSingle(); 
 
-    // 3. Handle the case where the record doesn't exist
     if (currentRecord == null) {
-      // If we can't find the record, we can't update it.
-      // This usually means it was deleted or the user doesn't have permission.
+     
       throw Exception(
         "Education record not found (ID: ${education.id}). Check RLS policies or if record exists.",
       );
@@ -103,11 +98,9 @@ class EducationRemoteDataSourceImpl implements EducationRemoteDataSource {
     final String? oldGradUrl = currentRecord['graduation_certificate_url'];
     final String? oldAcademicUrl = currentRecord['academic_record_url'];
 
-    // ... Rest of your logic (Prepare new URLs) ...
     String? gradCertUrl = education.graduationCertificateUrl;
     String? academicRecUrl = education.academicRecordUrl;
 
-    // --- HANDLE GRADUATION CERTIFICATE ---
     if (education.graduationCertificateBytes != null) {
       if (oldGradUrl != null) await _deleteFile(oldGradUrl);
       gradCertUrl = await _uploadFileBytes(
@@ -121,7 +114,6 @@ class EducationRemoteDataSourceImpl implements EducationRemoteDataSource {
       gradCertUrl = null;
     }
 
-    // --- HANDLE ACADEMIC RECORD ---
     if (education.academicRecordBytes != null) {
       if (oldAcademicUrl != null) await _deleteFile(oldAcademicUrl);
       academicRecUrl = await _uploadFileBytes(
@@ -134,7 +126,6 @@ class EducationRemoteDataSourceImpl implements EducationRemoteDataSource {
       academicRecUrl = null;
     }
 
-    // 4. Update the Database
     final model = EducationModel(
       id: education.id,
       degreeType: education.degreeType,
@@ -151,7 +142,6 @@ class EducationRemoteDataSourceImpl implements EducationRemoteDataSource {
     final data = model.toJson();
     data.remove('user_id'); 
 
-    // 5. Perform the update
     await _supabase.from('educations').update(data).eq('id', education.id);
   }
 

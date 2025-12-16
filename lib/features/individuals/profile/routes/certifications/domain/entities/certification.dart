@@ -13,12 +13,9 @@ abstract class Certification with _$Certification {
     required DateTime issueDate,
     DateTime? expirationDate,
     String? credentialUrl,
-    
-    // --- ADD THIS FIELD ---
-    // We ignore this for JSON because a File object cannot be serialized directly.
+   
     @JsonKey(includeFromJson: false, includeToJson: false) File? credentialFile,
 
-    // ----------------------
 
   }) = _Certification;
 

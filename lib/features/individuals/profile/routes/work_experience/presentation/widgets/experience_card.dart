@@ -23,9 +23,7 @@ class ExperienceCard extends StatelessWidget {
         "${fmt.format(experience.startDate)} - ${experience.isCurrentlyWorking ? 'Present' : (experience.endDate != null ? fmt.format(experience.endDate!) : '')}";
 
     return Container(
-      // 1. Clamp Padding:
-      // On mobile, 16.w might be 16px. On Desktop 16.w might be 60px.
-      // .clamp(16, 32) ensures it never gets bigger than 32px padding.
+     
       padding: EdgeInsets.all(16.w.clamp(16, 32)),
       
       decoration: BoxDecoration(
@@ -52,8 +50,7 @@ class ExperienceCard extends StatelessWidget {
                     Text(
                       experience.jobTitle,
                       style: TextStyle(
-                        // 2. Clamp Font Size:
-                        // Keeps it readable on mobile (16) but stops it being huge on web (max 22)
+                    
                         fontSize: 16.sp.clamp(16, 22), 
                         fontWeight: FontWeight.bold,
                       ),
@@ -87,9 +84,7 @@ class ExperienceCard extends StatelessWidget {
                     icon: Icon(
                       Icons.edit_outlined,
                       color: Colors.blue[400],
-                      // 3. Clamp Icons:
-                      
-                      // Icons scaling to 100px looks bad. Max size 24.
+                  
                       size: 20.sp.clamp(20, 24),
                     ),
                   ),
@@ -119,7 +114,6 @@ class ExperienceCard extends StatelessWidget {
                       padding: EdgeInsets.only(top: 6.h),
                       child: Icon(
                         Icons.circle,
-                        // Fix bullet point size
                         size: 5.sp.clamp(5, 8), 
                         color: Colors.grey[600],
                       ),
@@ -129,7 +123,6 @@ class ExperienceCard extends StatelessWidget {
                       child: Text(
                         r,
                         style: TextStyle(
-                          // Fix Responsibility text size
                           fontSize: 13.sp.clamp(13, 16),
                           color: Colors.grey[700],
                           height: 1.4,

@@ -14,11 +14,9 @@ class AboutMeState extends Equatable {
     this.status = FormStatus.initial,
   });
 
-  // 1. Create a private constant to act as a flag
   static const _sentinel = Object();
 
-  // 2. Change the nullable parameters to default to the _sentinel
-  //    and change their type to Object? so they can accept the sentinel.
+
   AboutMeState copyWith({
     String? summary,
     Object? videoPath = _sentinel,
@@ -27,9 +25,7 @@ class AboutMeState extends Equatable {
   }) {
     return AboutMeState(
       summary: summary ?? this.summary,
-      
-      // 3. Logic: If value is sentinel, keep old. 
-      //    If value is NOT sentinel (even if it is null), use the new value.
+     
       videoPath: videoPath == _sentinel
           ? this.videoPath
           : (videoPath as String?),

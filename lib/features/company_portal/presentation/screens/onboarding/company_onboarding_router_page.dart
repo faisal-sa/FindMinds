@@ -39,8 +39,7 @@ class _CompanyOnboardingRouterPageState
     if (!state.hasProfile) {
       context.go('/company/complete-profile');
     }
-    // }
-    // ---------------------------
+
     else {
       context.go('/company/search');
     }

@@ -1,4 +1,3 @@
-// States
 import 'package:graduation_project/features/ai_analysis/data/models/ai_score_model.dart';
 
 abstract class AiAnalysisState {}

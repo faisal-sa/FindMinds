@@ -1,4 +1,3 @@
-// lib/features/company_portal/domain/usecases/add_candidate_bookmark.dart
 
 import 'package:graduation_project/features/company_bookmarks/domain/repositories/company_bookmarks_repository.dart';
 import 'package:injectable/injectable.dart';

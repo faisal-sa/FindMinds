@@ -24,12 +24,10 @@ class CertificationCard extends StatelessWidget {
           "${fmt.format(certification.issueDate)} - ${fmt.format(certification.expirationDate!)}";
     }
 
-    // --- FIX: Check for Local File OR Remote URL ---
     final bool hasAttachment =
         certification.credentialFile != null ||
         (certification.credentialUrl != null &&
             certification.credentialUrl!.isNotEmpty);
-    // -----------------------------------------------
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -108,7 +106,6 @@ class CertificationCard extends StatelessWidget {
             ],
           ),
 
-          // --- FIX: Use the boolean we calculated above ---
           if (hasAttachment)
             Padding(
               padding: EdgeInsets.only(top: 12.h),

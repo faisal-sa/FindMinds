@@ -6,7 +6,6 @@ class CompanySettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Define colors locally or use your theme
     const backgroundColor = Color(0xFFF8F9FD);
     final primaryColor = Theme.of(context).primaryColor;
 
@@ -14,7 +13,6 @@ class CompanySettingsPage extends StatelessWidget {
       backgroundColor: backgroundColor,
       body: CustomScrollView(
         slivers: [
-          // 1. Modern Large Header
           SliverAppBar.large(
             backgroundColor: backgroundColor,
             surfaceTintColor: Colors.transparent,
@@ -27,7 +25,6 @@ class CompanySettingsPage extends StatelessWidget {
             ),
           ),
 
-          // 2. Settings List
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -68,7 +65,6 @@ class CompanySettingsPage extends StatelessWidget {
                     ],
                   ),
 
-                  // Version info footer
                   const Padding(
                     padding: EdgeInsets.only(top: 30, bottom: 50),
                     child: Center(
@@ -142,7 +138,7 @@ class CompanySettingsPage extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pop(context); // Close sheet
+                        Navigator.pop(context); 
                         context.go('/login');
                       },
                       style: ElevatedButton.styleFrom(
@@ -166,10 +162,6 @@ class CompanySettingsPage extends StatelessWidget {
     );
   }
 }
-
-// -----------------------------------------------------------------------------
-// HELPER WIDGETS
-// -----------------------------------------------------------------------------
 
 class _SectionHeader extends StatelessWidget {
   final String title;
@@ -247,7 +239,6 @@ class _SettingsTile extends StatelessWidget {
           children: [
             Row(
               children: [
-                // Icon Box
                 Container(
                   width: 38,
                   height: 38,
@@ -259,7 +250,6 @@ class _SettingsTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
 
-                // Text Info
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,7 +276,6 @@ class _SettingsTile extends StatelessWidget {
                   ),
                 ),
 
-                // Arrow
                 if (showArrow)
                   Icon(
                     Icons.arrow_forward_ios_rounded,
@@ -296,7 +285,6 @@ class _SettingsTile extends StatelessWidget {
               ],
             ),
 
-            // Subtle Divider
             if (showDivider)
               Padding(
                 padding: const EdgeInsets.only(top: 12, left: 54),

@@ -25,7 +25,6 @@ import 'package:graduation_project/features/payment/presentation/pages/pay_page.
 import 'package:graduation_project/features/payment/presentation/pages/webview_page.dart';
 import 'package:graduation_project/features/splash_screen/splash_screen.dart';
 
-// keep it here for now
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final getIt = GetIt.instance;
 
@@ -104,10 +103,9 @@ final GoRouter router = GoRouter(
               path: '/insights',
               builder: (context, state) => const InsightsTab(),
               routes: [
-                // --- ADD THIS ROUTE ---
                 GoRoute(
                   path:
-                      'match-strength', // route will be /insights/match-strength
+                      'match-strength',
                   parentNavigatorKey: _rootNavigatorKey, // Hides bottom navbar
                   builder: (context, state) {
                     final userCubit = serviceLocator.get<UserCubit>();
@@ -243,16 +241,13 @@ GoRoute(
                   path: 'certification',
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {
-                    // 1. Get UserCubit
                     final userCubit = serviceLocator.get<UserCubit>();
-                    // 2. Extract existing certifications from UserEntity
                     final initialCertifications =
                         userCubit.state.user.certifications;
 
                     return BlocProvider(
                       create: (context) {
                         final cubit = serviceLocator.get<CertificationCubit>();
-                        // 3. Initialize Cubit with local data instead of calling loadCertifications()
                         cubit.initialize(initialCertifications);
                         return cubit;
                       },
@@ -264,19 +259,14 @@ GoRoute(
                   path: 'skills',
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {
-                    // 1. Get UserCubit instance
                     final userCubit = serviceLocator.get<UserCubit>();
 
-                    // 2. Extract existing lists for initialization
                     final initialSkills = userCubit.state.user.skills;
                     final initialLanguages = userCubit.state.user.languages;
 
-                    // 3. Use MultiBlocProvider to provide BOTH UserCubit and SkillsLanguagesCubit
                     return MultiBlocProvider(
                       providers: [
-                        // Provide the existing UserCubit to the new route context
                         BlocProvider.value(value: userCubit),
-                        // Create and provide the SkillsLanguagesCubit
                         BlocProvider(
                           create: (context) {
                             final cubit = serviceLocator
@@ -294,25 +284,19 @@ GoRoute(
                   path: 'preferences',
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {
-                    // 1. Get existing UserCubit
                     final userCubit = serviceLocator.get<UserCubit>();
 
-                    // 2. Extract current preferences from local state
                     final initialPreferences =
                         userCubit.state.user.jobPreferences;
 
-                    // 3. Provide both cubits
                     return MultiBlocProvider(
                       providers: [
-                        // Pass the UserCubit down (for the BlocListener to work)
                         BlocProvider.value(value: userCubit),
 
-                        // Create JobPreferencesCubit and initialize with local data
                         BlocProvider(
                           create: (context) {
                             final cubit = serviceLocator
                                 .get<JobPreferencesCubit>();
-                            // Initialize immediately with data from UserEntity
                             cubit.initialize(initialPreferences);
                             return cubit;
                           },

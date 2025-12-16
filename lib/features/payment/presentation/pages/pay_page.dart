@@ -9,10 +9,8 @@ class PayPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Use a very subtle off-white for the whole page
       backgroundColor: Colors.grey[50],
 
-      //==================  App Bar  =================== //
       appBar: AppBar(
         title: const Text(
           'Payment',
@@ -20,7 +18,6 @@ class PayPage extends StatelessWidget {
         ),
         centerTitle: true,
         elevation: 0,
-        // Matching the dark brand color from your previous TextField focused border
         backgroundColor: const Color.fromARGB(255, 249, 249, 250),
         foregroundColor: Colors.black,
       ),
@@ -28,7 +25,6 @@ class PayPage extends StatelessWidget {
       //==================  Body  ===================//
       body: BlocListener<PaymentCubit, PaymentState>(
         listener: (context, state) async {
-          // Logic preserved exactly as requested
           switch (state.status) {
             case PaymentStatus.requiresAuth:
               if (state.authUrl != null) {
@@ -85,7 +81,6 @@ class PayPage extends StatelessWidget {
               buildSectionTitle('Card Details'),
 
               //==================  Card Input Form  ===================//
-              // Assuming this form uses the FormTextField we styled previously
               const CardInputForm(),
               const SizedBox(height: 40),
 
@@ -96,13 +91,12 @@ class PayPage extends StatelessWidget {
 
                   //==================  Pay Now Button  ===================//
                   return SizedBox(
-                    height: 56, // Taller, more modern button
+                    height: 56, 
                     child: ElevatedButton(
                       onPressed: isLoading
                           ? null
                           : context.read<PaymentCubit>().submitPayment,
                       style: ElevatedButton.styleFrom(
-                        // Dark Navy Brand Color
                         backgroundColor: const Color.fromARGB(
                           255,
                           123,
@@ -142,7 +136,6 @@ class PayPage extends StatelessWidget {
                   );
                 },
               ),
-              // Extra padding at bottom for scrolling
               const SizedBox(height: 20),
             ],
           ),

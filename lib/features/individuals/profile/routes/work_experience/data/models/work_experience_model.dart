@@ -8,9 +8,8 @@ part 'work_experience_model.g.dart';
 
 @freezed
 abstract class WorkExperienceModel with _$WorkExperienceModel {
-  const WorkExperienceModel._(); // Required for custom methods
+  const WorkExperienceModel._(); 
 
-  // @JsonSerializable(fieldRename: FieldRename.snake) // Optional: saves typing @JsonKey names manually
   const factory WorkExperienceModel({
     required String id,
     @JsonKey(name: 'job_title') required String jobTitle,
@@ -57,11 +56,8 @@ abstract class WorkExperienceModel with _$WorkExperienceModel {
     );
   }
 
-  // Custom method to match your original toJson({userId}) logic
   Map<String, dynamic> toApiJson({required String userId}) {
-    // Generate the standard JSON
     final json = toJson();
-    // Inject the user_id
     json['user_id'] = userId;
     return json;
   }

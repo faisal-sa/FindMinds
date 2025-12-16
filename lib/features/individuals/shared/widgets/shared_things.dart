@@ -1,5 +1,3 @@
-// --- 1. THE MAIN SHELL ---
-import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +27,7 @@ class BaseFormSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity, // Force full width
+      width: double.infinity, 
       decoration: const BoxDecoration(
         color: Color(0xFFF8FAFC),
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -42,7 +40,7 @@ class BaseFormSheet extends StatelessWidget {
         children: [
           SizedBox(height: 12.h),
           Container(
-            width: 40, // Fixed width for handle looks better on desktop
+            width: 40,
             height: 4, 
             decoration: BoxDecoration(
               color: Colors.grey[300],
@@ -51,9 +49,7 @@ class BaseFormSheet extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
 
-          // Header
           Padding(
-            // Clamp horizontal padding: At least 24, max 50
             padding: EdgeInsets.symmetric(horizontal: 24.w.clamp(24, 50)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +57,6 @@ class BaseFormSheet extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    // Clamp Font: At least 18, max 24
                     fontSize: 18.sp.clamp(18, 24), 
                     fontWeight: FontWeight.bold,
                   ),
@@ -75,10 +70,8 @@ class BaseFormSheet extends StatelessWidget {
           ),
           const Divider(),
 
-          // Scrollable Form Body
           Expanded(
             child: SingleChildScrollView(
-              // Clamp padding here too
               padding: EdgeInsets.all(24.w.clamp(24, 50)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +83,6 @@ class BaseFormSheet extends StatelessWidget {
             ),
           ),
 
-          // Sticky Bottom Button
           Container(
             padding: EdgeInsets.all(24.w.clamp(24, 50)),
             decoration: const BoxDecoration(
@@ -100,7 +92,7 @@ class BaseFormSheet extends StatelessWidget {
             child: SafeArea(
               child: SizedBox(
                 width: double.infinity,
-                height: 50.h.clamp(50, 60), // Don't let button get too tall
+                height: 50.h.clamp(50, 60), 
                 child: ElevatedButton(
                   onPressed: isLoading ? null : onSubmit,
                   style: ElevatedButton.styleFrom(
@@ -114,7 +106,7 @@ class BaseFormSheet extends StatelessWidget {
                       : Text(
                           submitLabel,
                           style: TextStyle(
-                            fontSize: 16.sp.clamp(16, 20), // Clamp font
+                            fontSize: 16.sp.clamp(16, 20),
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
                           ),
@@ -150,12 +142,10 @@ class FormFileUploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 1. Determine if we have content (New file OR Existing URL)
     final bool hasNewFile = file != null;
     final bool hasExistingUrl = existingUrl != null && existingUrl!.isNotEmpty;
     final bool hasContent = hasNewFile || hasExistingUrl;
 
-    // 2. Determine Display Text (New File Name > "File Attached" > Label)
     String displayText = label;
     if (hasNewFile) {
       displayText = file!.name;
@@ -163,7 +153,6 @@ class FormFileUploadButton extends StatelessWidget {
       displayText = "File Attached";
     }
 
-    // 3. Determine Colors
     final backgroundColor = hasContent
         ? Colors.green.withOpacity(0.1)
         : Colors.white;
@@ -206,7 +195,6 @@ class FormFileUploadButton extends StatelessWidget {
                 ),
               ],
             ),
-            // Clear Button
             if (hasContent && onClear != null)
               Positioned(
                 top: -10,
@@ -226,7 +214,6 @@ class FormFileUploadButton extends StatelessWidget {
   }
 }
 
-// --- 3. REUSABLE DATE ROW ---
 class FormDateRow extends StatelessWidget {
   final String startLabel;
   final DateTime? startDate;
@@ -256,16 +243,14 @@ class FormDateRow extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              FormLabel(startLabel), // Assuming FormLabel is global
+              FormLabel(startLabel), 
               GestureDetector(
                 onTap: () => showCustomDatePicker(
-                  // Assuming global helper
                   context: context,
                   initialDate: startDate,
                   onDateChanged: onStartChanged,
                 ),
                 child: DateBox(
-                  // Assuming global helper
                   date: startDate,
                   placeholder: "Select",
                 ),

@@ -5,11 +5,9 @@ import 'package:graduation_project/features/individuals/AI_quiz/cubit/ai_skill_c
 import 'package:graduation_project/features/individuals/AI_quiz/models/quiz_question.dart';
 import 'package:graduation_project/features/individuals/AI_quiz/models/skill_category_result.dart';
 import 'package:graduation_project/features/individuals/shared/user/domain/entities/user_entity.dart';
-import 'package:graduation_project/main.dart';
 
 class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
-  // Assuming you inject your Gemini model wrapper here
-  // final GenerativeModel model; 
+
   
   AiSkillCheckCubit() : super(AiSkillCheckInitial());
 
@@ -19,7 +17,6 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
     emit(AiSkillCheckLoading());
 
     try {
-      // 1. Build Rich Context from UserEntity
       final jobTitle = user.jobTitle.isNotEmpty
           ? user.jobTitle
           : "Professional";
@@ -41,7 +38,6 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
                 .join(", ")
           : "No specific education listed";
 
-      // 2. Enhanced Prompt Engineering
       final prompt = '''
         You are a senior technical recruiter and domain expert. 
         Create a technical skill assessment quiz for a candidate with the following profile:
@@ -67,14 +63,11 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
         ]
       ''';
 
-      // 3. Call AI (Pseudo-code for your implementation)
-      // final content = [Content.text(prompt)];
-      // final response = await model.generateContent(content);
+
       
-      // MOCK RESPONSE FOR DEMO (Replace with actual AI call)
       await Future.delayed(
         const Duration(seconds: 4),
-      ); // Simulate network for loader
+      ); 
       final mockJson =
           '''
       [
@@ -111,7 +104,6 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
       ]
       ''';
       
-      // Parse JSON (Add error handling for real AI responses)
       final List<dynamic> data = jsonDecode(mockJson);
       _currentQuestions = data.map((e) => QuizQuestion.fromMap(e)).toList();
 
@@ -148,9 +140,9 @@ class AiSkillCheckCubit extends Cubit<AiSkillCheckState> {
       final percentage = ((correctInCat / totalInCat) * 100).round();
 
       String status;
-      if (percentage >= 90) status = "Strong";
-      else if (percentage >= 70) status = "Proficient";
-      else status = "Needs Improvement";
+      if (percentage >= 90){ status = "Strong";}
+      else if (percentage >= 70) {status = "Proficient";}
+      else {status = "Needs Improvement";}
 
       return SkillCategoryResult(
         category: entry.key,

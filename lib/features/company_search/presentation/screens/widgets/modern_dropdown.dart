@@ -26,7 +26,7 @@ class ModernDropdown extends StatelessWidget {
         isExpanded: true,
         dropdownColor: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        icon: const SizedBox.shrink(), // Hide default arrow
+        icon: const SizedBox.shrink(), 
         decoration: InputDecoration(
           labelText: label,
           prefixIcon: Icon(

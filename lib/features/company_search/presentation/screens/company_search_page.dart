@@ -48,12 +48,10 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
   }
 
   void _performSearch(BuildContext context) {
-    // 1. Prepare the values
     final city = _cityController.text.trim();
     final skill = _skillController.text.trim();
 
-    // 2. Check if all search criteria are empty
-    // We check: Text inputs, selected lists, job title, and the switch
+
     bool isCriteriaEmpty =
         city.isEmpty &&
         skill.isEmpty &&
@@ -64,7 +62,6 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
         targetRolesList.isEmpty &&
         !canRelocateValue;
 
-    // 3. If everything is empty, display an error message and stop the process
     if (isCriteriaEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -88,10 +85,9 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
           margin: const EdgeInsets.all(20),
         ),
       );
-      return; // Stop execution here
+      return; 
     }
 
-    // 4. If the check passes, continue the search process as usual
     if (_formKey.currentState!.validate()) {
       context.read<SearchBloc>().add(
         PerformSearchEvent(

@@ -16,7 +16,6 @@ class ProfileHistoryWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // الخبرات
         _buildSectionTitle("Experience"),
         if (profile.experiences.isEmpty)
           const Padding(
@@ -27,7 +26,6 @@ class ProfileHistoryWidget extends StatelessWidget {
           ...profile.experiences.map((e) => _buildExperienceItem(e)),
         Gap(20.h),
 
-        // التعليم
         _buildSectionTitle("Education"),
         if (profile.educations.isEmpty)
           const Padding(
@@ -38,7 +36,6 @@ class ProfileHistoryWidget extends StatelessWidget {
           ...profile.educations.map((e) => _buildEducationItem(e)),
         Gap(20.h),
 
-        // الشهادات
         _buildSectionTitle("Certifications"),
         if (profile.certifications.isEmpty)
           const Padding(

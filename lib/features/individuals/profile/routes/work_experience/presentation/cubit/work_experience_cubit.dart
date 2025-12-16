@@ -58,7 +58,6 @@ void initialize(List<WorkExperience> initialExperiences) {
       emit(state.copyWith(experiences: currentList));
     } catch (e) {
       debugPrint(e.toString());
-      // Optionally handle error state here
     }
   }
 
@@ -73,7 +72,6 @@ void initialize(List<WorkExperience> initialExperiences) {
       }
     } catch (e) {
       debugPrint(e.toString());
-      // Optionally handle error state here
     }
   }
 

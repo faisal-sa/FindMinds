@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:injectable/injectable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../domain/repositories/candidate_details_repository.dart';
 import 'candidate_details_state.dart';
 
@@ -20,7 +22,10 @@ class CandidateProfileCubit extends Cubit<CandidateProfileState> {
 
     result.fold(
       (failure) => emit(CandidateProfileState.error(failure.message)),
-      (profile) => emit(CandidateProfileState.loaded(profile)),
+      (profile) async {emit(CandidateProfileState.loaded(profile) ); print("emiting here");  await serviceLocator.get<SupabaseClient>().rpc(
+      'track_profile_view',
+      params: {'target_user_id': candidateId},
+    );}
     );
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CustomTextField extends StatelessWidget {
   final String hint;
   final String? label;
@@ -34,14 +33,12 @@ class CustomTextField extends StatelessWidget {
           Text(
             label!,
             style: const TextStyle(
-              // CHANGE 1: Removed .sp.
-              // 14 logical pixels looks good on both Mobile and Web/Desktop.
+             
               fontSize: 14, 
               fontWeight: FontWeight.w600,
               color: Color(0xFF64748B),
             ),
           ),
-          // CHANGE 2: .h is usually fine, but a fixed 8 is safer for resizing
           const SizedBox(height: 8), 
         ],
 
@@ -53,7 +50,6 @@ class CustomTextField extends StatelessWidget {
           maxLines: maxLines,
           obscureText: isPassword,
           style: const TextStyle(
-            // CHANGE 3: Removed .sp to prevent text explosion on wide screens
             fontSize: 14,
             color: Color(0xFF334155),
           ),
@@ -61,13 +57,11 @@ class CustomTextField extends StatelessWidget {
             hintText: hint,
             hintStyle: TextStyle(
               color: Colors.grey[400],
-              // CHANGE 4: Removed .sp
               fontSize: 14,
             ),
             prefixIcon: icon != null
                 ? Icon(
                     icon,
-                    // CHANGE 5: Removed .sp. Icons should stay 20px fixed.
                     size: 20,
                     color: Colors.grey[500],
                   )
@@ -75,16 +69,13 @@ class CustomTextField extends StatelessWidget {
             filled: true,
             fillColor: Colors.white,
             
-            // CHANGE 6: IMPORTANT
-            // Removed .w and .h.
-            // Using 16.w on a desktop monitor creates massive padding.
+         
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 16,
             ),
             
             border: OutlineInputBorder(
-              // CHANGE 7: .r is okay, but fixed 12 is often cleaner on resize
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: Colors.grey[300]!),
             ),

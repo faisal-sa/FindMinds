@@ -7,7 +7,7 @@ class ResponsiveConstraint extends StatelessWidget {
   const ResponsiveConstraint({
     super.key,
     required this.child,
-    this.maxWidth = 600, // Standard tablet/mobile-friendly max width
+    this.maxWidth = 600, 
   });
 
   @override

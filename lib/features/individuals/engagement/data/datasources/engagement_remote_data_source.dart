@@ -17,18 +17,15 @@ class EngagementRemoteDataSourceImpl implements EngagementRemoteDataSource {
     final userId = supabase.auth.currentUser?.id;
     if (userId == null) throw Exception("User not logged in");
 
-    // 1. Yield the initial data immediately (so the user sees data right away)
     yield await _fetchFromRpc();
 
-    // 2. Create a Realtime Channel to listen for updates
     final channel = supabase.channel('public:daily_engagement_stats:$userId');
 
-    // 3. Listen to UPDATE and INSERT events on this table for this specific User
     final streamController = StreamController<EngagementStatsModel>();
 
     channel
         .onPostgresChanges(
-          event: PostgresChangeEvent.all, // Listen to INSERT and UPDATE
+          event: PostgresChangeEvent.all, 
           schema: 'public',
           table: 'daily_engagement_stats',
           filter: PostgresChangeFilter(
@@ -37,7 +34,6 @@ class EngagementRemoteDataSourceImpl implements EngagementRemoteDataSource {
             value: userId,
           ),
           callback: (payload) async {
-            // When a change happens, re-fetch the aggregated stats
             try {
               final newStats = await _fetchFromRpc();
               streamController.add(newStats);
@@ -48,11 +44,9 @@ class EngagementRemoteDataSourceImpl implements EngagementRemoteDataSource {
         )
         .subscribe();
 
-    // 4. Yield values coming from the realtime listener
     yield* streamController.stream;
   }
 
-  // Helper method to call the RPC
   Future<EngagementStatsModel> _fetchFromRpc() async {
     final response = await supabase.rpc('get_my_engagement_stats');
     

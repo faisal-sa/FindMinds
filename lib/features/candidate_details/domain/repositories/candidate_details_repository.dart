@@ -1,4 +1,3 @@
-// lib/features/candidate_details/domain/repositories/candidate_repository.dart
 import 'package:fpdart/fpdart.dart';
 import '../entities/candidate_profile_entity.dart';
 

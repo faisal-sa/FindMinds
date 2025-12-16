@@ -20,7 +20,7 @@ class AiSkillCheckQuestionsLoaded extends AiSkillCheckState {
 }
 
 class AiSkillCheckCompleted extends AiSkillCheckState {
-  final int totalScore; // 0-100
+  final int totalScore; 
   final List<SkillCategoryResult> breakdown;
 
   const AiSkillCheckCompleted({required this.totalScore, required this.breakdown});

@@ -26,14 +26,12 @@ class SavingButton extends StatelessWidget {
         width: double.infinity,
         height: height,
         child: ElevatedButton(
-          // Disable button if loading or if onPressed is null
           onPressed: (isLoading || onPressed == null) ? null : onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
-            // Optional: Define disabled color behavior
             disabledBackgroundColor: backgroundColor.withOpacity(0.5),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8), // Optional styling
+              borderRadius: BorderRadius.circular(8), 
             ),
           ),
           child: isLoading

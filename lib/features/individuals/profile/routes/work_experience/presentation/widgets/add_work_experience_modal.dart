@@ -102,7 +102,6 @@ class _AddWorkExperienceModalState extends State<AddWorkExperienceModal> {
       title: isEditing ? "Edit Experience" : "Add Experience",
       submitLabel: isEditing ? "Save Changes" : "Save Experience",
       onSubmit: _submit,
-      // BaseFormSheet handles the padding, scroll view, and sticky button
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -158,7 +157,6 @@ class _AddWorkExperienceModalState extends State<AddWorkExperienceModal> {
           ),
           SizedBox(height: 16.h),
 
-          // Checkbox for Currently Working
           Row(
             children: [
               Checkbox(
@@ -179,17 +177,13 @@ class _AddWorkExperienceModalState extends State<AddWorkExperienceModal> {
           ),
           SizedBox(height: 8.h),
 
-          // Reusable Date Row
           FormDateRow(
             startLabel: "Start Date",
             startDate: _startDate,
             onStartChanged: (d) => setState(() => _startDate = d),
             endLabel: "End Date",
-            // If working, pass null to clear visual selection or keep _endDate if you want to remember it
             endDate: _isCurrentlyWorking ? null : _endDate,
-            // Change placeholder if currently working
             endPlaceholder: _isCurrentlyWorking ? "Present" : "Select",
-            // If currently working, prevent changing the end date
             onEndChanged: _isCurrentlyWorking
                 ? (_) {}
                 : (d) => setState(() => _endDate = d),

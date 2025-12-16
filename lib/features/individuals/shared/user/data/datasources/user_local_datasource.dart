@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:graduation_project/features/individuals/shared/user/domain/entities/user_entity.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,17 +15,15 @@ class UserLocalDataSource {
 
   Future<UserEntity?> getLastUser() async {
     final jsonString = prefs.getString(_storageKey);
-    print("getting last user");
+    debugPrint("getting last user");
     
     if (jsonString != null) {
       try {
-        // Try to decode valid JSON
-        print("decoding");
+        debugPrint("decoding");
         return UserEntity.fromJson(jsonDecode(jsonString));
       } catch (e) {
         
-        // If the data is corrupted (FormatException), clear it!
-        print("Local data corrupted. Clearing cache. Error: $e");
+        debugPrint("Local data corrupted. Clearing cache. Error: $e");
         await prefs.remove(_storageKey); 
         return null;
       }
@@ -33,7 +32,6 @@ class UserLocalDataSource {
   }
 
   Future<void> cacheUser(UserEntity user) async {
-    // ENSURE you use jsonEncode here
     await prefs.setString(_storageKey, jsonEncode(user.toJson()));
   }
 }

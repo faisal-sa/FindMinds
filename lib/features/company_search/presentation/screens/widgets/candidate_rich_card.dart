@@ -14,7 +14,7 @@ class CandidateRichCard extends StatefulWidget {
     required this.primaryColor,
     required this.initialIsBookmarked,
     required this.onBookmarkToggle,
-    required this.onTap, // ✅ مطلوب في الـ Constructor
+    required this.onTap,
   });
 
   @override

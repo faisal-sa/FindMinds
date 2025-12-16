@@ -13,7 +13,7 @@ class MatchStrengthLoading extends MatchStrengthState {}
 class MatchStrengthLoaded extends MatchStrengthState {
   final int score;
   final List<String> strengths;
-  final List<Map<String, String>> improvements; // {'issue': '...', 'action': '...'}
+  final List<Map<String, String>> improvements;
 
   const MatchStrengthLoaded({
     required this.score,

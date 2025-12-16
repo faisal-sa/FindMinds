@@ -8,7 +8,7 @@ class UpdateUser {
   UpdateUser(this.repository);
   
   Future<void> call(UserEntity user) async {
-    await repository.updateRemoteProfile(user); // Send to Supabase
-    await repository.cacheUser(user);           // Update Local Storage
+    await repository.updateRemoteProfile(user);
+    await repository.cacheUser(user);          
   }
 }

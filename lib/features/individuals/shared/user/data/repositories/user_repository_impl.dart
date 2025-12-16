@@ -32,7 +32,6 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserEntity> fetchRemoteProfile(String userId) async {
     final user = await remoteDataSource.fetchProfile(userId);
-    // Refresh local cache when we fetch from remote
     await localDataSource.cacheUser(user);
     return user;
   }

@@ -25,7 +25,6 @@ abstract class EducationModel with _$EducationModel {
     String? graduationCertificateUrl,
     @JsonKey(name: 'academic_record_url') String? academicRecordUrl,
 
-    // Fields that are not part of the JSON payload
     @JsonKey(includeFromJson: false, includeToJson: false)
     dynamic graduationCertificateBytes,
     @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,10 +47,9 @@ abstract class EducationModel with _$EducationModel {
       startDate: entity.startDate,
       endDate: entity.endDate,
       gpa: entity.gpa,
-      activities: entity.activities ?? [],
+      activities: entity.activities ,
       graduationCertificateUrl: entity.graduationCertificateUrl,
       academicRecordUrl: entity.academicRecordUrl,
-      // Map local fields if they exist in entity
       graduationCertificateBytes: entity.graduationCertificateBytes,
       graduationCertificateName: entity.graduationCertificateName,
       academicRecordBytes: entity.academicRecordBytes,
@@ -70,7 +68,6 @@ abstract class EducationModel with _$EducationModel {
       activities: activities,
       graduationCertificateUrl: graduationCertificateUrl,
       academicRecordUrl: academicRecordUrl,
-      // Cast the dynamic fields to the specific type required by the entity
       graduationCertificateBytes: graduationCertificateBytes as Uint8List?,
       graduationCertificateName: graduationCertificateName,
       academicRecordBytes: academicRecordBytes as Uint8List?,

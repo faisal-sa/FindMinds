@@ -17,11 +17,9 @@ abstract class CertificationModel with _$CertificationModel {
     @JsonKey(name: 'expiration_date') DateTime? expirationDate,
     @JsonKey(name: 'credential_url') String? credentialUrl,
 
-    // File/Local fields ignored in JSON
     @JsonKey(includeFromJson: false, includeToJson: false) File? credentialFile,
     
-    // In your provided snippet, userId was a field in the model.
-    // If you want it part of the constructor but not the Entity interface:
+  
     @JsonKey(name: 'user_id') required String userId,
   }) = _CertificationModel;
 
@@ -42,9 +40,7 @@ abstract class CertificationModel with _$CertificationModel {
       expirationDate: certification.expirationDate,
       credentialUrl: uploadedUrl ?? certification.credentialUrl,
     
-      // --- FIX: Pass the file through! ---
       credentialFile: certification.credentialFile,
-      // -----------------------------------
     );
   }
   Certification toEntity() {
@@ -56,9 +52,8 @@ abstract class CertificationModel with _$CertificationModel {
       expirationDate: expirationDate,
       credentialUrl: credentialUrl,
       
-      // --- UNCOMMENT THIS ---
       credentialFile: credentialFile,
-      // ----------------------
+  
     );
   }
 }

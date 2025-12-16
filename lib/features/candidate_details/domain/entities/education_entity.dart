@@ -1,4 +1,3 @@
-// domain/entities/education_entity.dart
 import 'package:equatable/equatable.dart';
 
 class EducationEntity extends Equatable {

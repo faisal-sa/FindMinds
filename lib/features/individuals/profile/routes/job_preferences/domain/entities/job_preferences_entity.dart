@@ -5,7 +5,6 @@ part 'job_preferences_entity.g.dart';
 
 @freezed
 abstract class JobPreferencesEntity with _$JobPreferencesEntity {
-  // Ensure snake_case so it finds 'min_salary' in the root map
   @JsonSerializable(fieldRename: FieldRename.snake) 
   const factory JobPreferencesEntity({
     @Default([]) List<String> targetRoles,

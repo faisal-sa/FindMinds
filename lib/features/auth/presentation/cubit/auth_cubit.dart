@@ -83,7 +83,6 @@ class AuthCubit extends Cubit<AuthState> {
 
     result.when(
       (success) {
-        // After signup, OTP is usually sent automatically
         emit(OTPSent(email));
       },
       (error) {
@@ -97,7 +96,6 @@ class AuthCubit extends Cubit<AuthState> {
     required String password,
   }) async {
     emit(AuthLoading());
-    print("going here");
     final result = await login(LoginParams(email: email, password: password));
 
     result.when(

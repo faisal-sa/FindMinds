@@ -1,4 +1,3 @@
-// lib/features/company_portal/presentation/bloc/company_bloc.dart
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:graduation_project/features/shared/data/domain/entities/candidate_entity.dart';

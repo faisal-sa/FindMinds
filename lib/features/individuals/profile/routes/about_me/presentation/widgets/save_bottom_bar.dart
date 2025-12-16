@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:graduation_project/features/individuals/profile/routes/about_me/presentation/cubit/about_me_cubit.dart';
 import 'package:graduation_project/features/individuals/profile/routes/about_me/presentation/cubit/about_me_state.dart';
-//this might be duplicated
 class SaveBottomBar extends StatelessWidget {
   const SaveBottomBar({super.key});
 

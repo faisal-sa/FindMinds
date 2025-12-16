@@ -34,7 +34,6 @@ class ProfileSummaryWidget extends StatelessWidget {
           Gap(20.h),
         ],
 
-        // 3. تفضيلات العمل
         _buildSectionTitle("Work Preferences"),
         Gap(10.h),
         Wrap(
@@ -65,7 +64,6 @@ class ProfileSummaryWidget extends StatelessWidget {
         ),
         Gap(20.h),
 
-        // 4. اللغات
         if (profile.languages.isNotEmpty) ...[
           _buildSectionTitle("Languages"),
           Gap(8.h),
@@ -78,7 +76,6 @@ class ProfileSummaryWidget extends StatelessWidget {
           Gap(20.h),
         ],
 
-        // 5. المهارات
         if (profile.skills.isNotEmpty) ...[
           _buildSectionTitle("Skills"),
           Gap(8.h),
@@ -94,7 +91,6 @@ class ProfileSummaryWidget extends StatelessWidget {
           Gap(20.h),
         ],
 
-        // 6. الراتب
         if (profile.minSalary != null || profile.maxSalary != null) ...[
           Container(
             padding: EdgeInsets.all(12.r),

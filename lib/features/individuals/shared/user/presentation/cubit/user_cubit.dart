@@ -19,14 +19,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 @lazySingleton
 class UserCubit extends Cubit<UserState> {
-  // Dependencies
   final GetCachedUser _getCachedUser;
   final CacheUser _cacheUser;
   final FetchUserProfile _fetchUserProfile;
   final ParseResumeWithAI _parseResumeWithAI;
   
-  // Optional: If you need current user ID, you can inject SupabaseClient 
-  // just to get the ID, or pass the ID into the methods.
   final SupabaseClient _supabaseClient; 
   bool _isLoadingFromStorage = false;
 
@@ -41,11 +38,10 @@ class UserCubit extends Cubit<UserState> {
     _loadUserFromStorage();
   }
 
-  //=========================================================== LOCAL STORAGE LOGIC ===========================================================
   
  Future<void> _loadUserFromStorage() async {
     print("loading user from storage");
-    _isLoadingFromStorage = true; // Raise flag
+    _isLoadingFromStorage = true; 
 
     try {
       final user = await _getCachedUser();
@@ -55,7 +51,7 @@ class UserCubit extends Cubit<UserState> {
     } catch (e) {
       print("Error loading local user: $e");
     } finally {
-      _isLoadingFromStorage = false; // Lower flag after emit is done
+      _isLoadingFromStorage = false; 
     }
   }
 
@@ -63,14 +59,13 @@ class UserCubit extends Cubit<UserState> {
   void onChange(Change<UserState> change) {
     super.onChange(change);
 
-    // FIX 2: Don't save if the change was caused by loading from storage
     if (_isLoadingFromStorage) {
-      print("UserCubit: Loaded from storage (Skipping auto-save)");
+      debugPrint("UserCubit: Loaded from storage (Skipping auto-save)");
       return;
     }
 
     if (change.nextState.user != change.currentState.user) {
-      print("UserCubit: User entity changed, saving to storage...");
+      debugPrint("UserCubit: User entity changed, saving to storage...");
       _cacheUser(change.nextState.user);
     }
   }
@@ -80,10 +75,6 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(user: user));
   }
 
-  // =========================================================== CHANGING STATE LOGIC ===========================================================
-  
-  // These methods manipulate the state in memory. 
-  // Clean Architecture doesn't forbid logic in Cubits; it forbids data access logic.
   
   void updateLocalAvatar(String url) {
     emit(state.copyWith(user: state.user.copyWith(avatarUrl: url)));
@@ -126,14 +117,8 @@ class UserCubit extends Cubit<UserState> {
 
   void updateAboutMe({String? summary, String? videoUrl}) {
     final u = state.user;
-    // Explicit construction to handle nullable videoUrl correctly
-    final updatedUser = u.copyWith(summary: summary ?? u.summary).copyWith(
-      // Note: Freezed copyWith usually ignores nulls. 
-      // To explicitly set null in Freezed, logic depends on version.
-      // If your manual manual construction logic was simpler, stick to that:
-    );
 
-    // Reverting to your manual logic for safety regarding null videoUrl:
+
     final explicitUser = UserEntity(
       firstName: u.firstName,
       lastName: u.lastName,
@@ -149,17 +134,16 @@ class UserCubit extends Cubit<UserState> {
       languages: u.languages,
       jobPreferences: u.jobPreferences,
       summary: summary ?? u.summary,
-      videoUrl: videoUrl, // Allows null
+      videoUrl: videoUrl, 
     );
 
     emit(state.copyWith(user: explicitUser));
   }
 
   void deleteUserVideo() {
-    print("UserCubit: Deleting user video...");
+    debugPrint("UserCubit: Deleting user video...");
     final u = state.user;
     
-    // Explicitly reconstruct to force null
     final updatedUser = UserEntity(
       firstName: u.firstName,
       lastName: u.lastName,
@@ -175,18 +159,16 @@ class UserCubit extends Cubit<UserState> {
       skills: u.skills,
       languages: u.languages,
       jobPreferences: u.jobPreferences,
-      videoUrl: null, // Force NULL
+      videoUrl: null, 
     );
 
     emit(state.copyWith(user: updatedUser));
-    // _cacheUser is called automatically by onChange
   }
 
   void updateUser(UserEntity newUser) {
     emit(state.copyWith(user: newUser));
   }
 
-  // ... [List Sorting Logic remains the same] ...
   
   void updateWorkExperiencesList(List<WorkExperience> experiences) {
     final sortedList = List<WorkExperience>.from(experiences)
@@ -226,25 +208,21 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(user: state.user.copyWith(educations: currentList)));
   }
 
-  // =========================================================== SUPABASE FETCHING LOGIC ===========================================================
   
   Future<void> fetchUserProfile() async {
     try {
       final userId = _supabaseClient.auth.currentUser?.id;
       if (userId == null) return;
 
-      // Delegate to UseCase
       final fetchedUser = await _fetchUserProfile(userId);
 
       emit(state.copyWith(user: fetchedUser));
-      // Local cache update is handled inside FetchUserProfile -> Repository, 
-      // OR explicitly by onChange when we emit here.
+
     } catch (e) {
       print("Error fetching user profile: $e");
     }
   }
 
-  //=========================================================== CV ANALYSIS LOGIC ============================================================
   
   Future<void> uploadAndExtractResume() async {
     try {
@@ -276,10 +254,8 @@ class UserCubit extends Cubit<UserState> {
         return;
       }
 
-      // Delegate pure AI extraction logic to UseCase
       final extractedUser = await _parseResumeWithAI(fileBytes);
 
-      // Merge Logic (Logic stays in Cubit as it determines how to apply the data)
       final updatedUser = state.user.copyWith(
         firstName: extractedUser.firstName.isNotEmpty ? extractedUser.firstName : state.user.firstName,
         lastName: extractedUser.lastName.isNotEmpty ? extractedUser.lastName : state.user.lastName,

@@ -41,7 +41,6 @@ class _AddEducationModalState extends State<AddEducationModal> {
   DateTime? _endDate;
   List<String> _activities = [];
 
-  // File state
   PlatformFile? _selectedGradCertificate;
   PlatformFile? _selectedAcademicRecord;
 
@@ -62,13 +61,9 @@ class _AddEducationModalState extends State<AddEducationModal> {
       _endDate = edu.endDate;
       _activities = List.from(edu.activities);
       
-      // LOGIC FOR URLS
       _keepExistingGradCert = edu.graduationCertificateUrl != null;
       _keepExistingAcademicRecord = edu.academicRecordUrl != null;
 
-      // --- NEW FIX: RESTORE LOCAL FILES (BYTES) ---
-
-      // 1. Restore Graduation Certificate if bytes exist but URL doesn't (Local state)
       if (edu.graduationCertificateBytes != null &&
           edu.graduationCertificateName != null) {
         _selectedGradCertificate = PlatformFile(
@@ -78,7 +73,6 @@ class _AddEducationModalState extends State<AddEducationModal> {
         );
       }
 
-      // 2. Restore Academic Record if bytes exist
       if (edu.academicRecordBytes != null && edu.academicRecordName != null) {
         _selectedAcademicRecord = PlatformFile(
           name: edu.academicRecordName!,
@@ -100,7 +94,6 @@ class _AddEducationModalState extends State<AddEducationModal> {
 
   Future<void> _pickFile(bool isGradCert) async {
     try {
-      // Debug print
       debugPrint("Opening File Picker...");
 
       final result = await FilePicker.platform.pickFiles(
@@ -112,18 +105,17 @@ class _AddEducationModalState extends State<AddEducationModal> {
       if (result != null && result.files.isNotEmpty) {
         final file = result.files.first;
 
-        // Debug print
         debugPrint("File Picked: ${file.name}, Size: ${file.size}");
 
         setState(() {
           if (isGradCert) {
             _selectedGradCertificate = file;
             _keepExistingGradCert =
-                false; // Important: Invalidates the old URL logic
+                false; 
           } else {
             _selectedAcademicRecord = file;
             _keepExistingAcademicRecord =
-                false; // Important: Invalidates the old URL logic
+                false; 
           }
         });
       } else {
@@ -179,9 +171,6 @@ class _AddEducationModalState extends State<AddEducationModal> {
         ? widget.education?.academicRecordUrl
         : null;
 
-    // 2. Determine the Name to save (NEW LOGIC)
-    // If we picked a new file, use its name.
-    // If not, but we have bytes/url from before, keep the old name.
     String? gradName = _selectedGradCertificate?.name;
     if (gradName == null &&
         (_keepExistingGradCert ||
@@ -206,24 +195,20 @@ class _AddEducationModalState extends State<AddEducationModal> {
       gpa: _gpaController.text,
       activities: _activities,
 
-      // Pass the Bytes
       graduationCertificateBytes:
           _selectedGradCertificate?.bytes ??
           (_keepExistingGradCert
               ? null
               : widget.education?.graduationCertificateBytes),
 
-      // UNCOMMENT AND FIX THIS:
       graduationCertificateName: gradName,
 
-      // Pass the Bytes
       academicRecordBytes:
           _selectedAcademicRecord?.bytes ??
           (_keepExistingAcademicRecord
               ? null
               : widget.education?.academicRecordBytes),
 
-      // UNCOMMENT AND FIX THIS:
       academicRecordName: academicName,
 
       graduationCertificateUrl: gradUrlToSave,

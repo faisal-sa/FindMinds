@@ -1,4 +1,3 @@
-// data/models/education_model.dart
 import 'package:dart_mappable/dart_mappable.dart';
 import '../../domain/entities/education_entity.dart';
 

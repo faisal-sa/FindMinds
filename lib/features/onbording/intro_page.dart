@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:graduation_project/core/exports/app_exports.dart';
 import 'package:graduation_project/features/onbording/intro_text.dart';
 
@@ -26,8 +25,7 @@ class _IntroPageState extends State<IntroPage> {
       body: SafeArea(
         child: Column(
           children: [
-            //==================  Skip Button  ===================
-            //
+         
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
@@ -45,8 +43,7 @@ class _IntroPageState extends State<IntroPage> {
                 ),
               ),
             ),
-            //==================  Skip Button End  ===================
-            //
+    
             Expanded(
               child: PageView.builder(
                 controller: _controller,
@@ -92,12 +89,10 @@ class _IntroPageState extends State<IntroPage> {
                         ),
                       ],
                     ),
-                    // ==================  Contant Page End  =================== //
                   );
                 },
               ),
             ),
-            //==================  Dots ○ ○ ● ○  ===================
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(introText.length, (index) {
@@ -113,7 +108,6 @@ class _IntroPageState extends State<IntroPage> {
                 );
               }),
             ),
-            //==================  NEXT BUTTOM  ===================
             Padding(
               padding: const EdgeInsets.all(32.0),
               child: GestureDetector(

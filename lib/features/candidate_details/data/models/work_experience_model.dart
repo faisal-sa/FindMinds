@@ -1,4 +1,3 @@
-// data/models/work_experience_model.dart
 import 'package:dart_mappable/dart_mappable.dart';
 import '../../domain/entities/work_experience_entity.dart';
 
@@ -17,6 +16,6 @@ class WorkExperienceModel extends WorkExperienceEntity
     @MappableField(key: 'is_currently_working')
     required super.isCurrentlyWorking,
     @MappableField(key: 'responsibilities')
-    super.description, // Mapping custom keys
+    super.description, 
   });
 }

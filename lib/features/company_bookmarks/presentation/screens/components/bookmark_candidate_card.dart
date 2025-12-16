@@ -110,7 +110,6 @@ class BookmarkCandidateCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
 
-                // Info Section
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +205,6 @@ class BookmarkCandidateCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Drag handle
                 Container(
                   width: 40,
                   height: 4,
@@ -250,7 +248,7 @@ class BookmarkCandidateCard extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context, true);
-                          onRemove(); // Execute removal callback
+                          onRemove(); 
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.redAccent,

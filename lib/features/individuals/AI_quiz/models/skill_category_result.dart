@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class SkillCategoryResult extends Equatable {
   final String category;
   final int scorePercentage;
-  final String status; // Strong, Proficient, Needs Improvement
+  final String status; 
 
   const SkillCategoryResult({
     required this.category,

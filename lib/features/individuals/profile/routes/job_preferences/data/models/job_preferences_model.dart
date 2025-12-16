@@ -13,7 +13,7 @@ abstract class JobPreferencesModel with _$JobPreferencesModel {
   const factory JobPreferencesModel({
     @JsonKey(name: 'target_roles') @Default([]) List<String> targetRoles,
     @JsonKey(name: 'min_salary')
-    num? minSalary, // Changed to num to allow int/double
+    num? minSalary,
     @JsonKey(name: 'max_salary') num? maxSalary,
     @JsonKey(name: 'salary_currency') String? salaryCurrency,
     @JsonKey(name: 'current_work_status') String? currentWorkStatus,
@@ -48,7 +48,7 @@ abstract class JobPreferencesModel with _$JobPreferencesModel {
 JobPreferencesEntity toEntity() {
     return JobPreferencesEntity(
       targetRoles: targetRoles,
-      minSalary: minSalary?.toInt(), // Safely convert num? to int?
+      minSalary: minSalary?.toInt(), 
       maxSalary: maxSalary?.toInt(),
       salaryCurrency: salaryCurrency,
       currentWorkStatus: currentWorkStatus,
@@ -60,7 +60,6 @@ JobPreferencesEntity toEntity() {
     );
   }
 
-  // Custom method to include updated_at
   Map<String, dynamic> toApiJson() {
     final json = toJson();
     json['updated_at'] = DateTime.now().toIso8601String();

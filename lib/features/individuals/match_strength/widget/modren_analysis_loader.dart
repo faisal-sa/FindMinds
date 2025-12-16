@@ -25,7 +25,6 @@ class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
   @override
   void initState() {
     super.initState();
-    // Change text every 1.5 seconds
     _timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       setState(() {
         _index = (_index + 1) % _loadingMessages.length;
@@ -45,7 +44,6 @@ class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Outer Glow Circle
           Container(
             height: 100,
             width: 100,
@@ -67,9 +65,8 @@ class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
           ),
           const SizedBox(height: 32),
           
-          // Changing Text with AnimatedSwitcher for smooth fade
           SizedBox(
-            height: 50, // Fixed height to prevent jumping
+            height: 50, 
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
               transitionBuilder: (Widget child, Animation<double> animation) {

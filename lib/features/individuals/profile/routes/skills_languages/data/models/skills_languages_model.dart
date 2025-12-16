@@ -10,7 +10,6 @@ class SkillsAndLanguagesModel extends SkillsAndLanguages {
   factory SkillsAndLanguagesModel.fromJson(Map<String, dynamic> json) {
     return SkillsAndLanguagesModel(
       id: json['id'] as String,
-      // Handle nulls and convert dynamic list to String list
       skills:
           (json['skills'] as List<dynamic>?)
               ?.map((e) => e.toString())

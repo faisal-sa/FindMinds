@@ -11,7 +11,6 @@ class ModernAnalysisLoader extends StatefulWidget {
 
 class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
   int _index = 0;
-  // UPDATED MESSAGES FOR QUIZ CONTEXT
   final List<String> _loadingMessages = [
     "Analyzing profile skills...",
     "Reviewing experience level...",
@@ -25,7 +24,6 @@ class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
   @override
   void initState() {
     super.initState();
-    // Change text every 1.5 seconds
     _timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
       setState(() {
         _index = (_index + 1) % _loadingMessages.length;
@@ -45,7 +43,6 @@ class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Outer Glow Circle with Pulse Effect
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.8, end: 1.0),
             duration: const Duration(seconds: 1),
@@ -78,11 +75,11 @@ class _ModernAnalysisLoaderState extends State<ModernAnalysisLoader> {
                 ),
               );
             },
-            onEnd: () {}, // You can make this repeat if you wrap it in a StatefulWidget logic for pulse
+            onEnd: () {},
           ),
           const SizedBox(height: 40),
           
-          // Changing Text with AnimatedSwitcher
+        
           SizedBox(
             height: 50,
             child: AnimatedSwitcher(

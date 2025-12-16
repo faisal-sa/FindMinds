@@ -28,7 +28,7 @@ class CertificationCubit extends Cubit<CertificationState> {
       final sortedList = List<Certification>.from(initialCertifications)
         ..sort(
           (a, b) => b.issueDate.compareTo(a.issueDate),
-        ); // Sort by newest first
+        );
 
       emit(
         CertificationState(
@@ -39,7 +39,6 @@ class CertificationCubit extends Cubit<CertificationState> {
     }
   }
 
-  // Keep loadCertifications for pull-to-refresh if needed, but not for initial load
   Future<void> loadCertifications() async {
     emit(state.copyWith(status: ListStatus.loading));
     try {
@@ -59,20 +58,16 @@ class CertificationCubit extends Cubit<CertificationState> {
 
 Future<void> addCertification(Certification certification) async {
     try {
-      // Assuming your UseCase returns the result from the DataSource
-      // Update your UseCase signature to return Future<Certification>
+     
       final newCertification = await _addCertificationUseCase(certification);
       
       final currentList = List<Certification>.from(state.certifications);
-      currentList.add(newCertification); // Add the one with the real ID
-
-      // Sort list to keep UI consistent (optional, based on issue date)
+      currentList.add(newCertification); 
       currentList.sort((a, b) => b.issueDate.compareTo(a.issueDate));
       
       emit(state.copyWith(certifications: currentList));
     } catch (e) {
       debugPrint(e.toString());
-      // Optional: emit failure state or show snackbar via listener
     }
   }
 

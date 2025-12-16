@@ -6,7 +6,6 @@ Widget payTitleWidget(String amount) {
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
-      // Subtle shadow to make it pop off the background
       boxShadow: [
         BoxShadow(
           color: Colors.grey.withOpacity(0.1),
@@ -18,7 +17,7 @@ Widget payTitleWidget(String amount) {
     ),
     child: Row(
       mainAxisAlignment:
-          MainAxisAlignment.spaceBetween, // Spaced out looks cleaner
+          MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
@@ -48,7 +47,6 @@ Widget payTitleWidget(String amount) {
           amount,
           style: const TextStyle(
             fontSize: 22,
-            // Dark navy for the money emphasizes value
             color: Color.fromARGB(255, 2, 22, 38),
             fontWeight: FontWeight.w800,
             letterSpacing: 0.5,

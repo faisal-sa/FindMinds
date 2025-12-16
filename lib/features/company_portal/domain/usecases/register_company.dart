@@ -1,4 +1,3 @@
-// lib/features/company_portal/domain/usecases/register_company.dart
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';
 import '../../../../core/error/failures.dart';

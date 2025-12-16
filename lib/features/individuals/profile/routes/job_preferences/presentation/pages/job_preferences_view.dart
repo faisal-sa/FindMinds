@@ -20,7 +20,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
   final TextEditingController _maxSalaryController = TextEditingController();
   final TextEditingController _noticePeriodController = TextEditingController();
 
-  // Local State
   List<String> _targetRoles = [];
   List<String> _employmentTypes = [];
   List<String> _workModes = [];
@@ -42,10 +41,8 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
   void initState() {
     super.initState();
 
-    // 1. Get the current state of the cubit
     final state = context.read<JobPreferencesCubit>().state;
 
-    // 2. If data is already loaded, fill the controllers immediately
     if (state is JobPreferencesLoaded) {
       _initializeValues(state.preferences);
     }
@@ -93,7 +90,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
     return BlocBuilder<JobPreferencesCubit, JobPreferencesState>(
     
       builder: (context, state) {
-        // Move loading check to button or overlay if you want to keep form visible
         if (state is JobPreferencesLoading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -105,19 +101,9 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // // 1. REUSED: DynamicListSection
-                // // Replaces _buildLabel, _roleController, _buildRoleInput, and the Chips Wrap
-                // DynamicListSection(
-                //   title: 'Target Role',
-                //   hintText: 'e.g., Software Engineer',
-                //   items: _targetRoles,
-                //   onChanged: (values) => setState(() => _targetRoles = values),
-                // ),
-
-                // const Gap(24),
+             
                 _buildLabel('Salary Expectations'),
-                // Note: Kept custom _buildSalaryRow because your CustomTextField
-                // doesn't support suffixText ('/mo') or Widget prefixes currently.
+               
                 _buildSalaryRow(),
 
                 const Gap(24),
@@ -186,7 +172,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
       },
     );
   }
-  // --- Helper Widgets ---
 
   Widget _buildLabel(String text) {
     return Padding(
@@ -196,7 +181,7 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: Color(0xFF5F6368), // Dark grey
+          color: Color(0xFF5F6368), 
         ),
       ),
     );
@@ -226,7 +211,7 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   ),
-                  suffixText: '/mo', // Per month request
+                  suffixText: '/mo', 
                 ),
               ),
             ],
@@ -314,7 +299,6 @@ class _JobPreferencesViewState extends State<JobPreferencesView> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        // Simulating the card look from the screenshot
         border: Border.all(color: Colors.white),
       ),
       child: Row(

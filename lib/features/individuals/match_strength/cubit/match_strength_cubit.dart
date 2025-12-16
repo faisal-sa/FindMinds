@@ -72,11 +72,9 @@ class MatchStrengthCubit extends Cubit<MatchStrengthState> {
         }
       ''';
 
-      // Call Dio Service
       final responseText = await _geminiService.generateContent(
         prompt: prompt,
         model: 'gemini-2.5-flash',
-        // We enforce JSON MIME type to help the model, even without a strict schema object here
         enforceJson: true, 
       );
       

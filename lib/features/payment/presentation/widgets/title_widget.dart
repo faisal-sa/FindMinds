@@ -8,7 +8,6 @@ Widget buildSectionTitle(String title) {
       style: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        // Changed from Colors.white to Black87 so it is visible on the white page
         color: Colors.black87,
         letterSpacing: 0.3,
       ),

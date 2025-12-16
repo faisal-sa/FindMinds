@@ -40,7 +40,6 @@ class RemoveBookmarkEvent extends BookmarksEvent {
 
 class ToggleBookmarkEvent extends BookmarksEvent {
   final String candidateId;
-  // يمكن إضافة companyId إذا كنت لا تجلبه من داخل البلوك
 
   const ToggleBookmarkEvent({required this.candidateId});
 

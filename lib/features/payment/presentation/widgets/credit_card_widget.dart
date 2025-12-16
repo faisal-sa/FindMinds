@@ -8,7 +8,6 @@ import 'package:u_credit_card/u_credit_card.dart';
 This widget is used to display the credit card information.
 for ducomentation, see the link: https://pub.dev/packages/u_credit_card.
 it can be customized as you want.
-also enable the flipping effect to see the back of the card.
 */
 
 Widget creditCardWidget(BuildContext context) {

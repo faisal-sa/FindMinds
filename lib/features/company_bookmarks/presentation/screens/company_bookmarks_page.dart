@@ -63,7 +63,6 @@ class _CompanyBookmarksPageState extends State<CompanyBookmarksPage> {
         builder: (context, state) {
           return CustomScrollView(
             slivers: [
-              // 1. App Bar
               SliverAppBar.medium(
                 backgroundColor: backgroundColor,
                 surfaceTintColor: Colors.transparent,

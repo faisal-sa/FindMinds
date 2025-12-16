@@ -10,8 +10,6 @@ part 'user_entity.freezed.dart';
 
 part 'user_entity.g.dart';
 
-// 1. Define this helper function outside the class
-// It tells the parser: "Ignore the key 'jobPreferences', take the WHOLE JSON map instead."
 Object? _readRoot(Map<dynamic, dynamic> json, String key) => json;
 
 @freezed
@@ -25,13 +23,11 @@ abstract class UserEntity with _$UserEntity {
     @Default('') String email,
     @Default('') String location,
     
-    // Ensure all keys match DB columns or use @JsonKey
     @JsonKey(name: 'about_me') @Default('') String summary,
     @JsonKey(name: 'intro_video_url')
-    String? videoUrl, // Explicitly map if DB is different
+    String? videoUrl, 
     String? avatarUrl,
 
-    // Children lists (handled automatically if DB returns nested arrays)
     @Default([]) List<WorkExperience> workExperiences,
     @Default([]) List<Education> educations,
     @Default([]) List<Certification> certifications,
@@ -39,9 +35,6 @@ abstract class UserEntity with _$UserEntity {
     @Default([]) List<String> skills,
     @Default([]) List<String> languages,
 
-    // THE MAGIC FIX:
-    // 1. readValue: _readRoot passes the entire DB response to JobPreferencesEntity
-    // 2. JobPreferencesEntity extracts 'min_salary', etc. from that root map
     @JsonKey(readValue: _readRoot)
     @Default(JobPreferencesEntity())
     JobPreferencesEntity jobPreferences,
@@ -51,4 +44,3 @@ abstract class UserEntity with _$UserEntity {
   factory UserEntity.fromJson(Map<String, dynamic> json) =>
       _$UserEntityFromJson(json);
 }
-//remove from json

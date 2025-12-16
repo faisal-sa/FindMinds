@@ -148,7 +148,7 @@ class CandidateResultsPage extends StatelessWidget {
                                       bottom: 16.0,
                                     ),
                                     child: _buildModernCardWrapper(
-                                      child: // داخل ListView.builder
+                                      child:
                                       CandidateRichCard(
                                         candidate: candidate,
                                         primaryColor: primaryColor,

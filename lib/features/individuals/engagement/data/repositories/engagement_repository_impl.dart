@@ -7,7 +7,6 @@ class EngagementRepositoryImpl implements EngagementRepository {
   final EngagementRemoteDataSource dataSource;
   EngagementRepositoryImpl({required this.dataSource});
 
-  // Changed from Future to Stream
   @override
   Stream<EngagementStatsModel> getEngagementStatsStream() {
     return dataSource.getStatsStream();

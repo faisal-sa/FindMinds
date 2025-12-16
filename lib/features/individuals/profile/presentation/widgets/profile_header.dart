@@ -131,7 +131,6 @@ class ProfileHeader extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            // ... (Rest of UI)
             if (fullName.isNotEmpty)
               Text(
                 fullName,

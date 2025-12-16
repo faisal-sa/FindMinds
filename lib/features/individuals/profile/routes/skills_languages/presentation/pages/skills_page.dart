@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graduation_project/core/di/service_locator.dart';
 import 'package:graduation_project/features/individuals/profile/routes/skills_languages/presentation/cubit/skills_languages_cubit.dart';
 import 'package:graduation_project/features/individuals/profile/routes/skills_languages/presentation/cubit/skills_languages_state.dart';
 import 'package:graduation_project/features/individuals/shared/user/presentation/cubit/user_cubit.dart';
-
-// Assuming you have these imports from your project structure
-// import 'package:your_project/bloc/skills_languages_cubit.dart';
-// import 'package:your_project/service_locator.dart';
 
 class SkillsPage extends StatelessWidget {
   const SkillsPage({super.key});
@@ -27,7 +22,6 @@ class SkillsPage extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      // NEW: Listener updates UserCubit whenever the list changes
       body: BlocListener<SkillsLanguagesCubit, SkillsLanguagesState>(
         listener: (context, state) {
           if (state is SkillsLanguagesError) {
@@ -36,7 +30,6 @@ class SkillsPage extends StatelessWidget {
             ).showSnackBar(SnackBar(content: Text(state.message)));
           }
 
-          // Sync to Local Storage
           if (state is SkillsLanguagesLoaded) {
             context.read<UserCubit>().updateSkillsAndLanguages(
               state.skillsLanguages.skills,
@@ -53,7 +46,6 @@ class SkillsPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    // --- SKILLS SECTION ---
                     _SectionCard(
                       title: "My Skills",
                       items: state.skillsLanguages.skills,
@@ -63,14 +55,13 @@ class SkillsPage extends StatelessWidget {
                       },
                       onDelete: (item) {
                         context.read<SkillsLanguagesCubit>().removeSkill(
-                          item as String,
+                          item ,
                         );
                       },
                     ),
 
                     const SizedBox(height: 16),
 
-                    // --- LANGUAGES SECTION ---
                     _SectionCard(
                       title: "My Languages",
                       items: state.skillsLanguages.languages,
@@ -97,10 +88,9 @@ class SkillsPage extends StatelessWidget {
 }
 
 
-// Reusable Widget for both Skills and Languages cards
 class _SectionCard extends StatefulWidget {
   final String title;
-  final List<dynamic> items; // List of Strings
+  final List<dynamic> items; 
   final String hintText;
   final Function(String) onAdd;
   final Function(String) onDelete;
@@ -162,7 +152,6 @@ class _SectionCardState extends State<_SectionCard> {
           ),
           const SizedBox(height: 16),
 
-          // Wrap for Chips
           if (widget.items.isNotEmpty)
             Wrap(
               spacing: 8.0,
@@ -174,8 +163,8 @@ class _SectionCardState extends State<_SectionCard> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE3F2FD), // Light blue background
-                    borderRadius: BorderRadius.circular(20), // Stadium shape
+                    color: const Color(0xFFE3F2FD), 
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -183,12 +172,11 @@ class _SectionCardState extends State<_SectionCard> {
                       Text(
                         item.toString(),
                         style: const TextStyle(
-                          color: Color(0xFF1565C0), // Dark blue text
+                          color: Color(0xFF1565C0), 
                           fontWeight: FontWeight.w600,
                           fontSize: 13,
                         ),
                       ),
-                      // Optional: Add X icon for deletion if desired
                       const SizedBox(width: 4),
                       GestureDetector(
                         onTap: () => widget.onDelete(item),
@@ -206,10 +194,9 @@ class _SectionCardState extends State<_SectionCard> {
 
           const SizedBox(height: 20),
 
-          // Custom Input Field
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F4F6), // Gray background for input
+              color: const Color(0xFFF3F4F6),
               borderRadius: BorderRadius.circular(8),
             ),
             padding: const EdgeInsets.only(left: 16, right: 8),
@@ -249,4 +236,3 @@ class _SectionCardState extends State<_SectionCard> {
     );
   }
 }
-//check if this updates

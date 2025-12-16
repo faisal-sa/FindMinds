@@ -1,4 +1,3 @@
-// data/models/certification_model.dart
 import 'package:dart_mappable/dart_mappable.dart';
 import '../../domain/entities/certification_entity.dart';
 

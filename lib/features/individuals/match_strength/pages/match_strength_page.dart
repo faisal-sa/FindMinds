@@ -9,7 +9,6 @@ import 'package:graduation_project/features/individuals/match_strength/widget/mo
 import 'package:graduation_project/features/individuals/shared/user/domain/entities/user_entity.dart';
 class MatchStrengthPage extends StatefulWidget {
   final String jobTitle;
-  // Pass user entity or inject via GetIt/Provider
   final UserEntity userEntity; 
 
   const MatchStrengthPage({
@@ -27,7 +26,6 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
   @override
   void initState() {
     super.initState();
-    // Trigger analysis on load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MatchStrengthCubit>().analyzeProfile(widget.userEntity);
     });
@@ -36,7 +34,7 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC), // Slate-50
+      backgroundColor: const Color(0xFFF8FAFC),
       appBar: AppBar(
         backgroundColor: const Color(0xFFF8FAFC),
         elevation: 0,
@@ -58,7 +56,6 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
       body: BlocBuilder<MatchStrengthCubit, MatchStrengthState>(
         builder: (context, state) {
           if (state is MatchStrengthLoading) {
-            // THE NEW PRETTY LOADER
             return const ModernAnalysisLoader(); 
           } else if (state is MatchStrengthError) {
             return _buildErrorState(state.message);
@@ -130,7 +127,6 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
           
           const SizedBox(height: 24),
 
-          // 1. Score Card (Enhanced)
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
@@ -183,7 +179,6 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                // Custom Progress Bar
                 Container(
                   height: 12,
                   width: double.infinity,
@@ -209,7 +204,6 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
 
           const SizedBox(height: 32),
 
-          // 2. Strengths Section
           _buildSectionHeader(
             "Key Strengths",
             Icons.check_circle_outline,
@@ -220,7 +214,6 @@ class _MatchStrengthPageState extends State<MatchStrengthPage> {
 
           const SizedBox(height: 32),
 
-          // 3. Improvements Section
           _buildSectionHeader(
             "Recommended Actions",
             Icons.trending_up,

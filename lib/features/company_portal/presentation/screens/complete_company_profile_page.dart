@@ -20,7 +20,6 @@ class _CompleteCompanyProfilePageState
     extends State<CompleteCompanyProfilePage> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers
   late TextEditingController nameController;
   late TextEditingController industryController;
   late TextEditingController cityController;

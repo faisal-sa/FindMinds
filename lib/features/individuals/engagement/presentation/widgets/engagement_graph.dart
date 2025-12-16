@@ -27,17 +27,15 @@ class EngagementGraph extends StatelessWidget {
                 "Profile Traffic",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
-              // Changed icon to represent a line graph
               Icon(Icons.show_chart, color: AppColors.bluePrimary),
             ],
           ),
-          const SizedBox(height: 24), // Increased spacing for the graph
-          // LINE CHART AREA
+          const SizedBox(height: 24), 
           SizedBox(
-            height: 120, // Slightly taller to accommodate line curves
+            height: 120, 
             child: LineChart(
               LineChartData(
-                gridData: const FlGridData(show: false), // Clean look, no grid
+                gridData: const FlGridData(show: false), 
                 titlesData: FlTitlesData(
                   show: true,
                   rightTitles: const AxisTitles(
@@ -55,7 +53,6 @@ class EngagementGraph extends StatelessWidget {
                       reservedSize: 30,
                       interval: 1,
                       getTitlesWidget: (value, meta) {
-                        // Map the index (0, 1, 2) to the day string
                         final index = value.toInt();
                         if (index >= 0 && index < days.length) {
                           return Padding(
@@ -78,21 +75,18 @@ class EngagementGraph extends StatelessWidget {
                 minX: 0,
                 maxX: dataPoints.length.toDouble() - 1,
                 minY: 0,
-                // Add some buffer to the top Y value so the line doesn't hit the ceiling
                 maxY: dataPoints.reduce((a, b) => a > b ? a : b) * 1.2,
 
-                // THE LINE CONFIGURATION
                 lineBarsData: [
                   LineChartBarData(
                     spots: dataPoints.asMap().entries.map((e) {
                       return FlSpot(e.key.toDouble(), e.value);
                     }).toList(),
-                    isCurved: true, // Smooth bezier curve
-                    color: AppColors.bluePrimary, // Matches your theme
+                    isCurved: true, 
+                    color: AppColors.bluePrimary, 
                     barWidth: 3,
                     isStrokeCapRound: true,
 
-                    // The dots on the line
                     dotData: FlDotData(
                       show: true,
                       getDotPainter: (spot, percent, barData, index) {
@@ -105,7 +99,6 @@ class EngagementGraph extends StatelessWidget {
                       },
                     ),
 
-                    // The gradient fill below the line
                     belowBarData: BarAreaData(
                       show: true,
                       gradient: LinearGradient(

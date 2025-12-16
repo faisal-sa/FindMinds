@@ -31,12 +31,10 @@ class AiSkillCheckPage extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios, size: 18),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          // Actions removed as requested
         ),
         body: BlocBuilder<AiSkillCheckCubit, AiSkillCheckState>(
           builder: (context, state) {
             if (state is AiSkillCheckLoading) {
-              // Using the custom loader here
               return const ModernAnalysisLoader();
             } else if (state is AiSkillCheckError) {
               return Center(

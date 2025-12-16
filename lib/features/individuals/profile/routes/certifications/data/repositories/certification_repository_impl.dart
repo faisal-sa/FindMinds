@@ -17,7 +17,6 @@ class CertificationRepositoryImpl implements CertificationRepository {
     try {
       final models = await _remoteDataSource.getCertifications();
       
-      // FIX: Map the models to entities
       return models.map((model) => model.toEntity()).toList(); 
       
     } catch (e) {
@@ -33,27 +32,15 @@ Future<Certification> addCertification(Certification certification) async {
 
       String? uploadedUrl;
 
-      // // 1. Upload File if exists
-      // if (certification.credentialFile != null) {
-      //   uploadedUrl = await _remoteDataSource.uploadCredentialFile(
-      //     certification.credentialFile!,
-      //     userId,
-      //   );
-      // }
-
-      // 2. Create Model
-      // We pass the uploadedUrl here so it gets saved to the DB
+    
       final model = CertificationModel.fromEntity(
         certification,
         userId,
         uploadedUrl: uploadedUrl, 
       );
 
-      // 3. Insert to DB and Capture the result
-      // The remote data source now returns the model with the new ID
       final savedModel = await _remoteDataSource.addCertification(model);
 
-      // 4. Convert back to Entity and Return
       return savedModel.toEntity(); 
     } catch (e) {
       throw Exception('Failed to add certification: $e');
@@ -68,22 +55,13 @@ Future<Certification> addCertification(Certification certification) async {
 
       String? uploadedUrl = certification.credentialUrl;
 
-      // 1. Check if a NEW file was selected (overwriting the old URL)
-      // if (certification.credentialFile != null) {
-      //   uploadedUrl = await _remoteDataSource.uploadCredentialFile(
-      //     certification.credentialFile!,
-      //     userId,
-      //   );
-      // }
-
-      // 2. Create Model
+     
       final model = CertificationModel.fromEntity(
         certification,
         userId,
         uploadedUrl: uploadedUrl,
       );
 
-      // 3. Update DB
       await _remoteDataSource.updateCertification(model);
     } catch (e) {
       throw Exception('Failed to update certification: $e');

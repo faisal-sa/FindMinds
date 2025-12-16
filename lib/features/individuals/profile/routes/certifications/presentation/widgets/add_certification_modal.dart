@@ -37,7 +37,6 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
   DateTime? _issueDate;
   DateTime? _expirationDate;
 
-  // CHANGED: Use PlatformFile for new picks and a bool to track removal of existing
   PlatformFile? _pickedFile;
   bool _isExistingFileRemoved = false;
 
@@ -53,8 +52,7 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
     if (cert != null) {
       _issueDate = cert.issueDate;
       _expirationDate = cert.expirationDate;
-      // We don't pre-fill _pickedFile because that's only for NEW user actions.
-      // We rely on widget.certification.credentialFile for the existing state.
+     
     }
   }
 
@@ -65,7 +63,6 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
     super.dispose();
   }
 
-  // ADDED: Real file picking logic
   Future<void> _pickFile() async {
     try {
       final result = await FilePicker.platform.pickFiles(
@@ -77,7 +74,7 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
         setState(() {
           _pickedFile = result.files.first;
           _isExistingFileRemoved =
-              false; // Reset removal if they pick a new one
+              false; 
         });
       }
     } catch (e) {
@@ -90,7 +87,6 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
     }
   }
 
-  // ADDED: Logic to clear the file
   void _clearFile() {
     setState(() {
       _pickedFile = null;
@@ -113,20 +109,18 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
 
     File? fileToSave;
     String? urlToSave =
-        widget.certification?.credentialUrl; // Default to existing URL
+        widget.certification?.credentialUrl; 
 
-    // 1. If a new file was picked
     if (_pickedFile != null && _pickedFile!.path != null) {
       fileToSave = File(_pickedFile!.path!);
       urlToSave =
-          null; // Clear URL because we have a new local file waiting to upload
+          null; 
     }
-    // 2. If removed explicitly
     else if (_isExistingFileRemoved) {
       fileToSave = null;
       urlToSave = null;
     }
-    // 3. Else (No change), keep existing fileToSave (if local) or urlToSave (if remote) stays as is.
+   
 
     final newCertification = Certification(
       id: widget.certification?.id ?? const Uuid().v4(),
@@ -135,7 +129,7 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
       issueDate: _issueDate!,
       expirationDate: _expirationDate,
       credentialFile: fileToSave,
-      credentialUrl: urlToSave, // Pass this back so we don't lose it!
+      credentialUrl: urlToSave, 
     );
 
     Navigator.pop(context, newCertification);
@@ -145,7 +139,6 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
   Widget build(BuildContext context) {
     final isEditing = widget.certification != null;
 
-    // --- FIX: Check both Local File AND Remote URL ---
     final bool hasLocalFile =
         !_isExistingFileRemoved && widget.certification?.credentialFile != null;
     final bool hasRemoteUrl =
@@ -193,10 +186,10 @@ class _AddCertificationModalState extends State<AddCertificationModal> {
           const FormLabel("Credential File"),
           FormFileUploadButton(
             label: "Upload Certificate",
-            file: _pickedFile, // Pass the new platform file
+            file: _pickedFile, 
             existingUrl:
-                existingFileIndicator, // Pass indicator for existing file
-            onTap: _pickFile, // Trigger the picker
+                existingFileIndicator, 
+            onTap: _pickFile, 
             onClear: (_pickedFile != null || hasExistingFile)
                 ? _clearFile 
                 : null,

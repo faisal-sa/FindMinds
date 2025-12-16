@@ -26,7 +26,6 @@ class InsightsTab extends StatelessWidget {
               SnackBar(
                 content: Text(
                   state.resumeError!,
-                  // Use spMin to prevent text exploding on wide screens
                   style: TextStyle(fontSize: 14.spMin),
                 ),
                 backgroundColor: Colors.red,
@@ -41,7 +40,6 @@ class InsightsTab extends StatelessWidget {
             final isComplete = completionRatio >= 0.8;
 
             return SingleChildScrollView(
-              // Use fixed padding (24) instead of 24.r so margins don't become huge on desktop
               padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +53,6 @@ class InsightsTab extends StatelessWidget {
                   Text(
                     "Your Insights",
                     style: TextStyle(
-                      // FIXED: spMin prevents this from becoming 50px on desktop
                       fontSize: 18.spMin, 
                       fontWeight: FontWeight.bold,
                     ),
@@ -74,9 +71,6 @@ class InsightsTab extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------------------
-// 2. Welcome Card (Main Container)
-// -----------------------------------------------------------------------------
 class WelcomeCard extends StatelessWidget {
   final UserState userState;
   final bool isComplete;
@@ -97,11 +91,9 @@ class WelcomeCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      // FIXED: Fixed padding ensures the card content doesn't get crushed or spaced out wildly
       padding: const EdgeInsets.all(24), 
       decoration: BoxDecoration(
         color: AppColors.bluePrimary,
-        // FIXED: Fixed radius
         borderRadius: BorderRadius.circular(24), 
         boxShadow: [
           BoxShadow(
@@ -125,7 +117,6 @@ class WelcomeCard extends StatelessWidget {
                 : "Welcome to FINDMinds! 👋",
             style: TextStyle(
               color: Colors.white,
-              // FIXED: spMin caps the size
               fontSize: 22.spMin, 
               fontWeight: FontWeight.bold,
             ),
@@ -135,7 +126,6 @@ class WelcomeCard extends StatelessWidget {
             isComplete
                 ? "Your profile is active and ready to match."
                 : "Let's get your profile ready for top companies.",
-            // FIXED: spMin
             style: TextStyle(color: Colors.blue.shade100, fontSize: 14.spMin), 
           ),
           SizedBox(height: 24.h),
@@ -152,7 +142,7 @@ class WelcomeCard extends StatelessWidget {
               style: TextStyle(
                 color: Colors.blue.shade100,
                 fontWeight: FontWeight.bold,
-                fontSize: 11.spMin, // FIXED
+                fontSize: 11.spMin, 
                 letterSpacing: 1.2,
               ),
             ),
@@ -177,7 +167,7 @@ class _ProfileStrengthIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16), // Fixed padding
+      padding: const EdgeInsets.all(16), 
       decoration: BoxDecoration(
         color: AppColors.blueDark.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
@@ -192,7 +182,7 @@ class _ProfileStrengthIndicator extends StatelessWidget {
                 "Profile Strength",
                 style: TextStyle(
                   color: Colors.blue.shade100,
-                  fontSize: 12.spMin, // FIXED
+                  fontSize: 12.spMin, 
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -200,7 +190,7 @@ class _ProfileStrengthIndicator extends StatelessWidget {
                 "$progressPercent% Complete",
                 style: TextStyle(
                   color: Colors.blue.shade100,
-                  fontSize: 12.spMin, // FIXED
+                  fontSize: 12.spMin, 
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -210,7 +200,7 @@ class _ProfileStrengthIndicator extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 8, // Fixed height looks cleaner on desktop
+                height: 8, 
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: AppColors.blueDark,
@@ -279,7 +269,7 @@ class _ResumeUploadButton extends StatelessWidget {
                       style: TextStyle(
                         color: AppColors.textMain,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14.spMin, // FIXED
+                        fontSize: 14.spMin,
                       ),
                     ),
                   ],
@@ -295,7 +285,7 @@ class _ResumeUploadButton extends StatelessWidget {
                       child: const Icon(
                         Icons.upload_file,
                         color: AppColors.bluePrimary,
-                        size: 20, // Fixed size
+                        size: 20, 
                       ),
                     ),
                     SizedBox(width: 12.w),
@@ -308,14 +298,14 @@ class _ResumeUploadButton extends StatelessWidget {
                             style: TextStyle(
                               color: AppColors.textMain,
                               fontWeight: FontWeight.bold,
-                              fontSize: 14.spMin, // FIXED
+                              fontSize: 14.spMin,
                             ),
                           ),
                           Text(
                             "Auto-fill 80% of profile",
                             style: TextStyle(
                               color: AppColors.textSub,
-                              fontSize: 11.spMin, // FIXED
+                              fontSize: 11.spMin, 
                             ),
                           ),
                         ],
@@ -371,14 +361,12 @@ class InsightsFeatureGrid extends StatelessWidget {
           Expanded(
             child: isComplete
                 ? FeatureCard(
-                    // onTap moved to child
                     child: _FeatureCardContent(
                       icon: Icons.handshake,
                       iconColor: Colors.pink,
                       title: "Match Strength",
                       subtitle: "Check job fit",
                       actionText: "View Score",
-                      // Pass the navigation logic here
                       onTap: () => context.go('/insights/match-strength'),
                     ),
                   )
@@ -392,14 +380,12 @@ class InsightsFeatureGrid extends StatelessWidget {
           Expanded(
             child: isComplete
                 ? FeatureCard(
-                    // onTap moved to child
                     child: _FeatureCardContent(
                       icon: Icons.bolt,
                       iconColor: Colors.amber,
                       title: "AI Skill Check",
                       subtitle: "Validate top skills",
                       actionText: "Start Quiz",
-                      // Pass the navigation logic here
                       onTap: () => context.go('/insights/ai-skill-check'),
                     ),
                   )
@@ -437,11 +423,9 @@ class _FeatureCardContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
-          // FIXED: Changed 32.r to 32. 
-          // Icons shouldn't scale infinitely on desktop.
+       
           child: Icon(icon, color: iconColor, size: 32),
         ),
-        // FIXED: Fixed vertical spacing
         const SizedBox(height: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -460,7 +444,6 @@ class _FeatureCardContent extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                // FIXED: spMin
                 fontSize: 11.spMin, 
                 color: Colors.grey,
               ),

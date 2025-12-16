@@ -1,4 +1,3 @@
-// lib/features/candidate_details/data/data_sources/candidate_details_data_source.dart
 
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -33,14 +32,13 @@ class CandidateRemoteDataSourceImpl implements CandidateRemoteDataSource {
       final bool isPremium = companyData['is_premium'] ?? false;
 
       final bookmarkRes = await _supabase
-          .from('company_bookmarks') // اسم جدول المفضلة لديك
+          .from('company_bookmarks') 
           .select('id')
           .eq('company_id', companyId)
           .eq('candidate_id', candidateId)
           .maybeSingle();
       final bool isBookmarked = bookmarkRes != null;
 
-      // 3. جلب بيانات المرشح من جدول 'profiles'
       final response = await _supabase
           .from('profiles')
           .select('''
@@ -52,11 +50,10 @@ class CandidateRemoteDataSourceImpl implements CandidateRemoteDataSource {
           .eq('id', candidateId)
           .single();
 
-      // 4. إنشاء الموديل مع تمرير جميع الحالات
       return CandidateProfileModel.fromSupabase(
         response,
-        isPremium, // Unlocked Status
-        isBookmarked, // Bookmark Status
+        isPremium, 
+        isBookmarked, 
       );
     } catch (e) {
       throw Exception("Failed to load profile: $e");
@@ -73,14 +70,12 @@ class CandidateRemoteDataSourceImpl implements CandidateRemoteDataSource {
         .maybeSingle();
 
     if (exists != null) {
-      // حذف من المفضلة
       await _supabase
           .from('company_bookmarks')
           .delete()
           .eq('company_id', companyId)
           .eq('candidate_id', candidateId);
     } else {
-      // إضافة للمفضلة
       await _supabase.from('company_bookmarks').insert({
         'company_id': companyId,
         'candidate_id': candidateId,

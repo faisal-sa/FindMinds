@@ -11,7 +11,6 @@ class AiRemoteDataSource {
 
   AiRemoteDataSource(this._geminiService);
 
-  /// Defines the Schema as a raw Map for the REST API
   Map<String, dynamic> _getJsonSchema() {
     return {
       "type": "OBJECT",
@@ -55,7 +54,7 @@ CRITICAL INSTRUCTION: Generate ONLY a JSON object that strictly adheres to the p
     final responseText = await _geminiService.generateContent(
       prompt: prompt,
       model: 'gemini-2.5-flash',
-      jsonSchema: _getJsonSchema(), // Pass the raw schema map
+      jsonSchema: _getJsonSchema(),
       enforceJson: true,
     );
 
@@ -69,7 +68,6 @@ CRITICAL INSTRUCTION: Generate ONLY a JSON object that strictly adheres to the p
 }
 
 Map<String, dynamic> _decodeJson(String text) {
-  // If the API returns valid JSON, we might not need to clean, but safe to keep logic simple
   String cleanText = text.replaceAll(RegExp(r'```json|```'), '').trim();
   return jsonDecode(cleanText) as Map<String, dynamic>;
 }

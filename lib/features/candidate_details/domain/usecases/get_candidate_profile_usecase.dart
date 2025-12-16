@@ -1,4 +1,3 @@
-// lib/features/candidate_details/domain/usecases/get_candidate_profile_usecase.dart
 import 'package:fpdart/fpdart.dart';
 import 'package:graduation_project/features/candidate_details/domain/repositories/candidate_details_repository.dart';
 import 'package:injectable/injectable.dart';

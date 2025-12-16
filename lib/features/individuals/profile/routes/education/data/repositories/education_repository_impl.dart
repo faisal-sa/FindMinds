@@ -14,10 +14,8 @@ class EducationRepositoryImpl implements EducationRepository {
     try {
       final models = await _remoteDataSource.getEducations();
 
-      // FIX: Map the models to entities
       return models.map((model) => model.toEntity()).toList();
     } catch (e) {
-      // It is good practice to handle errors here as well, similar to above
       throw Exception('Failed to fetch educations: $e');
     }
   }

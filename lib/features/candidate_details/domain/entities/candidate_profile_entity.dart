@@ -1,4 +1,3 @@
-// lib/features/candidate_details/domain/entities/candidate_profile_entity.dart
 
 import 'package:equatable/equatable.dart';
 import 'work_experience_entity.dart';
@@ -14,10 +13,8 @@ class CandidateProfileEntity extends Equatable {
   final String? avatarUrl;
   final String? location;
 
-  // New Fields
   final String? introVideoUrl;
 
-  // ✅ 1. إضافة حقل رابط السيرة الذاتية
   final String? cvUrl;
 
   final List<String> employmentTypes;
@@ -33,7 +30,6 @@ class CandidateProfileEntity extends Equatable {
   final int? noticePeriodDays;
   final List<String> workModes;
 
-  // Locked Fields
   final String? email;
   final String? phoneNumber;
 
@@ -41,7 +37,6 @@ class CandidateProfileEntity extends Equatable {
   final List<EducationEntity> educations;
   final List<CertificationEntity> certifications;
 
-  // Status Fields
   final bool isUnlocked;
   final bool isBookmarked;
 
@@ -56,7 +51,7 @@ class CandidateProfileEntity extends Equatable {
     this.avatarUrl,
     this.location,
     this.introVideoUrl,
-    this.cvUrl, // ✅ إضافة للـ Constructor
+    this.cvUrl, 
     this.employmentTypes = const [],
     this.skills = const [],
     this.canRelocate = false,
@@ -87,7 +82,7 @@ class CandidateProfileEntity extends Equatable {
     String? avatarUrl,
     String? location,
     String? introVideoUrl,
-    String? cvUrl, // ✅ إضافة هنا
+    String? cvUrl,
     List<String>? employmentTypes,
     List<String>? skills,
     bool? canRelocate,
@@ -117,7 +112,7 @@ class CandidateProfileEntity extends Equatable {
       avatarUrl: avatarUrl ?? this.avatarUrl,
       location: location ?? this.location,
       introVideoUrl: introVideoUrl ?? this.introVideoUrl,
-      cvUrl: cvUrl ?? this.cvUrl, // ✅ التحديث هنا
+      cvUrl: cvUrl ?? this.cvUrl, 
       employmentTypes: employmentTypes ?? this.employmentTypes,
       skills: skills ?? this.skills,
       canRelocate: canRelocate ?? this.canRelocate,
@@ -150,7 +145,7 @@ class CandidateProfileEntity extends Equatable {
     avatarUrl,
     location,
     introVideoUrl,
-    cvUrl, // ✅ إضافته للمقارنة
+    cvUrl, 
     employmentTypes,
     skills,
     canRelocate,

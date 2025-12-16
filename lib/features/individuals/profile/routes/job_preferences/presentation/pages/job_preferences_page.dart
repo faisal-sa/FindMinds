@@ -17,7 +17,6 @@ class JobPreferencesPage extends StatelessWidget {
         elevation: 0,
         foregroundColor: Colors.black,
       ),
-      // BlocListener handles the "Sync to UserCubit" logic
       body: BlocListener<JobPreferencesCubit, JobPreferencesState>(
         listener: (context, state) {
           if (state is JobPreferencesSaved) {
@@ -28,7 +27,6 @@ class JobPreferencesPage extends StatelessWidget {
               ),
             );
           } else if (state is JobPreferencesLoaded) {
-            // SYNC BACK TO USER CUBIT
             context.read<UserCubit>().updateJobPreferences(state.preferences);
           } else if (state is JobPreferencesError) {
             ScaffoldMessenger.of(context).showSnackBar(

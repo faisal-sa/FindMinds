@@ -14,8 +14,7 @@ class PaymentWebViewPage extends StatefulWidget {
 class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
   late final WebViewController _controller;
 
-  // FIX: Removed the space between '_is' and 'handled'
-  bool _is_handled = false;
+  bool _isHandled = false;
 
   @override
   void initState() {
@@ -30,18 +29,16 @@ class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            // Optional: Loading indicator logic
           },
           onPageStarted: (String url) {},
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
-            // Check for success URL
             if (request.url.contains('success') ||
                 request.url.contains('approved') ||
                 request.url.contains('example.com')) {
-              if (!_is_handled) {
-                _is_handled = true;
+              if (!_isHandled) {
+                _isHandled = true;
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -58,11 +55,10 @@ class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
               return NavigationDecision.prevent;
             }
 
-            // Check for failure URL
             if (request.url.contains('failed') ||
                 request.url.contains('error')) {
-              if (!_is_handled) {
-                _is_handled = true;
+              if (!_isHandled) {
+                _isHandled = true;
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Payment verification failed.'),

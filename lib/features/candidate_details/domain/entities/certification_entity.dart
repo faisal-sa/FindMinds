@@ -1,4 +1,3 @@
-// domain/entities/certification_entity.dart
 import 'package:equatable/equatable.dart';
 
 class CertificationEntity extends Equatable {

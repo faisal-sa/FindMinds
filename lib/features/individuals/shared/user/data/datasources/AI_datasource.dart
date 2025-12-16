@@ -29,7 +29,6 @@ class AIDataSource {
       3. Fix any capitalization issues in names.
     """;
 
-    // Call the Dio service passing the PDF bytes
     final responseText = await _geminiService.generateContent(
       prompt: promptText,
       binaryData: pdfBytes,
@@ -43,7 +42,6 @@ class AIDataSource {
     }
 
     try {
-      // Clean up markdown just in case, though the prompt says not to use it
       String cleanJson = responseText
           .replaceAll('```json', '')
           .replaceAll('```', '')

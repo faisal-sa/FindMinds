@@ -1,4 +1,3 @@
-// lib/features/company_portal/domain/repositories/company_portal_repository.dart
 import 'package:multiple_result/multiple_result.dart';
 import '../../../../core/error/failures.dart';
 import '../../../shared/data/domain/entities/company_entity.dart';

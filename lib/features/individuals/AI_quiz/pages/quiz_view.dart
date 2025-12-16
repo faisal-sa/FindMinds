@@ -46,7 +46,6 @@ class _QuizViewState extends State<QuizView> {
 
     return Column(
       children: [
-        // Linear Progress Bar at the top
         LinearProgressIndicator(
           value: progress,
           backgroundColor: Colors.grey.shade100,
@@ -59,7 +58,6 @@ class _QuizViewState extends State<QuizView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Clean Question Counter
                 Text(
                   "Question ${_currentIndex + 1} of ${widget.questions.length}",
                   style: TextStyle(
@@ -71,7 +69,6 @@ class _QuizViewState extends State<QuizView> {
                 ),
                 const SizedBox(height: 16),
 
-                // Question Text
                 Text(
                   question.question,
                   style: const TextStyle(
@@ -82,7 +79,6 @@ class _QuizViewState extends State<QuizView> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                // Category Tag
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -103,7 +99,6 @@ class _QuizViewState extends State<QuizView> {
                 ),
                 const SizedBox(height: 32),
 
-                // Options List
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -195,7 +190,6 @@ class _QuizViewState extends State<QuizView> {
           ),
         ),
         
-        // Next Button Area
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: SizedBox(

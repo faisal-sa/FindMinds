@@ -1,4 +1,3 @@
-// lib/features/company_portal/domain/usecases/check_company_status.dart
 
 import 'package:injectable/injectable.dart';
 import 'package:multiple_result/multiple_result.dart';

@@ -1,4 +1,3 @@
-// lib/features/candidate_details/data/models/candidate_profile_model.dart
 
 import 'package:dart_mappable/dart_mappable.dart';
 import '../../domain/entities/candidate_profile_entity.dart';
@@ -38,7 +37,6 @@ class CandidateProfileModel extends CandidateProfileEntity with CandidateProfile
     super.location,
     super.introVideoUrl,
 
-    // ✅ 1. إضافة تمرير cvUrl هنا
     super.cvUrl,
 
     super.employmentTypes = const [],

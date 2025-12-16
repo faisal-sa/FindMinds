@@ -1,4 +1,3 @@
-// domain/entities/work_experience_entity.dart
 import 'package:equatable/equatable.dart';
 
 class WorkExperienceEntity extends Equatable {
@@ -9,7 +8,7 @@ class WorkExperienceEntity extends Equatable {
   final DateTime startDate;
   final DateTime? endDate;
   final bool isCurrentlyWorking;
-  final String? description; // Responsibilities
+  final String? description; 
 
   const WorkExperienceEntity({
     required this.id,
