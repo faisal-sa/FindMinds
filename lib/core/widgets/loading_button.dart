@@ -12,7 +12,7 @@ Widget loadingBtn({
   return ElevatedButton(
     onPressed: isLoading ? null : onPressed,
     style: ElevatedButton.styleFrom(
-      backgroundColor: backgroundColor ?? Colors.blue,
+      backgroundColor: Color(0xff356fed),
       foregroundColor: foregroundColor ?? Colors.white,
       padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
       shape: RoundedRectangleBorder(

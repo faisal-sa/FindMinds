@@ -77,18 +77,7 @@ class EducationPage extends StatelessWidget {
                     "No education listed",
                     style: TextStyle(color: Colors.grey[500], fontSize: 16.sp),
                   ),
-                  TextButton(
-                    onPressed: () async {
-                      final result = await AddEducationModal.show(
-                        context,
-                        null,
-                      );
-                      if (result != null && context.mounted) {
-                        context.read<EducationCubit>().addEducation(result);
-                      }
-                    },
-                    child: const Text("Add your education"),
-                  ),
+                 
                 ],
               ),
             );

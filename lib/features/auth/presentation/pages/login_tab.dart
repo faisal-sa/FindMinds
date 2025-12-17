@@ -56,48 +56,51 @@ class _LoginTabState extends State<LoginTab> {
         }
       },
       builder: (context, state) {
-        return Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 23),
-              AppTextField(
-                label: 'Email',
-                controller: emailController,
-                validator: Validators.validateEmail,
-              ),
-              const SizedBox(height: 16),
-              AppTextField(
-                label: 'Password',
-                obscure: true,
-                controller: passwordController,
-                validator: Validators.validatePassword,
-              ),
-              const SizedBox(height: 24),
-              loadingBtn(
-                text: 'Login',
-                isLoading: state.status == AuthStatus.loading,
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    context.read<AuthCubit>().signInUser(
-                      email: emailController.text.trim(),
-                      password: passwordController.text,
-                    );
-                  }
-                },
-              ),
-              const SizedBox(height: 16),
-              Center(
-                child: TextButton(
-                  onPressed: () => context.push('/reset-password'),
-                  child: const Text(
-                    'Forgot your password? Reset it',
-                    style: TextStyle(color: Colors.blue),
+        return SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 23),
+                AppTextField(
+                  label: 'Email',
+                  controller: emailController,
+                  validator: Validators.validateEmail,
+                ),
+                const SizedBox(height: 16),
+                AppTextField(
+                  label: 'Password',
+                  obscure: true,
+                  controller: passwordController,
+                  validator: Validators.validatePassword,
+                ),
+                const SizedBox(height: 24),
+                loadingBtn(
+                  text: 'Login',
+                  isLoading: state.status == AuthStatus.loading,
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      context.read<AuthCubit>().signInUser(
+                        email: emailController.text.trim(),
+                        password: passwordController.text,
+                      );
+                    }
+                  },
+                ),
+                const SizedBox(height: 16),
+                Center(
+                  child: TextButton(
+                    onPressed: () => context.push('/reset-password'),
+                    child: const Text(
+                      'Forgot your password? Reset it',
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

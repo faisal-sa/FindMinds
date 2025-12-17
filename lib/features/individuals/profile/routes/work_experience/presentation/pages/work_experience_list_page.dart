@@ -119,10 +119,7 @@ class _EmptyExperienceView extends StatelessWidget {
             "No experience listed",
             style: TextStyle(color: Colors.grey[500], fontSize: 16.sp),
           ),
-          TextButton(
-            onPressed: onAdd,
-            child: const Text("Add your first role"),
-          ),
+         
         ],
       ),
     );

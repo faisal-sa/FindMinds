@@ -137,7 +137,7 @@ class _CompanySearchPageState extends State<CompanySearchPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xff225be3),
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 24),
+              padding: const EdgeInsets.symmetric(vertical: 18),
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),

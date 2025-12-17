@@ -25,14 +25,14 @@ class RoleChip extends StatelessWidget {
       avatar: Icon(
         icon,
         size: 22.spMin,
-        color: isSelected ? Colors.blue : Colors.grey.shade600,
+        color: isSelected ? Colors.blue : Colors.grey,
       ),
       label: Text(label, style: TextStyle(fontSize: 15.spMin)),
       selected: isSelected,
       onSelected: (_) => onSelected(value),
-      selectedColor: Colors.blue.withAlpha(15),
+      selectedColor: Colors.blue.withAlpha(5),
       checkmarkColor: Colors.blue,
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: Colors.white,
       elevation: isSelected ? 2 : 0,
       pressElevation: 4,
       labelStyle: TextStyle(

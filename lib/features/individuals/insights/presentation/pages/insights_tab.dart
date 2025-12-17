@@ -300,7 +300,7 @@ class _ResumeUploadButton extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Auto-fill 80% of profile",
+                            "Auto-fill your profile",
                             style: TextStyle(
                               color: AppColors.textSub,
                               fontSize: 11.spMin, 
@@ -327,7 +327,7 @@ class _ResumeUploadButton extends StatelessWidget {
                           ),
                           SizedBox(width: 4.w),
                           Text(
-                            "+100%",
+                            "+?%",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 10.spMin,

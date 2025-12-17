@@ -25,7 +25,7 @@ class SaveBottomBar extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF3B82F6),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 elevation: 0,
               ),
