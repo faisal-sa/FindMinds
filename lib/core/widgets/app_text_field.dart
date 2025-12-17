@@ -1,3 +1,41 @@
+// ============================================================================
+//                               APP TEXT FIELD
+// ============================================================================
+// A reusable, app-wide text form field widget.
+//
+// PURPOSE:
+// - Centralizes TextFormField styling and behavior.
+// - Ensures consistent UI and validation usage across the app.
+// - Works seamlessly with the app validators file (single source of truth).
+//
+// DESIGN PRINCIPLES:
+// - Stateless and UI-only (no business logic).
+// - Follows Single Responsibility Principle (SRP):
+//   this widget is responsible ONLY for input rendering and decoration.
+// - Validation logic is injected via `validator` and never defined here.
+//
+// VALIDATION:
+// - Accepts a validator function: `String? Function(String?)?`
+// - Validation rules must come from the validators file.
+// - `null` return value = valid input.
+//
+// CONFIGURABILITY:
+// - Supports obscured text (passwords).
+// - Supports custom keyboard types, input formatters, and max length.
+// - Allows text alignment and custom text style.
+// - Provides optional hint text.
+//
+// STYLING:
+// - Consistent borders for normal, focused, and error states.
+// - Uses filled background for better UX.
+// - Avoids inline styling in screens by centralizing design here.
+//
+// USAGE RULES:
+// - Do NOT add validation logic inside this widget.
+// - Do NOT perform state management here.
+// - Control input state via external controllers and Cubit/Form logic.
+// ============================================================================
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

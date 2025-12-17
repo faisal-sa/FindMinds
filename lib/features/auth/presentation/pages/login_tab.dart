@@ -5,7 +5,6 @@ import 'package:graduation_project/core/widgets/app_text_field.dart';
 import 'package:graduation_project/core/widgets/loading_button.dart';
 import 'package:graduation_project/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:graduation_project/features/auth/presentation/cubit/auth_state.dart';
-import 'package:go_router/go_router.dart';
 
 // ===============================================================
 // LOGIN TAB
@@ -62,12 +61,16 @@ class _LoginTabState extends State<LoginTab> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 23),
+
+              // ================= EMAIL FIELD =================
               AppTextField(
                 label: 'Email',
                 controller: emailController,
                 validator: Validators.validateEmail,
               ),
               const SizedBox(height: 16),
+
+              // ================= PASSWORD FIELD =================
               AppTextField(
                 label: 'Password',
                 obscure: true,
@@ -75,6 +78,8 @@ class _LoginTabState extends State<LoginTab> {
                 validator: Validators.validatePassword,
               ),
               const SizedBox(height: 24),
+
+              // ================= LOGIN BUTTON =================
               loadingBtn(
                 text: 'Login',
                 isLoading: state.status == AuthStatus.loading,
@@ -88,6 +93,8 @@ class _LoginTabState extends State<LoginTab> {
                 },
               ),
               const SizedBox(height: 16),
+
+              // ================= FORGOT PASSWORD =================
               Center(
                 child: TextButton(
                   onPressed: () => context.push('/reset-password'),

@@ -62,6 +62,8 @@ class _SignupTabState extends State<SignupTab> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 8),
+
+                // ================= ROLE CHIP SELECTION =================
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -85,12 +87,15 @@ class _SignupTabState extends State<SignupTab> {
                 ),
                 const SizedBox(height: 24),
 
+                // ================= EMAIL FIELD =================
                 AppTextField(
                   label: 'Email',
                   controller: emailController,
                   validator: Validators.validateEmail,
                 ),
                 const SizedBox(height: 16),
+
+                // ================= PASSWORD FIELD =================
                 AppTextField(
                   label: 'Password',
                   obscure: true,
@@ -98,6 +103,8 @@ class _SignupTabState extends State<SignupTab> {
                   validator: Validators.validatePassword,
                 ),
                 const SizedBox(height: 16),
+
+                // ================= CONFIRM PASSWORD FIELD =================
                 AppTextField(
                   label: 'Confirm Password',
                   obscure: true,
@@ -111,6 +118,8 @@ class _SignupTabState extends State<SignupTab> {
                 // Show CR number field only when Company is selected
                 if (_selectedRole == 'company') ...[
                   const SizedBox(height: 16),
+
+                  // ================= CR NUMBER FIELD =================
                   AppTextField(
                     label: 'CR number',
                     controller: crNumberController,
@@ -127,6 +136,8 @@ class _SignupTabState extends State<SignupTab> {
 
                 // ===== ROLE CHIP SELECTION =====
                 const SizedBox(height: 24),
+
+                // ================= CREATE ACCOUNT BUTTON =================
                 loadingBtn(
                   text: 'Create Account',
                   isLoading: state.status == AuthStatus.loading,
@@ -152,6 +163,8 @@ class _SignupTabState extends State<SignupTab> {
                 ),
 
                 const SizedBox(height: 16),
+
+                // ================= TERMS AND CONDITIONS =================
                 const Center(
                   child: Text(
                     'By signing up you agree to our terms',

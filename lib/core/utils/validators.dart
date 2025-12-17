@@ -1,3 +1,65 @@
+/*
+ ============================================================================
+.                              APP VALIDATORS
+ ============================================================================
+ This file is the single source of truth for all input validation in the app.
+
+ It contains ONLY the following validators:
+ - validateName
+- validateRole
+- validateEmail
+- validatePassword
+- validateConfirmPassword
+- validateOTP
+
+and more , it can be scaled up to more validators as needed
+
+RULES & GUIDELINES:
+1. Do NOT create validators outside this file.
+
+
+
+2. All validators must be pure functions:
+   - No side effects
+   - No async work
+   - No dependency on UI, context, or state.
+
+
+
+3. Each validator has a single responsibility (SRP):
+   - Validate one thing, and one thing only.
+
+
+
+4. Validators must return `String?`:
+   - `null`   → valid input
+   - `String` → validation error message.
+
+
+
+5. Validation is UI-agnostic:
+   - AppTextField (already implemented) is responsible for calling validators.
+   - Validators never interact with widgets or form logic.
+
+
+
+6. Keep validation rules centralized and consistent:
+   - Any change to validation behavior must be done here.
+   - This guarantees predictable behavior across the entire app.
+
+
+
+============================================================================
+NOTE:
+- Follow OOP and SOLID principles at all times.
+- This file exists to prevent validation duplication and logic drift.
+- If you think you need a new validator, you probably need to reuse or
+  extend an existing one in this file instead.
+============================================================================ 
+ 
+ 
+*/
+
 class Validators {
   static String? validateName(String? value) {
     if (value == null || value.trim().isEmpty) {

@@ -21,6 +21,7 @@ class AuthHead extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // ================= LOGO =================
                 SvgPicture.asset(
                   'assets/icons/logo.svg',
                   height: 80,
