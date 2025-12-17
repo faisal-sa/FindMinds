@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:flutter/foundation.dart';
 import '../models/ai_score_model.dart';
 
-
 @lazySingleton
 class AiRemoteDataSource {
   final GeminiService _geminiService;
@@ -19,14 +18,20 @@ class AiRemoteDataSource {
         "summary": {"type": "STRING", "description": "Candidate fit summary"},
         "pros": {
           "type": "ARRAY",
-          "items": {"type": "STRING", "description": "A key strength of the candidate"}
+          "items": {
+            "type": "STRING",
+            "description": "A key strength of the candidate",
+          },
         },
         "cons": {
           "type": "ARRAY",
-          "items": {"type": "STRING", "description": "A key weakness or missing requirement"}
-        }
+          "items": {
+            "type": "STRING",
+            "description": "A key weakness or missing requirement",
+          },
+        },
       },
-      "required": ["score", "summary", "pros", "cons"]
+      "required": ["score", "summary", "pros", "cons"],
     };
   }
 
@@ -57,7 +62,7 @@ CRITICAL INSTRUCTION: Generate ONLY a JSON object that strictly adheres to the p
       jsonSchema: _getJsonSchema(),
       enforceJson: true,
     );
-
+    print(responseText);
     if (responseText == null || responseText.isEmpty) {
       throw Exception('AI returned empty or null response text.');
     }

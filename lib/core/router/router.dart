@@ -104,8 +104,7 @@ final GoRouter router = GoRouter(
               builder: (context, state) => const InsightsTab(),
               routes: [
                 GoRoute(
-                  path:
-                      'match-strength',
+                  path: 'match-strength',
                   parentNavigatorKey: _rootNavigatorKey, // Hides bottom navbar
                   builder: (context, state) {
                     final userCubit = serviceLocator.get<UserCubit>();
@@ -114,7 +113,7 @@ final GoRouter router = GoRouter(
                     return BlocProvider(
                       create: (context) {
                         final cubit = MatchStrengthCubit(
-                          geminiService: serviceLocator.get<GeminiService>(), 
+                          geminiService: serviceLocator.get<GeminiService>(),
                         );
                         cubit.analyzeProfile(currentUser);
                         return cubit;
@@ -181,8 +180,6 @@ final GoRouter router = GoRouter(
 
                     return MultiBlocProvider(
                       providers: [
-                   
-
                         BlocProvider(
                           create: (context) {
                             final cubit = serviceLocator.get<AboutMeCubit>();
@@ -207,7 +204,7 @@ final GoRouter router = GoRouter(
                     final userCubit = serviceLocator.get<UserCubit>();
                     final initialExperiences =
                         userCubit.state.user.workExperiences;
-                        
+
                     return BlocProvider(
                       create: (context) {
                         final cubit = serviceLocator.get<WorkExperienceCubit>();
@@ -226,7 +223,7 @@ final GoRouter router = GoRouter(
                   builder: (context, state) {
                     final userCubit = serviceLocator.get<UserCubit>();
                     final initialEducations = userCubit.state.user.educations;
-    
+
                     return BlocProvider(
                       create: (context) {
                         final cubit = serviceLocator.get<EducationCubit>();
@@ -237,7 +234,7 @@ final GoRouter router = GoRouter(
                     );
                   },
                 ),
-GoRoute(
+                GoRoute(
                   path: 'certification',
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {

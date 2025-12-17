@@ -112,7 +112,7 @@ class CandidateResultsPage extends StatelessWidget {
                         child: Text(
                           "${candidates.length} Found",
                           style: TextStyle(
-                            color: primaryColor,
+                            color: Color(0xFF3B82F6),
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -148,8 +148,7 @@ class CandidateResultsPage extends StatelessWidget {
                                       bottom: 16.0,
                                     ),
                                     child: _buildModernCardWrapper(
-                                      child:
-                                      CandidateRichCard(
+                                      child: CandidateRichCard(
                                         candidate: candidate,
                                         primaryColor: primaryColor,
 
